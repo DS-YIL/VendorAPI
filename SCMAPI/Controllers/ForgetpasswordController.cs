@@ -62,6 +62,7 @@ namespace SCMAPI.Controllers
         [Route("checkforgetpasswordlink")]
         public IHttpActionResult checkforgetpasswordlink(forgetpassword model)
         {
+            //test
             return Ok(this._rfqBusenessAcess.CheckLinkExpiryOrNot(model));
         }
     
