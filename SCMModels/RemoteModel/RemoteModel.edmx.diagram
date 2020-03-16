@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="136c7e2183fc49bea182d1cd59d0c85a" Name="Diagram1" ZoomLevel="91">
+        <EntityTypeShape EntityType="VSCMModel.RemoteBankDetailsForVendor" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteCurrencyHistory" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteCurrencyMaster" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteDocumentTypeMaster" Width="1.5" PointX="5.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteForgetPassword" Width="1.5" PointX="10.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteNatureOfBusinessMaster" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQCommunication" Width="1.5" PointX="10.5" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQDocument" Width="1.5" PointX="10.5" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQItem" Width="1.5" PointX="12" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQItems_N" Width="1.5" PointX="5.25" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQItemsInfo" Width="1.5" PointX="14.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQItemsInfo_N" Width="1.5" PointX="7.5" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQMaster" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQMPRMapping" Width="1.5" PointX="7.5" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQReminderTracking" Width="1.5" PointX="12.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQRevision" Width="1.5" PointX="9.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQRevisions_N" Width="1.5" PointX="3" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQStatu" Width="1.5" PointX="5.25" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQStatusUpdate" Width="1.5" PointX="7.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRfqTerm" Width="1.5" PointX="5.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRfqVendorBOM" Width="1.5" PointX="7.5" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteRFQVendorTerm" Width="1.5" PointX="15" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteShipmentModeMaster" Width="1.5" PointX="12.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteStateMaster" Width="1.5" PointX="14.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteUnitMaster" Width="1.5" PointX="14.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteVendorMaster" Width="1.5" PointX="14.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteVendorRegisterDocumenetMaster" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteVendorRegisterDocumentDetail" Width="1.5" PointX="8.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteVendorRegisterMaster" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteVendorRFQTerm" Width="1.5" PointX="12.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RemoteVendorUserMaster" Width="1.5" PointX="16.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.RFQPendingQuotation" Width="1.5" PointX="9.75" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VSCMModel.V_RFQList" Width="1.5" PointX="16.75" PointY="12.25" IsExpanded="true" />
+        <AssociationConnector Association="VSCMModel.FK__BankDetai__Vendo__308E3499" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteCurrencyHistory_RemoteCurrencyMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK__VendorReg__Payme__2DB1C7EE" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQCommunications_RemoteRFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQCommunications_RemoteRFQRevisions_N" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQReminderTracking_RFQCommunications" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQDocuments_RFQItems" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQDocuments_RFQRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQItems_RFQRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQItemsInfo_RFQItems" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQItems_N_RemoteRFQRevisions_N" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQItemsInfo_N_RemoteRFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQMPRMapping_RemoteRFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRfqVendorBOM_RemoteRfqVendorBOM" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQRevisions_N_RemoteRFQMasters" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQMPRMapping_RemoteRFQMPRMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQVendorTerms_RFQRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RemoteRFQStatus_RemoteRFQRevisions_N" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK_RFQVendorTerms_VendorRFQTerms" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK__VendorReg__Docum__345EC57D" ManuallyRouted="false" />
+        <AssociationConnector Association="VSCMModel.FK__VendorReg__Docum__336AA144" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="76f60ca617504986b3b0bebcb58c0cb2" Name="Diagram1" ZoomLevel="28">
+        <EntityTypeShape EntityType="YSCMModel.AccessGroupMaster" Width="1.5" PointX="5.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.AccessName" Width="1.5" PointX="8" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.AuthorizationItem" Width="1.5" PointX="5.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.AutorizationGroup" Width="1.5" PointX="8" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.BankDetailsForVendor" Width="1.5" PointX="15.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.ClientLogin" Width="1.5" PointX="7.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.CurrencyHistory" Width="1.5" PointX="19" PointY="23.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.CurrencyMaster" Width="1.5" PointX="16.75" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.DocumentTypeMaster" Width="1.5" PointX="14.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Employee" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.GlobalGroupEmployee" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.GlobalGroup" Width="1.5" PointX="3" PointY="69.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.ItemAttributesMaster" Width="1.5" PointX="7.5" PointY="65.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MaterialMaster" Width="1.5" PointX="16.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MaterialMasterYG" Width="1.5" PointX="21.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPR_Assignment" Width="1.5" PointX="5.25" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRApprover" Width="1.5" PointX="10.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRBuyerGroupMember" Width="1.5" PointX="3" PointY="62" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRBuyerGroup" Width="1.5" PointX="0.75" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRCommunication" Width="1.5" PointX="8.25" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRCustomsDuty" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDepartment" Width="1.5" PointX="0.75" PointY="32.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDespatchDocCategory" Width="1.5" PointX="7.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDetail" Width="1.5" PointX="0.75" PointY="41.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDispatchLocation" Width="1.5" PointX="18.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDocumentation" Width="1.5" PointX="5.25" PointY="34.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDocumentationDescription" Width="1.5" PointX="3" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDocument" Width="1.5" PointX="5.25" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRIncharge" Width="1.5" PointX="8.25" PointY="32" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRIssuePurpos" Width="1.5" PointX="0.75" PointY="49.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRItemDetails_X" Width="1.5" PointX="5.25" PointY="46.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRItemDetailsAttachment" Width="1.5" PointX="7.5" PointY="46.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRItemInfo" Width="1.5" PointX="11.25" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPROfferDetail" Width="1.5" PointX="3" PointY="72.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPAApprover" Width="1.5" PointX="11.25" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPADetail" Width="1.5" PointX="9" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPADocument" Width="1.5" PointX="7.5" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPAPurchaseMode" Width="1.5" PointX="6.75" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPAPurchaseType" Width="1.5" PointX="6.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPAVendor" Width="1.5" PointX="11.25" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPreferredVendorType" Width="1.5" PointX="1.5" PointY="53" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRProcurementSource" Width="1.5" PointX="0.75" PointY="61.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRProjectDutyApplicable" Width="1.5" PointX="0.75" PointY="64.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRPurchaseType" Width="1.5" PointX="1.5" PointY="55.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRReminderTracking" Width="1.5" PointX="13.5" PointY="37.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRRevision" Width="1.5" PointX="3" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRRfqItemInfo" Width="1.5" PointX="18.75" PointY="54" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRRfqItem" Width="1.5" PointX="13.5" PointY="55.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRScope" Width="1.5" PointX="13.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRStatu" Width="1.5" PointX="1.5" PointY="58.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRStatusTrack" Width="1.5" PointX="8.25" PointY="41.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRTargetedSpendSupportingDoc" Width="1.5" PointX="5.25" PointY="62.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRVendorDetail" Width="1.5" PointX="11.25" PointY="31.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.NatureOfBusinessMaster" Width="1.5" PointX="10.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.OrgDepartment" Width="1.5" PointX="20.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PAAuthorizationEmployeeMapping" Width="1.5" PointX="22" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PAAuthorizationLimit" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PACreditDaysApprover" Width="1.5" PointX="25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PACreditDaysMaster" Width="1.5" PointX="22.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PAFunctionalRole" Width="1.5" PointX="19.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PAItem" Width="1.5" PointX="16.5" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PATerm" Width="1.5" PointX="14.25" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQCommunication" Width="1.5" PointX="15.75" PointY="51.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQDocument" Width="1.5" PointX="21.75" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQItem" Width="1.5" PointX="13.5" PointY="29.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQItems_N" Width="1.5" PointX="9.75" PointY="71.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQItemsInfo" Width="1.5" PointX="22.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQItemsInfo_N" Width="1.5" PointX="12" PointY="68.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQMaster" Width="1.5" PointX="5.25" PointY="73.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQMPRMapping" Width="1.5" PointX="16.5" PointY="56" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQReminderTracking" Width="1.5" PointX="18" PointY="49.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQRevision" Width="1.5" PointX="11.25" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQRevisions_N" Width="1.5" PointX="7.5" PointY="72.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQStatu" Width="1.5" PointX="13.5" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQTerm" Width="1.5" PointX="12" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RfqVendorBOM" Width="1.5" PointX="12" PointY="74.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQVendorTerm" Width="1.5" PointX="19.25" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.SCMStatu" Width="1.5" PointX="5.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.ShipmentModeMaster" Width="1.5" PointX="23.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.StandardListYNN" Width="1.5" PointX="0.75" PointY="37.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.sysdiagram" Width="1.5" PointX="23.75" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.TermsCategory" Width="1.5" PointX="14.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Test_AttributeMaster" Width="1.5" PointX="5.25" PointY="58.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Test_CategoryAttributes" Width="1.5" PointX="7.5" PointY="59" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Test_CategoryMaster" Width="1.5" PointX="3" PointY="65.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Test_ItemAttributesMaster" Width="1.5" PointX="7.5" PointY="62.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Test_ItemMaster" Width="1.5" PointX="5.25" PointY="65.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.testuserdetail" Width="1.5" PointX="15.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.UnitMaster" Width="1.5" PointX="9" PointY="52.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.UserDetail" Width="1.5" PointX="5.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorMaster" Width="1.5" PointX="9" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorRegisterDocumenetMaster" Width="1.5" PointX="16" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorRegisterDocumentDetail" Width="1.5" PointX="18.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorRegisterMaster" Width="1.5" PointX="13" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorRFQTerm" Width="1.5" PointX="17" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorUserMaster" Width="1.5" PointX="23.75" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.YILTermsandCondition" Width="1.5" PointX="24.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.YILTermsGroup" Width="1.5" PointX="24.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.CustomerMasterYG" Width="1.5" PointX="15.75" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Department" Width="1.5" PointX="23.75" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Grade" Width="1.5" PointX="25.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRTechClearance" Width="1.5" PointX="19.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Organization" Width="1.5" PointX="17.75" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.AccessRoleView" Width="1.5" PointX="25.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.approverFinalview" Width="1.5" PointX="9.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.CreditApprover" Width="1.5" PointX="19.75" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.DisplayRfqTermsByRevisionId" Width="1.5" PointX="25.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Employeemappingtocredit" Width="1.5" PointX="25.75" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.Employeemappingtopurchase" Width="1.5" PointX="26.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.GetMappedSlab" Width="1.5" PointX="26.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.GetmprApproverdeatil" Width="1.5" PointX="27.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.GetMprPaDetailsByFilter" Width="1.5" PointX="27.75" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.getrevision" Width="1.5" PointX="5.75" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.getrevision1" Width="1.5" PointX="27.75" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.LoadApproverEmployee" Width="1.5" PointX="27.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.LoadBuyerManager" Width="1.5" PointX="27.75" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.LoadItemsByID" Width="1.5" PointX="21.75" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.LoadItemsByPAID" Width="1.5" PointX="29.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.LoadProjectManager" Width="1.5" PointX="29.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPR_GetAssignEmployee" Width="1.5" PointX="17.75" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPR_GetAssignEmployeList" Width="1.5" PointX="29.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRApproversView" Width="1.5" PointX="29.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRDepartmentsView" Width="1.5" PointX="23.75" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRRevisionDetail" Width="1.5" PointX="29.75" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRRevisionDetails_woItems" Width="1.5" PointX="25.75" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.MPRStatusTrackDetail" Width="1.5" PointX="31.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.PAandCRMapping" Width="1.5" PointX="31.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RateContract" Width="1.5" PointX="31.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RepeatOrdersView" Width="1.5" PointX="31.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQCompareView" Width="1.5" PointX="31.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQCompareView_BK17_02_2020" Width="1.5" PointX="33.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQItemsView" Width="1.5" PointX="18.75" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQListView" Width="1.5" PointX="33.75" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQQuoteView" Width="1.5" PointX="33.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQQuoteView1" Width="1.5" PointX="35.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQQuoteView14022020" Width="1.5" PointX="35.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.RFQView140202020" Width="1.5" PointX="35.75" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.UserPermission" Width="1.5" PointX="37.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YSCMModel.VendorEmployeeView" Width="1.5" PointX="37.75" PointY="6.125" IsExpanded="true" />
+        <AssociationConnector Association="YSCMModel.FK_AccessNames_AccessGroupMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_AccessNames_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_AccessNames_UserDetails1" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_AutorizationGroup_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_AutorizationGroup_UserDetails1" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK__BankDetai__Vendo__092A4EB5" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_CurrencyHistory_CurrencyMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_GlobalGroupEmployees_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPR_Assignment_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRCommunications_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRReminderTracking_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRStatusTrack_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_GlobalGroupEmployees_GlobalGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_ItemAttributesMaster_Test_AttributeMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_ItemAttributesMaster_Test_ItemMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPR_Assignment_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRApprovers_MPRApprovers" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRBuyerGroupMembers_MPRBuyerGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPADetails_MPRBuyerGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRBuyerGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_Test_CategoryMaster_MPRBuyerGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRCommunications_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRReminderTracking_MPRCommunications" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRCustomsDuty" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDepartments_MPRDepartments" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPADetails_MPRDepartments" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRDepartments" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDetails_MPRPreferredVendorTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDetails_MPRPurchaseTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDetails_MPRStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRIncharges_MPRDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPROfferDetails_MPRDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRStatusTrack_MPRDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDocumentation_MPRDocumentationDescriptions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDocumentation_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDocuments_MPRItemInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRDocuments_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRIncharges_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRIssuePurposes" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRItemDetails_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRItemDetailsAttachments_MPRItemDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPADocuments_MPRItemDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRItemInfo_MPRPADetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRItemInfo_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRItemInfo_PAItem" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRItemInfo_UnitMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRfqItems_MPRItemInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQItems_MPRItemInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQMPRMapping_MPRItemInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPAApprovers_MPRPADetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPADetails_MPRPAPurchaseModes" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPADetails_MPRPAPurchaseTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRPAVendors_MPRPADetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PAItem_RFQItemsInfo_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PATerms_MPRPADetails" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQItems_RFQItems" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRProcurementSources" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_MPRProjectDutyApplicable" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_StandardListYNN" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_StandardListYNN10" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_StandardListYNN6" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_StandardListYNN7" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_StandardListYNN8" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRevisions_StandardListYNN9" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRStatusTrack_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRTargetedSpendSupportingDocs_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRVendorDetails_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQMaster_MPRRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRfqItemInfos_MPRRfqItemInfos" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRfqItemInfos_MPRRfqItems" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRfqItemInfos_PAItem" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRfqItemInfos_RFQItemsInfo_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRRfqItems_RFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_MPRVendorDetails_VendorMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK__VendorReg__Payme__064DE20A" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PAAuthorizationEmployeeMapping_PAAuthorizationLimits" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PAAuthorizationEmployeeMapping_PAFunctionalRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PACreditDaysApprovers_PAAuthorizationLimits" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PACreditDaysApprovers_PAFunctionalRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_PATerms_RFQTerms" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQCommunications_RFQItems" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQCommunications_RFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQCommunications_RFQRevisions_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQReminderTracking_RFQCommunications" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQItems_RFQRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQItems_N_RFQRevisions_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQItemsInfo_N_RFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQMPRMapping_RFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RfqVendorBOM_RFQItems_N" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQRevisions_N_RFQMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQStatus_RFQRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQVendorTerms_RFQRevisions" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_RFQVendorTerms_VendorRFQTerms" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.v" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_Test_CategoryAttributes_Test_AttributeMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_Test_ItemAttributesMaster_Test_AttributeMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_Test_CategoryMaster_Test_CategoryMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_Test_ItemMaster_Test_CategoryMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK_Test_ItemAttributesMaster_Test_ItemMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK__VendorReg__Docum__0CFADF99" ManuallyRouted="false" />
+        <AssociationConnector Association="YSCMModel.FK__VendorReg__Docum__0C06BB60" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

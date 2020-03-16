@@ -1,0 +1,2844 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="YSCMModelStoreContainer" CdmEntityContainer="YSCMEntities">
+    <EntitySetMapping Name="AccessGroupMasters">
+      <EntityTypeMapping TypeName="YSCMModel.AccessGroupMaster">
+        <MappingFragment StoreEntitySet="AccessGroupMaster">
+          <ScalarProperty Name="AccessGroupId" ColumnName="AccessGroupId" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeletedRemarks" ColumnName="DeletedRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessNames">
+      <EntityTypeMapping TypeName="YSCMModel.AccessName">
+        <MappingFragment StoreEntitySet="AccessNames">
+          <ScalarProperty Name="AccessNameID" ColumnName="AccessNameID" />
+          <ScalarProperty Name="AccessGroupId" ColumnName="AccessGroupId" />
+          <ScalarProperty Name="AccessName1" ColumnName="AccessName" />
+          <ScalarProperty Name="updatedBy" ColumnName="updatedBy" />
+          <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="DeletedRemarks" ColumnName="DeletedRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="AccessNameStatus" ColumnName="AccessNameStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AuthorizationItems">
+      <EntityTypeMapping TypeName="YSCMModel.AuthorizationItem">
+        <MappingFragment StoreEntitySet="AuthorizationItems">
+          <ScalarProperty Name="RoleAccessNameid" ColumnName="RoleAccessNameid" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="AccessNamesId" ColumnName="AccessNamesId" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="Updateddate" ColumnName="Updateddate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="Deleteddate" ColumnName="Deleteddate" />
+          <ScalarProperty Name="DeletedRemarks" ColumnName="DeletedRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="AccessNameStatus" ColumnName="AccessNameStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AutorizationGroups">
+      <EntityTypeMapping TypeName="YSCMModel.AutorizationGroup">
+        <MappingFragment StoreEntitySet="AutorizationGroup">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="DeletedRemarks" ColumnName="DeletedRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BankDetailsForVendors">
+      <EntityTypeMapping TypeName="YSCMModel.BankDetailsForVendor">
+        <MappingFragment StoreEntitySet="BankDetailsForVendor">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BankDetails" ColumnName="BankDetails" />
+          <ScalarProperty Name="BankerName" ColumnName="BankerName" />
+          <ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
+          <ScalarProperty Name="AccountHolderName" ColumnName="AccountHolderName" />
+          <ScalarProperty Name="LocationOrBranch" ColumnName="LocationOrBranch" />
+          <ScalarProperty Name="AccNo" ColumnName="AccNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientLogins">
+      <EntityTypeMapping TypeName="YSCMModel.ClientLogin">
+        <MappingFragment StoreEntitySet="ClientLogin">
+          <ScalarProperty Name="CId" ColumnName="CId" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerPassword" ColumnName="CustomerPassword" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="email" ColumnName="email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CurrencyHistories">
+      <EntityTypeMapping TypeName="YSCMModel.CurrencyHistory">
+        <MappingFragment StoreEntitySet="CurrencyHistory">
+          <ScalarProperty Name="CurrencyHistoryId" ColumnName="CurrencyHistoryId" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="EffectiveFrom" ColumnName="EffectiveFrom" />
+          <ScalarProperty Name="EffectiveTo" ColumnName="EffectiveTo" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="editedBy" ColumnName="editedBy" />
+          <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CurrencyMasters">
+      <EntityTypeMapping TypeName="YSCMModel.CurrencyMaster">
+        <MappingFragment StoreEntitySet="CurrencyMaster">
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
+          <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="updateddate" ColumnName="updateddate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentTypeMasters">
+      <EntityTypeMapping TypeName="YSCMModel.DocumentTypeMaster">
+        <MappingFragment StoreEntitySet="DocumentTypeMaster">
+          <ScalarProperty Name="DocumenTypeId" ColumnName="DocumenTypeId" />
+          <ScalarProperty Name="DocumentTypeName" ColumnName="DocumentTypeName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="UsedByYIL" ColumnName="UsedByYIL" />
+          <ScalarProperty Name="UsedBYVendor" ColumnName="UsedBYVendor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="YSCMModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="GlobalEmpNo" ColumnName="GlobalEmpNo" />
+          <ScalarProperty Name="YGSAccountCode" ColumnName="YGSAccountCode" />
+          <ScalarProperty Name="DomainId" ColumnName="DomainId" />
+          <ScalarProperty Name="YGSCostCenter" ColumnName="YGSCostCenter" />
+          <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+          <ScalarProperty Name="OrgDepartmentId" ColumnName="OrgDepartmentId" />
+          <ScalarProperty Name="OrgOfficeId" ColumnName="OrgOfficeId" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="BoolContract" ColumnName="BoolContract" />
+          <ScalarProperty Name="DOJ" ColumnName="DOJ" />
+          <ScalarProperty Name="EffectiveDOJ" ColumnName="EffectiveDOJ" />
+          <ScalarProperty Name="ConfirmationDueDate" ColumnName="ConfirmationDueDate" />
+          <ScalarProperty Name="ConfirmationDate" ColumnName="ConfirmationDate" />
+          <ScalarProperty Name="DOL" ColumnName="DOL" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+          <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+          <ScalarProperty Name="HODEmpNo" ColumnName="HODEmpNo" />
+          <ScalarProperty Name="BoolHOD" ColumnName="BoolHOD" />
+          <ScalarProperty Name="BlockId" ColumnName="BlockId" />
+          <ScalarProperty Name="FloorId" ColumnName="FloorId" />
+          <ScalarProperty Name="Qualification" ColumnName="Qualification" />
+          <ScalarProperty Name="QualificationString" ColumnName="QualificationString" />
+          <ScalarProperty Name="BoolFurnishedCertificates" ColumnName="BoolFurnishedCertificates" />
+          <ScalarProperty Name="PrevEmployment" ColumnName="PrevEmployment" />
+          <ScalarProperty Name="BoolExecutive" ColumnName="BoolExecutive" />
+          <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+          <ScalarProperty Name="Basic" ColumnName="Basic" />
+          <ScalarProperty Name="HRA" ColumnName="HRA" />
+          <ScalarProperty Name="MedicalAllowance" ColumnName="MedicalAllowance" />
+          <ScalarProperty Name="SpecialAllowance" ColumnName="SpecialAllowance" />
+          <ScalarProperty Name="TransportAllowance" ColumnName="TransportAllowance" />
+          <ScalarProperty Name="TraineeAllowance" ColumnName="TraineeAllowance" />
+          <ScalarProperty Name="PersonalPay" ColumnName="PersonalPay" />
+          <ScalarProperty Name="ProfessionalAllowance" ColumnName="ProfessionalAllowance" />
+          <ScalarProperty Name="PFNo" ColumnName="PFNo" />
+          <ScalarProperty Name="FPFNo" ColumnName="FPFNo" />
+          <ScalarProperty Name="AccountsDetails" ColumnName="AccountsDetails" />
+          <ScalarProperty Name="BoolESI" ColumnName="BoolESI" />
+          <ScalarProperty Name="ICICIAccNo" ColumnName="ICICIAccNo" />
+          <ScalarProperty Name="MedAllBal" ColumnName="MedAllBal" />
+          <ScalarProperty Name="PickupPointId" ColumnName="PickupPointId" />
+          <ScalarProperty Name="HomePhone" ColumnName="HomePhone" />
+          <ScalarProperty Name="PresentAddress" ColumnName="PresentAddress" />
+          <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+          <ScalarProperty Name="EmergencyContactPerson" ColumnName="EmergencyContactPerson" />
+          <ScalarProperty Name="EmergencyContactNo" ColumnName="EmergencyContactNo" />
+          <ScalarProperty Name="BoolHasProximityCard" ColumnName="BoolHasProximityCard" />
+          <ScalarProperty Name="PLStatus" ColumnName="PLStatus" />
+          <ScalarProperty Name="LeavesDeductedFromFlexiDaily" ColumnName="LeavesDeductedFromFlexiDaily" />
+          <ScalarProperty Name="LeavesDeductedFromFlexiWeekly" ColumnName="LeavesDeductedFromFlexiWeekly" />
+          <ScalarProperty Name="RestrictedHolidaysAvailed" ColumnName="RestrictedHolidaysAvailed" />
+          <ScalarProperty Name="PaternityLeavesAvailed" ColumnName="PaternityLeavesAvailed" />
+          <ScalarProperty Name="NameAsInPassport" ColumnName="NameAsInPassport" />
+          <ScalarProperty Name="PassportNo" ColumnName="PassportNo" />
+          <ScalarProperty Name="PassportIssuedPlace" ColumnName="PassportIssuedPlace" />
+          <ScalarProperty Name="PassportIssuedDate" ColumnName="PassportIssuedDate" />
+          <ScalarProperty Name="PassportExpiryDate" ColumnName="PassportExpiryDate" />
+          <ScalarProperty Name="AddressAsInPassport" ColumnName="AddressAsInPassport" />
+          <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+          <ScalarProperty Name="PanNo" ColumnName="PanNo" />
+          <ScalarProperty Name="AadhaarNo" ColumnName="AadhaarNo" />
+          <ScalarProperty Name="BoolKannadiga" ColumnName="BoolKannadiga" />
+          <ScalarProperty Name="CommunityId" ColumnName="CommunityId" />
+          <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+          <ScalarProperty Name="SpouseName" ColumnName="SpouseName" />
+          <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+          <ScalarProperty Name="BoolIntranetEnabled" ColumnName="BoolIntranetEnabled" />
+          <ScalarProperty Name="UAN" ColumnName="UAN" />
+          <ScalarProperty Name="ExpenseCategoryId" ColumnName="ExpenseCategoryId" />
+          <ScalarProperty Name="BoolExpatriate" ColumnName="BoolExpatriate" />
+          <ScalarProperty Name="PWD" ColumnName="PWD" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GlobalGroupEmployees">
+      <EntityTypeMapping TypeName="YSCMModel.GlobalGroupEmployee">
+        <MappingFragment StoreEntitySet="GlobalGroupEmployees">
+          <ScalarProperty Name="grpempid" ColumnName="grpempid" />
+          <ScalarProperty Name="GlobalGroupId" ColumnName="GlobalGroupId" />
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="updatedon" ColumnName="updatedon" />
+          <ScalarProperty Name="updatedby" ColumnName="updatedby" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GlobalGroups">
+      <EntityTypeMapping TypeName="YSCMModel.GlobalGroup">
+        <MappingFragment StoreEntitySet="GlobalGroups">
+          <ScalarProperty Name="GlobalGroupId" ColumnName="GlobalGroupId" />
+          <ScalarProperty Name="GlobalGroupDescription" ColumnName="GlobalGroupDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemAttributesMasters">
+      <EntityTypeMapping TypeName="YSCMModel.ItemAttributesMaster">
+        <MappingFragment StoreEntitySet="ItemAttributesMaster">
+          <ScalarProperty Name="ItemAttributeid" ColumnName="ItemAttributeid" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="Attributeid" ColumnName="Attributeid" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MaterialMasters">
+      <EntityTypeMapping TypeName="YSCMModel.MaterialMaster">
+        <MappingFragment StoreEntitySet="MaterialMaster">
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MaterialMasterYGS">
+      <EntityTypeMapping TypeName="YSCMModel.MaterialMasterYG">
+        <MappingFragment StoreEntitySet="MaterialMasterYGS">
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="MaterialType" ColumnName="MaterialType" />
+          <ScalarProperty Name="Materialdescription" ColumnName="Materialdescription" />
+          <ScalarProperty Name="MaterialGroup" ColumnName="MaterialGroup" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="Producthierarchy" ColumnName="Producthierarchy" />
+          <ScalarProperty Name="Materialisconfigurable" ColumnName="Materialisconfigurable" />
+          <ScalarProperty Name="AuthorizationGroup" ColumnName="AuthorizationGroup" />
+          <ScalarProperty Name="ExtMaterialGroup" ColumnName="ExtMaterialGroup" />
+          <ScalarProperty Name="Genitemcatgrp" ColumnName="Genitemcatgrp" />
+          <ScalarProperty Name="Securityexportcontrolitem" ColumnName="Securityexportcontrolitem" />
+          <ScalarProperty Name="Plant" ColumnName="Plant" />
+          <ScalarProperty Name="PurchasingGroup" ColumnName="PurchasingGroup" />
+          <ScalarProperty Name="MRPType" ColumnName="MRPType" />
+          <ScalarProperty Name="MRPController" ColumnName="MRPController" />
+          <ScalarProperty Name="Lotsize" ColumnName="Lotsize" />
+          <ScalarProperty Name="Procurementtype" ColumnName="Procurementtype" />
+          <ScalarProperty Name="AutomaticPO" ColumnName="AutomaticPO" />
+          <ScalarProperty Name="Sourcelist" ColumnName="Sourcelist" />
+          <ScalarProperty Name="Serialnoprofile" ColumnName="Serialnoprofile" />
+          <ScalarProperty Name="StoragelocforEP" ColumnName="StoragelocforEP" />
+          <ScalarProperty Name="CASnumber" ColumnName="CASnumber" />
+          <ScalarProperty Name="Controlcode" ColumnName="Controlcode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPR_Assignment">
+      <EntityTypeMapping TypeName="YSCMModel.MPR_Assignment">
+        <MappingFragment StoreEntitySet="MPR_Assignment">
+          <ScalarProperty Name="assignmentid" ColumnName="assignmentid" />
+          <ScalarProperty Name="MprRevisionId" ColumnName="MprRevisionId" />
+          <ScalarProperty Name="Employeeno" ColumnName="Employeeno" />
+          <ScalarProperty Name="deleteFlag" ColumnName="deleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRApprovers">
+      <EntityTypeMapping TypeName="YSCMModel.MPRApprover">
+        <MappingFragment StoreEntitySet="MPRApprovers">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="BoolActive" ColumnName="BoolActive" />
+          <ScalarProperty Name="DeactivatedBy" ColumnName="DeactivatedBy" />
+          <ScalarProperty Name="DeactivatedOn" ColumnName="DeactivatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRBuyerGroupMembers">
+      <EntityTypeMapping TypeName="YSCMModel.MPRBuyerGroupMember">
+        <MappingFragment StoreEntitySet="MPRBuyerGroupMembers">
+          <ScalarProperty Name="BuyerGroupMemberId" ColumnName="BuyerGroupMemberId" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="GroupMember" ColumnName="GroupMember" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRBuyerGroups">
+      <EntityTypeMapping TypeName="YSCMModel.MPRBuyerGroup">
+        <MappingFragment StoreEntitySet="MPRBuyerGroups">
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="BuyerGroup" ColumnName="BuyerGroup" />
+          <ScalarProperty Name="BuyerManager" ColumnName="BuyerManager" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRCommunications">
+      <EntityTypeMapping TypeName="YSCMModel.MPRCommunication">
+        <MappingFragment StoreEntitySet="MPRCommunications">
+          <ScalarProperty Name="MPRCCId" ColumnName="MPRCCId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="RemarksFrom" ColumnName="RemarksFrom" />
+          <ScalarProperty Name="SendEmail" ColumnName="SendEmail" />
+          <ScalarProperty Name="SetReminder" ColumnName="SetReminder" />
+          <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
+          <ScalarProperty Name="RemarksDate" ColumnName="RemarksDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRCustomsDuties">
+      <EntityTypeMapping TypeName="YSCMModel.MPRCustomsDuty">
+        <MappingFragment StoreEntitySet="MPRCustomsDuty">
+          <ScalarProperty Name="CustomsDutyId" ColumnName="CustomsDutyId" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDepartments">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDepartment">
+        <MappingFragment StoreEntitySet="MPRDepartments">
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="ORgDepartmentid" ColumnName="ORgDepartmentid" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="SecondApprover" ColumnName="SecondApprover" />
+          <ScalarProperty Name="ThirdApprover" ColumnName="ThirdApprover" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDespatchDocCategories">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDespatchDocCategory">
+        <MappingFragment StoreEntitySet="MPRDespatchDocCategories">
+          <ScalarProperty Name="DespatchDocCategoryId" ColumnName="DespatchDocCategoryId" />
+          <ScalarProperty Name="DespatchDocCategory" ColumnName="DespatchDocCategory" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDetails">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDetail">
+        <MappingFragment StoreEntitySet="MPRDetails">
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="MPRSeqNo" ColumnName="MPRSeqNo" />
+          <ScalarProperty Name="SubmittedBy" ColumnName="SubmittedBy" />
+          <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />
+          <ScalarProperty Name="XXXCommercialOfferReceivedDate" ColumnName="XXXCommercialOfferReceivedDate" />
+          <ScalarProperty Name="XXXOfferDetailsMailedBy" ColumnName="XXXOfferDetailsMailedBy" />
+          <ScalarProperty Name="XXXOfferDetailsMailedOn" ColumnName="XXXOfferDetailsMailedOn" />
+          <ScalarProperty Name="XXXOfferDetailsViewedByCheckerOn" ColumnName="XXXOfferDetailsViewedByCheckerOn" />
+          <ScalarProperty Name="XXXOfferDetailsViewedByApproverOn" ColumnName="XXXOfferDetailsViewedByApproverOn" />
+          <ScalarProperty Name="XXXMaterialReceiptDate" ColumnName="XXXMaterialReceiptDate" />
+          <ScalarProperty Name="XXXRemarks" ColumnName="XXXRemarks" />
+          <ScalarProperty Name="XXXEstimatedCost" ColumnName="XXXEstimatedCost" />
+          <ScalarProperty Name="XXXPreviousPOPrice" ColumnName="XXXPreviousPOPrice" />
+          <ScalarProperty Name="XXXPurchaseTypeId" ColumnName="XXXPurchaseTypeId" />
+          <ScalarProperty Name="XXXPreferredVendorTypeId" ColumnName="XXXPreferredVendorTypeId" />
+          <ScalarProperty Name="XXXStatusId" ColumnName="XXXStatusId" />
+          <ScalarProperty Name="XXXPurchaseCost" ColumnName="XXXPurchaseCost" />
+          <ScalarProperty Name="DocumentDescription" ColumnName="DocumentDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDispatchLocations">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDispatchLocation">
+        <MappingFragment StoreEntitySet="MPRDispatchLocations">
+          <ScalarProperty Name="DispatchLocationId" ColumnName="DispatchLocationId" />
+          <ScalarProperty Name="DispatchLocation" ColumnName="DispatchLocation" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDocumentations">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDocumentation">
+        <MappingFragment StoreEntitySet="MPRDocumentation">
+          <ScalarProperty Name="DocumentationId" ColumnName="DocumentationId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="DocumentationDescriptionId" ColumnName="DocumentationDescriptionId" />
+          <ScalarProperty Name="NoOfSetsApproval" ColumnName="NoOfSetsApproval" />
+          <ScalarProperty Name="NoOfSetsFinal" ColumnName="NoOfSetsFinal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDocumentationDescriptions">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDocumentationDescription">
+        <MappingFragment StoreEntitySet="MPRDocumentationDescriptions">
+          <ScalarProperty Name="DocumentationDescriptionId" ColumnName="DocumentationDescriptionId" />
+          <ScalarProperty Name="DocumentationDescription" ColumnName="DocumentationDescription" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDocuments">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDocument">
+        <MappingFragment StoreEntitySet="MPRDocuments">
+          <ScalarProperty Name="MprDocId" ColumnName="MprDocId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="ItemDetailsId" ColumnName="ItemDetailsId" />
+          <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+          <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+          <ScalarProperty Name="UplaodedDate" ColumnName="UplaodedDate" />
+          <ScalarProperty Name="CanShareWithVendor" ColumnName="CanShareWithVendor" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="DocumentTypeid" ColumnName="DocumentTypeid" />
+          <ScalarProperty Name="Deleteflag" ColumnName="Deleteflag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRIncharges">
+      <EntityTypeMapping TypeName="YSCMModel.MPRIncharge">
+        <MappingFragment StoreEntitySet="MPRIncharges">
+          <ScalarProperty Name="InchargeId" ColumnName="InchargeId" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="Incharge" ColumnName="Incharge" />
+          <ScalarProperty Name="CanClearTechnically" ColumnName="CanClearTechnically" />
+          <ScalarProperty Name="CanClearCommercially" ColumnName="CanClearCommercially" />
+          <ScalarProperty Name="CanReceiveMailNotification" ColumnName="CanReceiveMailNotification" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRIssuePurposes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRIssuePurpos">
+        <MappingFragment StoreEntitySet="MPRIssuePurposes">
+          <ScalarProperty Name="IssuePurposeId" ColumnName="IssuePurposeId" />
+          <ScalarProperty Name="IssuePurpose" ColumnName="IssuePurpose" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRItemDetails_X">
+      <EntityTypeMapping TypeName="YSCMModel.MPRItemDetails_X">
+        <MappingFragment StoreEntitySet="MPRItemDetails_X">
+          <ScalarProperty Name="ItemDetailsId" ColumnName="ItemDetailsId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="SaleOrderLineItemNo" ColumnName="SaleOrderLineItemNo" />
+          <ScalarProperty Name="ReferenceDocNo" ColumnName="ReferenceDocNo" />
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+          <ScalarProperty Name="PONo" ColumnName="PONo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRItemDetailsAttachments">
+      <EntityTypeMapping TypeName="YSCMModel.MPRItemDetailsAttachment">
+        <MappingFragment StoreEntitySet="MPRItemDetailsAttachments">
+          <ScalarProperty Name="ItemDetailsAttachmentId" ColumnName="ItemDetailsAttachmentId" />
+          <ScalarProperty Name="ItemDetailsId" ColumnName="ItemDetailsId" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRItemInfoes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRItemInfo">
+        <MappingFragment StoreEntitySet="MPRItemInfo">
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="Itemid" ColumnName="Itemid" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="SaleOrderNo" ColumnName="SaleOrderNo" />
+          <ScalarProperty Name="SOLineItemNo" ColumnName="SOLineItemNo" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="ReferenceDocNo" ColumnName="ReferenceDocNo" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="MfgPartNo" ColumnName="MfgPartNo" />
+          <ScalarProperty Name="MfgModelNo" ColumnName="MfgModelNo" />
+          <ScalarProperty Name="PAid" ColumnName="PAid" />
+          <ScalarProperty Name="RepeatOrderRefId" ColumnName="RepeatOrderRefId" />
+          <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="POPrice" ColumnName="POPrice" />
+          <ScalarProperty Name="PORemarks" ColumnName="PORemarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPROfferDetails">
+      <EntityTypeMapping TypeName="YSCMModel.MPROfferDetail">
+        <MappingFragment StoreEntitySet="MPROfferDetails">
+          <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OfferMailedOn" ColumnName="OfferMailedOn" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="EnteredOn" ColumnName="EnteredOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPAApprovers">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPAApprover">
+        <MappingFragment StoreEntitySet="MPRPAApprovers">
+          <ScalarProperty Name="ApproverId" ColumnName="ApproverId" />
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+          <ScalarProperty Name="ApproverLevel" ColumnName="ApproverLevel" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="Approver" ColumnName="Approver" />
+          <ScalarProperty Name="ApproversRemarks" ColumnName="ApproversRemarks" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="ApprovedOn" ColumnName="ApprovedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPADetails">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPADetail">
+        <MappingFragment StoreEntitySet="MPRPADetails">
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="RequestedOn" ColumnName="RequestedOn" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="PurchaseTypeId" ColumnName="PurchaseTypeId" />
+          <ScalarProperty Name="PurchaseModeId" ColumnName="PurchaseModeId" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="ProjectCode" ColumnName="ProjectCode" />
+          <ScalarProperty Name="TargetedSpendAmount" ColumnName="TargetedSpendAmount" />
+          <ScalarProperty Name="PurchaseCost" ColumnName="PurchaseCost" />
+          <ScalarProperty Name="PackagingForwarding" ColumnName="PackagingForwarding" />
+          <ScalarProperty Name="Taxes" ColumnName="Taxes" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="DeliveryCondition" ColumnName="DeliveryCondition" />
+          <ScalarProperty Name="ShipmentMode" ColumnName="ShipmentMode" />
+          <ScalarProperty Name="PaymentTerms" ColumnName="PaymentTerms" />
+          <ScalarProperty Name="CreditDays" ColumnName="CreditDays" />
+          <ScalarProperty Name="Warranty" ColumnName="Warranty" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="LDPenaltyTerms" ColumnName="LDPenaltyTerms" />
+          <ScalarProperty Name="SpecialInstructions" ColumnName="SpecialInstructions" />
+          <ScalarProperty Name="FactorsForImports" ColumnName="FactorsForImports" />
+          <ScalarProperty Name="SpecialRemarks" ColumnName="SpecialRemarks" />
+          <ScalarProperty Name="SuppliersReference" ColumnName="SuppliersReference" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPADocuments">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPADocument">
+        <MappingFragment StoreEntitySet="MPRPADocuments">
+          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+          <ScalarProperty Name="ItemDetailsId" ColumnName="ItemDetailsId" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPAPurchaseModes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPAPurchaseMode">
+        <MappingFragment StoreEntitySet="MPRPAPurchaseModes">
+          <ScalarProperty Name="PurchaseModeId" ColumnName="PurchaseModeId" />
+          <ScalarProperty Name="PurchaseMode" ColumnName="PurchaseMode" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPAPurchaseTypes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPAPurchaseType">
+        <MappingFragment StoreEntitySet="MPRPAPurchaseTypes">
+          <ScalarProperty Name="PurchaseTypeId" ColumnName="PurchaseTypeId" />
+          <ScalarProperty Name="PurchaseType" ColumnName="PurchaseType" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPAVendors">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPAVendor">
+        <MappingFragment StoreEntitySet="MPRPAVendors">
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="BoolSelectedVendor" ColumnName="BoolSelectedVendor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPreferredVendorTypes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPreferredVendorType">
+        <MappingFragment StoreEntitySet="MPRPreferredVendorTypes">
+          <ScalarProperty Name="PreferredVendorTypeId" ColumnName="PreferredVendorTypeId" />
+          <ScalarProperty Name="PreferredVendorType" ColumnName="PreferredVendorType" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRProcurementSources">
+      <EntityTypeMapping TypeName="YSCMModel.MPRProcurementSource">
+        <MappingFragment StoreEntitySet="MPRProcurementSources">
+          <ScalarProperty Name="ProcurementSourceId" ColumnName="ProcurementSourceId" />
+          <ScalarProperty Name="ProcurementSource" ColumnName="ProcurementSource" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRProjectDutyApplicables">
+      <EntityTypeMapping TypeName="YSCMModel.MPRProjectDutyApplicable">
+        <MappingFragment StoreEntitySet="MPRProjectDutyApplicable">
+          <ScalarProperty Name="ProjectDutyApplicableId" ColumnName="ProjectDutyApplicableId" />
+          <ScalarProperty Name="ProjectDutyApplicable" ColumnName="ProjectDutyApplicable" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRPurchaseTypes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRPurchaseType">
+        <MappingFragment StoreEntitySet="MPRPurchaseTypes">
+          <ScalarProperty Name="PurchaseTypeId" ColumnName="PurchaseTypeId" />
+          <ScalarProperty Name="PurchaseType" ColumnName="PurchaseType" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRReminderTrackings">
+      <EntityTypeMapping TypeName="YSCMModel.MPRReminderTracking">
+        <MappingFragment StoreEntitySet="MPRReminderTracking">
+          <ScalarProperty Name="ReminderId" ColumnName="ReminderId" />
+          <ScalarProperty Name="MPRCCId" ColumnName="MPRCCId" />
+          <ScalarProperty Name="MailTo" ColumnName="MailTo" />
+          <ScalarProperty Name="MailAddressType" ColumnName="MailAddressType" />
+          <ScalarProperty Name="MailSentOn" ColumnName="MailSentOn" />
+          <ScalarProperty Name="ReminderSentOn" ColumnName="ReminderSentOn" />
+          <ScalarProperty Name="AcknowledgedOn" ColumnName="AcknowledgedOn" />
+          <ScalarProperty Name="AcknowledgementRemarks" ColumnName="AcknowledgementRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRRevisions">
+      <EntityTypeMapping TypeName="YSCMModel.MPRRevision">
+        <MappingFragment StoreEntitySet="MPRRevisions">
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="ProjectManager" ColumnName="ProjectManager" />
+          <ScalarProperty Name="JobCode" ColumnName="JobCode" />
+          <ScalarProperty Name="JobName" ColumnName="JobName" />
+          <ScalarProperty Name="GEPSApprovalId" ColumnName="GEPSApprovalId" />
+          <ScalarProperty Name="SaleOrderNo" ColumnName="SaleOrderNo" />
+          <ScalarProperty Name="LineItemNo" ColumnName="LineItemNo" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="PlantLocation" ColumnName="PlantLocation" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="TargetedSpendAmount" ColumnName="TargetedSpendAmount" />
+          <ScalarProperty Name="TargetedSpendRemarks" ColumnName="TargetedSpendRemarks" />
+          <ScalarProperty Name="BoolPreferredVendor" ColumnName="BoolPreferredVendor" />
+          <ScalarProperty Name="JustificationForSinglePreferredVendor" ColumnName="JustificationForSinglePreferredVendor" />
+          <ScalarProperty Name="DeliveryRequiredBy" ColumnName="DeliveryRequiredBy" />
+          <ScalarProperty Name="IssuePurposeId" ColumnName="IssuePurposeId" />
+          <ScalarProperty Name="DispatchLocation" ColumnName="DispatchLocation" />
+          <ScalarProperty Name="ScopeId" ColumnName="ScopeId" />
+          <ScalarProperty Name="TrainingRequired" ColumnName="TrainingRequired" />
+          <ScalarProperty Name="TrainingManWeeks" ColumnName="TrainingManWeeks" />
+          <ScalarProperty Name="TrainingRemarks" ColumnName="TrainingRemarks" />
+          <ScalarProperty Name="BoolDocumentationApplicable" ColumnName="BoolDocumentationApplicable" />
+          <ScalarProperty Name="GuaranteePeriod" ColumnName="GuaranteePeriod" />
+          <ScalarProperty Name="NoOfSetsOfQAP" ColumnName="NoOfSetsOfQAP" />
+          <ScalarProperty Name="InspectionRequired" ColumnName="InspectionRequired" />
+          <ScalarProperty Name="InspectionRemarks" ColumnName="InspectionRemarks" />
+          <ScalarProperty Name="InspectionRequiredNew" ColumnName="InspectionRequiredNew" />
+          <ScalarProperty Name="InspectionComments" ColumnName="InspectionComments" />
+          <ScalarProperty Name="NoOfSetsOfTestCertificates" ColumnName="NoOfSetsOfTestCertificates" />
+          <ScalarProperty Name="ProcurementSourceId" ColumnName="ProcurementSourceId" />
+          <ScalarProperty Name="CustomsDutyId" ColumnName="CustomsDutyId" />
+          <ScalarProperty Name="ProjectDutyApplicableId" ColumnName="ProjectDutyApplicableId" />
+          <ScalarProperty Name="ExciseDutyReimbursableForBOs" ColumnName="ExciseDutyReimbursableForBOs" />
+          <ScalarProperty Name="SalesTaxReimbursableForBOs" ColumnName="SalesTaxReimbursableForBOs" />
+          <ScalarProperty Name="VATReimbursableForBOs" ColumnName="VATReimbursableForBOs" />
+          <ScalarProperty Name="ServiceTaxReimbursableForBOs" ColumnName="ServiceTaxReimbursableForBOs" />
+          <ScalarProperty Name="ExciseDutyReimbursableForBOsNew" ColumnName="ExciseDutyReimbursableForBOsNew" />
+          <ScalarProperty Name="SalesTaxReimbursableForBOsNew" ColumnName="SalesTaxReimbursableForBOsNew" />
+          <ScalarProperty Name="VATReimbursableForBOsNew" ColumnName="VATReimbursableForBOsNew" />
+          <ScalarProperty Name="ServiceTaxReimbursableForBOsNew" ColumnName="ServiceTaxReimbursableForBOsNew" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedOn" ColumnName="PreparedOn" />
+          <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
+          <ScalarProperty Name="CheckedOn" ColumnName="CheckedOn" />
+          <ScalarProperty Name="CheckStatus" ColumnName="CheckStatus" />
+          <ScalarProperty Name="CheckerRemarks" ColumnName="CheckerRemarks" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="ApprovedOn" ColumnName="ApprovedOn" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="ApproverRemarks" ColumnName="ApproverRemarks" />
+          <ScalarProperty Name="SecondApprover" ColumnName="SecondApprover" />
+          <ScalarProperty Name="SecondApprovedOn" ColumnName="SecondApprovedOn" />
+          <ScalarProperty Name="SecondApproversStatus" ColumnName="SecondApproversStatus" />
+          <ScalarProperty Name="SecondApproverRemarks" ColumnName="SecondApproverRemarks" />
+          <ScalarProperty Name="ThirdApprover" ColumnName="ThirdApprover" />
+          <ScalarProperty Name="ThirdApproverStatus" ColumnName="ThirdApproverStatus" />
+          <ScalarProperty Name="ThirdApproverStatusChangedOn" ColumnName="ThirdApproverStatusChangedOn" />
+          <ScalarProperty Name="ThirdApproverRemarks" ColumnName="ThirdApproverRemarks" />
+          <ScalarProperty Name="PurchaseDetailsReadBy" ColumnName="PurchaseDetailsReadBy" />
+          <ScalarProperty Name="PurchaseDetailsReadOn" ColumnName="PurchaseDetailsReadOn" />
+          <ScalarProperty Name="PurchasePersonnel" ColumnName="PurchasePersonnel" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="ExpectedDespatchDate" ColumnName="ExpectedDespatchDate" />
+          <ScalarProperty Name="PurchasePersonnelsComments" ColumnName="PurchasePersonnelsComments" />
+          <ScalarProperty Name="TechDocsReceivedDate" ColumnName="TechDocsReceivedDate" />
+          <ScalarProperty Name="CommercialOfferReceivedDate" ColumnName="CommercialOfferReceivedDate" />
+          <ScalarProperty Name="OfferDetailsMailedBy" ColumnName="OfferDetailsMailedBy" />
+          <ScalarProperty Name="OfferDetailsMailedOn" ColumnName="OfferDetailsMailedOn" />
+          <ScalarProperty Name="OfferDetailsViewedByCheckerOn" ColumnName="OfferDetailsViewedByCheckerOn" />
+          <ScalarProperty Name="OfferDetailsViewedByApproverOn" ColumnName="OfferDetailsViewedByApproverOn" />
+          <ScalarProperty Name="MaterialReceiptDate" ColumnName="MaterialReceiptDate" />
+          <ScalarProperty Name="Remarks1" ColumnName="Remarks1" />
+          <ScalarProperty Name="EstimatedCost" ColumnName="EstimatedCost" />
+          <ScalarProperty Name="PreviousPOPrice" ColumnName="PreviousPOPrice" />
+          <ScalarProperty Name="PurchaseTypeId" ColumnName="PurchaseTypeId" />
+          <ScalarProperty Name="PreferredVendorTypeId" ColumnName="PreferredVendorTypeId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="PurchaseCost" ColumnName="PurchaseCost" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="BoolValidRevision" ColumnName="BoolValidRevision" />
+          <ScalarProperty Name="MPRForOrdering" ColumnName="MPRForOrdering" />
+          <ScalarProperty Name="ORequestedon" ColumnName="ORequestedon" />
+          <ScalarProperty Name="ORequestedBy" ColumnName="ORequestedBy" />
+          <ScalarProperty Name="ORemarks" ColumnName="ORemarks" />
+          <ScalarProperty Name="OCheckedBy" ColumnName="OCheckedBy" />
+          <ScalarProperty Name="OCheckedOn" ColumnName="OCheckedOn" />
+          <ScalarProperty Name="OCheckStatus" ColumnName="OCheckStatus" />
+          <ScalarProperty Name="OCheckerRemarks" ColumnName="OCheckerRemarks" />
+          <ScalarProperty Name="OApprovedBy" ColumnName="OApprovedBy" />
+          <ScalarProperty Name="OApprovedOn" ColumnName="OApprovedOn" />
+          <ScalarProperty Name="OApprovalStatus" ColumnName="OApprovalStatus" />
+          <ScalarProperty Name="OApproverRemarks" ColumnName="OApproverRemarks" />
+          <ScalarProperty Name="OSecondApprover" ColumnName="OSecondApprover" />
+          <ScalarProperty Name="OSecondApprovedOn" ColumnName="OSecondApprovedOn" />
+          <ScalarProperty Name="OSecondApproversStatus" ColumnName="OSecondApproversStatus" />
+          <ScalarProperty Name="OSecondApproverRemarks" ColumnName="OSecondApproverRemarks" />
+          <ScalarProperty Name="OThirdApprover" ColumnName="OThirdApprover" />
+          <ScalarProperty Name="OThirdApproverStatus" ColumnName="OThirdApproverStatus" />
+          <ScalarProperty Name="OThirdApproverStatusChangedOn" ColumnName="OThirdApproverStatusChangedOn" />
+          <ScalarProperty Name="OThirdApproverRemarks" ColumnName="OThirdApproverRemarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRRfqItemInfos">
+      <EntityTypeMapping TypeName="YSCMModel.MPRRfqItemInfo">
+        <MappingFragment StoreEntitySet="MPRRfqItemInfos">
+          <ScalarProperty Name="Mprrfqsplititemid" ColumnName="Mprrfqsplititemid" />
+          <ScalarProperty Name="MPRRFQitemId" ColumnName="MPRRFQitemId" />
+          <ScalarProperty Name="rfqsplititemid" ColumnName="rfqsplititemid" />
+          <ScalarProperty Name="Deleteflag" ColumnName="Deleteflag" />
+          <ScalarProperty Name="PAItemID" ColumnName="PAItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRRfqItems">
+      <EntityTypeMapping TypeName="YSCMModel.MPRRfqItem">
+        <MappingFragment StoreEntitySet="MPRRfqItems">
+          <ScalarProperty Name="MPRRFQitemId" ColumnName="MPRRFQitemId" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="RfqItemsid" ColumnName="RfqItemsid" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRScopes">
+      <EntityTypeMapping TypeName="YSCMModel.MPRScope">
+        <MappingFragment StoreEntitySet="MPRScopes">
+          <ScalarProperty Name="ScopeId" ColumnName="ScopeId" />
+          <ScalarProperty Name="Scope" ColumnName="Scope" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRStatus">
+      <EntityTypeMapping TypeName="YSCMModel.MPRStatu">
+        <MappingFragment StoreEntitySet="MPRStatus">
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ManualStatus" ColumnName="ManualStatus" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRStatusTracks">
+      <EntityTypeMapping TypeName="YSCMModel.MPRStatusTrack">
+        <MappingFragment StoreEntitySet="MPRStatusTrack">
+          <ScalarProperty Name="StatusTrackId" ColumnName="StatusTrackId" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRTargetedSpendSupportingDocs">
+      <EntityTypeMapping TypeName="YSCMModel.MPRTargetedSpendSupportingDoc">
+        <MappingFragment StoreEntitySet="MPRTargetedSpendSupportingDocs">
+          <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="DocumentFilename" ColumnName="DocumentFilename" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRVendorDetails">
+      <EntityTypeMapping TypeName="YSCMModel.MPRVendorDetail">
+        <MappingFragment StoreEntitySet="MPRVendorDetails">
+          <ScalarProperty Name="VendorDetailsId" ColumnName="VendorDetailsId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="Vendorid" ColumnName="Vendorid" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="RemovedBy" ColumnName="RemovedBy" />
+          <ScalarProperty Name="RemovedDate" ColumnName="RemovedDate" />
+          <ScalarProperty Name="RemoveFlag" ColumnName="RemoveFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NatureOfBusinessMasters">
+      <EntityTypeMapping TypeName="YSCMModel.NatureOfBusinessMaster">
+        <MappingFragment StoreEntitySet="NatureOfBusinessMaster">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NatureOfBusinessType" ColumnName="NatureOfBusinessType" />
+          <ScalarProperty Name="SubmittedOn" ColumnName="SubmittedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrgDepartments">
+      <EntityTypeMapping TypeName="YSCMModel.OrgDepartment">
+        <MappingFragment StoreEntitySet="OrgDepartments">
+          <ScalarProperty Name="OrgDepartmentId" ColumnName="OrgDepartmentId" />
+          <ScalarProperty Name="OrgDepartment1" ColumnName="OrgDepartment" />
+          <ScalarProperty Name="DepartmentHead" ColumnName="DepartmentHead" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAAuthorizationEmployeeMappings">
+      <EntityTypeMapping TypeName="YSCMModel.PAAuthorizationEmployeeMapping">
+        <MappingFragment StoreEntitySet="PAAuthorizationEmployeeMapping">
+          <ScalarProperty Name="PAmapid" ColumnName="PAmapid" />
+          <ScalarProperty Name="Authid" ColumnName="Authid" />
+          <ScalarProperty Name="Employeeid" ColumnName="Employeeid" />
+          <ScalarProperty Name="LessBudget" ColumnName="LessBudget" />
+          <ScalarProperty Name="MoreBudget" ColumnName="MoreBudget" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="CreatedBY" ColumnName="CreatedBY" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAAuthorizationLimits">
+      <EntityTypeMapping TypeName="YSCMModel.PAAuthorizationLimit">
+        <MappingFragment StoreEntitySet="PAAuthorizationLimits">
+          <ScalarProperty Name="Authid" ColumnName="Authid" />
+          <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+          <ScalarProperty Name="MinPAValue" ColumnName="MinPAValue" />
+          <ScalarProperty Name="MaxPAValue" ColumnName="MaxPAValue" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedBY" ColumnName="DeletedBY" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PACreditDaysApprovers">
+      <EntityTypeMapping TypeName="YSCMModel.PACreditDaysApprover">
+        <MappingFragment StoreEntitySet="PACreditDaysApprovers">
+          <ScalarProperty Name="CRApprovalId" ColumnName="CRApprovalId" />
+          <ScalarProperty Name="AuthId" ColumnName="AuthId" />
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="CreditdaysId" ColumnName="CreditdaysId" />
+          <ScalarProperty Name="Createdby" ColumnName="Createdby" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PACreditDaysMasters">
+      <EntityTypeMapping TypeName="YSCMModel.PACreditDaysMaster">
+        <MappingFragment StoreEntitySet="PACreditDaysMaster">
+          <ScalarProperty Name="CreditDaysid" ColumnName="CreditDaysid" />
+          <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+          <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAFunctionalRoles">
+      <EntityTypeMapping TypeName="YSCMModel.PAFunctionalRole">
+        <MappingFragment StoreEntitySet="PAFunctionalRoles">
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="FunctionalRole" ColumnName="FunctionalRole" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAItems">
+      <EntityTypeMapping TypeName="YSCMModel.PAItem">
+        <MappingFragment StoreEntitySet="PAItem">
+          <ScalarProperty Name="PAItemID" ColumnName="PAItemID" />
+          <ScalarProperty Name="PAID" ColumnName="PAID" />
+          <ScalarProperty Name="RfqSplitItemId" ColumnName="RfqSplitItemId" />
+          <ScalarProperty Name="PONO" ColumnName="PONO" />
+          <ScalarProperty Name="POItemNo" ColumnName="POItemNo" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="MPRItemDetailsId" ColumnName="MPRItemDetailsId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PATerms">
+      <EntityTypeMapping TypeName="YSCMModel.PATerm">
+        <MappingFragment StoreEntitySet="PATerms">
+          <ScalarProperty Name="PATermID" ColumnName="PATermID" />
+          <ScalarProperty Name="PAID" ColumnName="PAID" />
+          <ScalarProperty Name="RfqTermId" ColumnName="RfqTermId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQCommunications">
+      <EntityTypeMapping TypeName="YSCMModel.RFQCommunication">
+        <MappingFragment StoreEntitySet="RFQCommunications">
+          <ScalarProperty Name="RfqCCid" ColumnName="RfqCCid" />
+          <ScalarProperty Name="RfqItemsId" ColumnName="RfqItemsId" />
+          <ScalarProperty Name="RfqRevisionId" ColumnName="RfqRevisionId" />
+          <ScalarProperty Name="RemarksFrom" ColumnName="RemarksFrom" />
+          <ScalarProperty Name="RemarksTo" ColumnName="RemarksTo" />
+          <ScalarProperty Name="SendEmail" ColumnName="SendEmail" />
+          <ScalarProperty Name="SetReminder" ColumnName="SetReminder" />
+          <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
+          <ScalarProperty Name="RemarksDate" ColumnName="RemarksDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQDocuments">
+      <EntityTypeMapping TypeName="YSCMModel.RFQDocument">
+        <MappingFragment StoreEntitySet="RFQDocuments">
+          <ScalarProperty Name="RfqDocId" ColumnName="RfqDocId" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="rfqItemsid" ColumnName="rfqItemsid" />
+          <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+          <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+          <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
+          <ScalarProperty Name="StatusRemarks" ColumnName="StatusRemarks" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+          <ScalarProperty Name="StatusBy" ColumnName="StatusBy" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQItems">
+      <EntityTypeMapping TypeName="YSCMModel.RFQItem">
+        <MappingFragment StoreEntitySet="RFQItems">
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="RFQRevisionId" ColumnName="RFQRevisionId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="IGSTPercentage" ColumnName="IGSTPercentage" />
+          <ScalarProperty Name="CGSTPercentage" ColumnName="CGSTPercentage" />
+          <ScalarProperty Name="SGSTPercentage" ColumnName="SGSTPercentage" />
+          <ScalarProperty Name="taxInclusiveOfDiscount" ColumnName="taxInclusiveOfDiscount" />
+          <ScalarProperty Name="RequestRemarks" ColumnName="RequestRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusUpdatedBy" ColumnName="StatusUpdatedBy" />
+          <ScalarProperty Name="StatusUpdateddate" ColumnName="StatusUpdateddate" />
+          <ScalarProperty Name="paid" ColumnName="paid" />
+          <ScalarProperty Name="MfgPartNo" ColumnName="MfgPartNo" />
+          <ScalarProperty Name="MfgModelNo" ColumnName="MfgModelNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQItems_N">
+      <EntityTypeMapping TypeName="YSCMModel.RFQItems_N">
+        <MappingFragment StoreEntitySet="RFQItems_N">
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="RFQRevisionId" ColumnName="RFQRevisionId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="IGSTPercentage" ColumnName="IGSTPercentage" />
+          <ScalarProperty Name="CGSTPercentage" ColumnName="CGSTPercentage" />
+          <ScalarProperty Name="SGSTPercentage" ColumnName="SGSTPercentage" />
+          <ScalarProperty Name="taxInclusiveOfDiscount" ColumnName="taxInclusiveOfDiscount" />
+          <ScalarProperty Name="RequestRemarks" ColumnName="RequestRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusUpdatedBy" ColumnName="StatusUpdatedBy" />
+          <ScalarProperty Name="StatusUpdateddate" ColumnName="StatusUpdateddate" />
+          <ScalarProperty Name="paid" ColumnName="paid" />
+          <ScalarProperty Name="MfgPartNo" ColumnName="MfgPartNo" />
+          <ScalarProperty Name="MfgModelNo" ColumnName="MfgModelNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQItemsInfoes">
+      <EntityTypeMapping TypeName="YSCMModel.RFQItemsInfo">
+        <MappingFragment StoreEntitySet="RFQItemsInfo">
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQItemsInfo_N">
+      <EntityTypeMapping TypeName="YSCMModel.RFQItemsInfo_N">
+        <MappingFragment StoreEntitySet="RFQItemsInfo_N">
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="StartQty" ColumnName="StartQty" />
+          <ScalarProperty Name="EndQty" ColumnName="EndQty" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeliveryDays" ColumnName="DeliveryDays" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="ValidFrom" ColumnName="ValidFrom" />
+          <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusUpdatedBy" ColumnName="StatusUpdatedBy" />
+          <ScalarProperty Name="StatusUpdateddate" ColumnName="StatusUpdateddate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Paid" ColumnName="Paid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQMasters">
+      <EntityTypeMapping TypeName="YSCMModel.RFQMaster">
+        <MappingFragment StoreEntitySet="RFQMaster">
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="RFQUniqueNo" ColumnName="RFQUniqueNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="VendorVisibility" ColumnName="VendorVisibility" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQMPRMappings">
+      <EntityTypeMapping TypeName="YSCMModel.RFQMPRMapping">
+        <MappingFragment StoreEntitySet="RFQMPRMapping">
+          <ScalarProperty Name="RFQMPRMappingId" ColumnName="RFQMPRMappingId" />
+          <ScalarProperty Name="RfqItemid" ColumnName="RfqItemid" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="MPRItemDetailsId" ColumnName="MPRItemDetailsId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQReminderTrackings">
+      <EntityTypeMapping TypeName="YSCMModel.RFQReminderTracking">
+        <MappingFragment StoreEntitySet="RFQReminderTracking">
+          <ScalarProperty Name="Reminderid" ColumnName="Reminderid" />
+          <ScalarProperty Name="rfqccid" ColumnName="rfqccid" />
+          <ScalarProperty Name="ReminderTo" ColumnName="ReminderTo" />
+          <ScalarProperty Name="MailsSentOn" ColumnName="MailsSentOn" />
+          <ScalarProperty Name="Acknowledgementon" ColumnName="Acknowledgementon" />
+          <ScalarProperty Name="AcknowledgementRemarks" ColumnName="AcknowledgementRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQRevisions">
+      <EntityTypeMapping TypeName="YSCMModel.RFQRevision">
+        <MappingFragment StoreEntitySet="RFQRevisions">
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="rfqMasterId" ColumnName="rfqMasterId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQRevisions_N">
+      <EntityTypeMapping TypeName="YSCMModel.RFQRevisions_N">
+        <MappingFragment StoreEntitySet="RFQRevisions_N">
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="rfqMasterId" ColumnName="rfqMasterId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="QuoteValidfrom" ColumnName="QuoteValidfrom" />
+          <ScalarProperty Name="QuoteValidTo" ColumnName="QuoteValidTo" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="BuyergroupEmail" ColumnName="BuyergroupEmail" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQStatus">
+      <EntityTypeMapping TypeName="YSCMModel.RFQStatu">
+        <MappingFragment StoreEntitySet="RFQStatus">
+          <ScalarProperty Name="RfqStatusId" ColumnName="RfqStatusId" />
+          <ScalarProperty Name="RfqRevisionId" ColumnName="RfqRevisionId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="updatedby" ColumnName="updatedby" />
+          <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQTerms">
+      <EntityTypeMapping TypeName="YSCMModel.RFQTerm">
+        <MappingFragment StoreEntitySet="RFQTerms">
+          <ScalarProperty Name="RfqTermsid" ColumnName="RfqTermsid" />
+          <ScalarProperty Name="RFQrevisionId" ColumnName="RFQrevisionId" />
+          <ScalarProperty Name="termsid" ColumnName="termsid" />
+          <ScalarProperty Name="VendorResponse" ColumnName="VendorResponse" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RfqVendorBOMs">
+      <EntityTypeMapping TypeName="YSCMModel.RfqVendorBOM">
+        <MappingFragment StoreEntitySet="RfqVendorBOM">
+          <ScalarProperty Name="RFQVendorbomItemId" ColumnName="RFQVendorbomItemId" />
+          <ScalarProperty Name="RfqItemsId" ColumnName="RfqItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="MfgPartNo" ColumnName="MfgPartNo" />
+          <ScalarProperty Name="MfgModelNo" ColumnName="MfgModelNo" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="IGSTPercentage" ColumnName="IGSTPercentage" />
+          <ScalarProperty Name="CGSTPercentage" ColumnName="CGSTPercentage" />
+          <ScalarProperty Name="SGSTPercentage" ColumnName="SGSTPercentage" />
+          <ScalarProperty Name="taxInclusiveOfDiscount" ColumnName="taxInclusiveOfDiscount" />
+          <ScalarProperty Name="RequestRemarks" ColumnName="RequestRemarks" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeliveryDays" ColumnName="DeliveryDays" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQVendorTerms">
+      <EntityTypeMapping TypeName="YSCMModel.RFQVendorTerm">
+        <MappingFragment StoreEntitySet="RFQVendorTerms">
+          <ScalarProperty Name="RFQTermsid" ColumnName="RFQTermsid" />
+          <ScalarProperty Name="RFQversionId" ColumnName="RFQversionId" />
+          <ScalarProperty Name="VendorTermsid" ColumnName="VendorTermsid" />
+          <ScalarProperty Name="updatedBY" ColumnName="updatedBY" />
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SCMStatus">
+      <EntityTypeMapping TypeName="YSCMModel.SCMStatu">
+        <MappingFragment StoreEntitySet="SCMStatus">
+          <ScalarProperty Name="Statusid" ColumnName="Statusid" />
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="StatusType" ColumnName="StatusType" />
+          <ScalarProperty Name="RemarksRequired" ColumnName="RemarksRequired" />
+          <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+          <ScalarProperty Name="deleteFlag" ColumnName="deleteFlag" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="Deletedon" ColumnName="Deletedon" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipmentModeMasters">
+      <EntityTypeMapping TypeName="YSCMModel.ShipmentModeMaster">
+        <MappingFragment StoreEntitySet="ShipmentModeMaster">
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="DeletedBY" ColumnName="DeletedBY" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StandardListYNNs">
+      <EntityTypeMapping TypeName="YSCMModel.StandardListYNN">
+        <MappingFragment StoreEntitySet="StandardListYNN">
+          <ScalarProperty Name="ListItemId" ColumnName="ListItemId" />
+          <ScalarProperty Name="ListItem" ColumnName="ListItem" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="YSCMModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TermsCategories">
+      <EntityTypeMapping TypeName="YSCMModel.TermsCategory">
+        <MappingFragment StoreEntitySet="TermsCategory">
+          <ScalarProperty Name="TermCategoryId" ColumnName="TermCategoryId" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="IndexNo" ColumnName="IndexNo" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Test_AttributeMaster">
+      <EntityTypeMapping TypeName="YSCMModel.Test_AttributeMaster">
+        <MappingFragment StoreEntitySet="Test_AttributeMaster">
+          <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+          <ScalarProperty Name="AttributeName" ColumnName="AttributeName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Test_CategoryAttributes">
+      <EntityTypeMapping TypeName="YSCMModel.Test_CategoryAttributes">
+        <MappingFragment StoreEntitySet="Test_CategoryAttributes">
+          <ScalarProperty Name="CatAttributeid" ColumnName="CatAttributeid" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Test_CategoryMaster">
+      <EntityTypeMapping TypeName="YSCMModel.Test_CategoryMaster">
+        <MappingFragment StoreEntitySet="Test_CategoryMaster">
+          <ScalarProperty Name="Categoryid" ColumnName="Categoryid" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="BuyergroupId" ColumnName="BuyergroupId" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="Deleteflag" ColumnName="Deleteflag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Test_ItemAttributesMaster">
+      <EntityTypeMapping TypeName="YSCMModel.Test_ItemAttributesMaster">
+        <MappingFragment StoreEntitySet="Test_ItemAttributesMaster">
+          <ScalarProperty Name="ItemAttributeid" ColumnName="ItemAttributeid" />
+          <ScalarProperty Name="itemid" ColumnName="itemid" />
+          <ScalarProperty Name="Attributeid" ColumnName="Attributeid" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Test_ItemMaster">
+      <EntityTypeMapping TypeName="YSCMModel.Test_ItemMaster">
+        <MappingFragment StoreEntitySet="Test_ItemMaster">
+          <ScalarProperty Name="itemId" ColumnName="itemId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="testuserdetails">
+      <EntityTypeMapping TypeName="YSCMModel.testuserdetail">
+        <MappingFragment StoreEntitySet="testuserdetails">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UnitMasters">
+      <EntityTypeMapping TypeName="YSCMModel.UnitMaster">
+        <MappingFragment StoreEntitySet="UnitMaster">
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserDetails">
+      <EntityTypeMapping TypeName="YSCMModel.UserDetail">
+        <MappingFragment StoreEntitySet="UserDetails">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorMasters">
+      <EntityTypeMapping TypeName="YSCMModel.VendorMaster">
+        <MappingFragment StoreEntitySet="VendorMaster">
+          <ScalarProperty Name="Vendorid" ColumnName="Vendorid" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+          <ScalarProperty Name="AuGr" ColumnName="AuGr" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="AutoAssignmentofRFQ" ColumnName="AutoAssignmentofRFQ" />
+          <ScalarProperty Name="Deleteflag" ColumnName="Deleteflag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorRegisterDocumenetMasters">
+      <EntityTypeMapping TypeName="YSCMModel.VendorRegisterDocumenetMaster">
+        <MappingFragment StoreEntitySet="VendorRegisterDocumenetMaster">
+          <ScalarProperty Name="DocumentationTypeId" ColumnName="DocumentationTypeId" />
+          <ScalarProperty Name="Documentype" ColumnName="Documentype" />
+          <ScalarProperty Name="IsNewRegister" ColumnName="IsNewRegister" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorRegisterDocumentDetails">
+      <EntityTypeMapping TypeName="YSCMModel.VendorRegisterDocumentDetail">
+        <MappingFragment StoreEntitySet="VendorRegisterDocumentDetails">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="PhysicalPath" ColumnName="PhysicalPath" />
+          <ScalarProperty Name="UploadedOn" ColumnName="UploadedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DocumentationTypeId" ColumnName="DocumentationTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorRegisterMasters">
+      <EntityTypeMapping TypeName="YSCMModel.VendorRegisterMaster">
+        <MappingFragment StoreEntitySet="VendorRegisterMaster">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Onetimevendor" ColumnName="Onetimevendor" />
+          <ScalarProperty Name="EvaluationRequired" ColumnName="EvaluationRequired" />
+          <ScalarProperty Name="VendorNoInSAP" ColumnName="VendorNoInSAP" />
+          <ScalarProperty Name="RequestedOn" ColumnName="RequestedOn" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="LocalBranchOffice" ColumnName="LocalBranchOffice" />
+          <ScalarProperty Name="PhoneAndExtn" ColumnName="PhoneAndExtn" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+          <ScalarProperty Name="NatureofBusiness" ColumnName="NatureofBusiness" />
+          <ScalarProperty Name="PANNo" ColumnName="PANNo" />
+          <ScalarProperty Name="CINNo" ColumnName="CINNo" />
+          <ScalarProperty Name="TanNo" ColumnName="TanNo" />
+          <ScalarProperty Name="PaymentTerms" ColumnName="PaymentTerms" />
+          <ScalarProperty Name="Vendorid" ColumnName="Vendorid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorRFQTerms">
+      <EntityTypeMapping TypeName="YSCMModel.VendorRFQTerm">
+        <MappingFragment StoreEntitySet="VendorRFQTerms">
+          <ScalarProperty Name="VendorTermsid" ColumnName="VendorTermsid" />
+          <ScalarProperty Name="TermsCategoryId" ColumnName="TermsCategoryId" />
+          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="Indexno" ColumnName="Indexno" />
+          <ScalarProperty Name="deleteFlag" ColumnName="deleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorUserMasters">
+      <EntityTypeMapping TypeName="YSCMModel.VendorUserMaster">
+        <MappingFragment StoreEntitySet="VendorUserMaster">
+          <ScalarProperty Name="Vuserid" ColumnName="Vuserid" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="SuperUser" ColumnName="SuperUser" />
+          <ScalarProperty Name="VuniqueId" ColumnName="VuniqueId" />
+          <ScalarProperty Name="SequenceNo" ColumnName="SequenceNo" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="YILTermsandConditions">
+      <EntityTypeMapping TypeName="YSCMModel.YILTermsandCondition">
+        <MappingFragment StoreEntitySet="YILTermsandConditions">
+          <ScalarProperty Name="TermId" ColumnName="TermId" />
+          <ScalarProperty Name="TermGroupId" ColumnName="TermGroupId" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+          <ScalarProperty Name="DefaultSelect" ColumnName="DefaultSelect" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="YILTermsGroups">
+      <EntityTypeMapping TypeName="YSCMModel.YILTermsGroup">
+        <MappingFragment StoreEntitySet="YILTermsGroup">
+          <ScalarProperty Name="TermGroupId" ColumnName="TermGroupId" />
+          <ScalarProperty Name="TermGroup" ColumnName="TermGroup" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomerMasterYGS">
+      <EntityTypeMapping TypeName="YSCMModel.CustomerMasterYG">
+        <MappingFragment StoreEntitySet="CustomerMasterYGS">
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="CustomerMasterTypeId" ColumnName="CustomerMasterTypeId" />
+          <ScalarProperty Name="YGSSAPCustomerCode" ColumnName="YGSSAPCustomerCode" />
+          <ScalarProperty Name="CustomerName1" ColumnName="CustomerName1" />
+          <ScalarProperty Name="CustomerName2" ColumnName="CustomerName2" />
+          <ScalarProperty Name="CustomerName3" ColumnName="CustomerName3" />
+          <ScalarProperty Name="CustomerCountry" ColumnName="CustomerCountry" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="Address3" ColumnName="Address3" />
+          <ScalarProperty Name="IndustryCode" ColumnName="IndustryCode" />
+          <ScalarProperty Name="PAN" ColumnName="PAN" />
+          <ScalarProperty Name="TAN" ColumnName="TAN" />
+          <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+          <ScalarProperty Name="CINNo" ColumnName="CINNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="YSCMModel.Department">
+        <MappingFragment StoreEntitySet="Departments">
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="DepartmentHead" ColumnName="DepartmentHead" />
+          <ScalarProperty Name="DepartmentAdministrator" ColumnName="DepartmentAdministrator" />
+          <ScalarProperty Name="DepartmentSubAdministrator" ColumnName="DepartmentSubAdministrator" />
+          <ScalarProperty Name="BUCode" ColumnName="BUCode" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Grades">
+      <EntityTypeMapping TypeName="YSCMModel.Grade">
+        <MappingFragment StoreEntitySet="Grades">
+          <ScalarProperty Name="Grade1" ColumnName="Grade" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="Designation" ColumnName="Designation" />
+          <ScalarProperty Name="Hierarchy" ColumnName="Hierarchy" />
+          <ScalarProperty Name="SumInsured" ColumnName="SumInsured" />
+          <ScalarProperty Name="SumInsuredDependentParents" ColumnName="SumInsuredDependentParents" />
+          <ScalarProperty Name="PersonalAccidentSumInsured" ColumnName="PersonalAccidentSumInsured" />
+          <ScalarProperty Name="JobStatus" ColumnName="JobStatus" />
+          <ScalarProperty Name="TSSkillFactor" ColumnName="TSSkillFactor" />
+          <ScalarProperty Name="TEVComfortLevel" ColumnName="TEVComfortLevel" />
+          <ScalarProperty Name="TEVOutOfPocketAllowance" ColumnName="TEVOutOfPocketAllowance" />
+          <ScalarProperty Name="TEVOffshoreAllowance" ColumnName="TEVOffshoreAllowance" />
+          <ScalarProperty Name="TEVDayTripAllowance" ColumnName="TEVDayTripAllowance" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRTechClearances">
+      <EntityTypeMapping TypeName="YSCMModel.MPRTechClearance">
+        <MappingFragment StoreEntitySet="MPRTechClearance">
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="BoolCleared" ColumnName="BoolCleared" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Organizations">
+      <EntityTypeMapping TypeName="YSCMModel.Organization">
+        <MappingFragment StoreEntitySet="Organizations">
+          <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+          <ScalarProperty Name="Organization1" ColumnName="Organization" />
+          <ScalarProperty Name="BoolIntranetEnabled" ColumnName="BoolIntranetEnabled" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessRoleViews">
+      <EntityTypeMapping TypeName="YSCMModel.AccessRoleView">
+        <MappingFragment StoreEntitySet="AccessRoleView">
+          <ScalarProperty Name="AccessNameID" ColumnName="AccessNameID" />
+          <ScalarProperty Name="AccessName" ColumnName="AccessName" />
+          <ScalarProperty Name="AccessGroupId" ColumnName="AccessGroupId" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="approverFinalviews">
+      <EntityTypeMapping TypeName="YSCMModel.approverFinalview">
+        <MappingFragment StoreEntitySet="approverFinalview">
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+          <ScalarProperty Name="approved" ColumnName="approved" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CreditApprovers">
+      <EntityTypeMapping TypeName="YSCMModel.CreditApprover">
+        <MappingFragment StoreEntitySet="CreditApprovers">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="roleorder" ColumnName="roleorder" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="minpAVAlue" ColumnName="minpAVAlue" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+          <ScalarProperty Name="MaxPAValue" ColumnName="MaxPAValue" />
+          <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
+          <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DisplayRfqTermsByRevisionIds">
+      <EntityTypeMapping TypeName="YSCMModel.DisplayRfqTermsByRevisionId">
+        <MappingFragment StoreEntitySet="DisplayRfqTermsByRevisionId">
+          <ScalarProperty Name="RfqTermsid" ColumnName="RfqTermsid" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="TermId" ColumnName="TermId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="RFQrevisionId" ColumnName="RFQrevisionId" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="VendorResponse" ColumnName="VendorResponse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employeemappingtocredits">
+      <EntityTypeMapping TypeName="YSCMModel.Employeemappingtocredit">
+        <MappingFragment StoreEntitySet="Employeemappingtocredit">
+          <ScalarProperty Name="Authid" ColumnName="Authid" />
+          <ScalarProperty Name="MinPAValue" ColumnName="MinPAValue" />
+          <ScalarProperty Name="MaxPAValue" ColumnName="MaxPAValue" />
+          <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+          <ScalarProperty Name="CreditdaysId" ColumnName="CreditdaysId" />
+          <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+          <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
+          <ScalarProperty Name="CRApprovalId" ColumnName="CRApprovalId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employeemappingtopurchases">
+      <EntityTypeMapping TypeName="YSCMModel.Employeemappingtopurchase">
+        <MappingFragment StoreEntitySet="Employeemappingtopurchase">
+          <ScalarProperty Name="Authid" ColumnName="Authid" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+          <ScalarProperty Name="Employeeid" ColumnName="Employeeid" />
+          <ScalarProperty Name="PAmapid" ColumnName="PAmapid" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="LessBudget" ColumnName="LessBudget" />
+          <ScalarProperty Name="MoreBudget" ColumnName="MoreBudget" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MaxPAValue" ColumnName="MaxPAValue" />
+          <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="MinPAValue" ColumnName="MinPAValue" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GetMappedSlabs">
+      <EntityTypeMapping TypeName="YSCMModel.GetMappedSlab">
+        <MappingFragment StoreEntitySet="GetMappedSlabs">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="MinPAValue" ColumnName="MinPAValue" />
+          <ScalarProperty Name="MaxPAValue" ColumnName="MaxPAValue" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="Authid" ColumnName="Authid" />
+          <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GetmprApproverdeatils">
+      <EntityTypeMapping TypeName="YSCMModel.GetmprApproverdeatil">
+        <MappingFragment StoreEntitySet="GetmprApproverdeatils">
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="Approver" ColumnName="Approver" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ApprovedOn" ColumnName="ApprovedOn" />
+          <ScalarProperty Name="XOrder" ColumnName="XOrder" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="ApproversRemarks" ColumnName="ApproversRemarks" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="RequestedOn" ColumnName="RequestedOn" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GetMprPaDetailsByFilters">
+      <EntityTypeMapping TypeName="YSCMModel.GetMprPaDetailsByFilter">
+        <MappingFragment StoreEntitySet="GetMprPaDetailsByFilters">
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="BuyerGroup" ColumnName="BuyerGroup" />
+          <ScalarProperty Name="PONO" ColumnName="PONO" />
+          <ScalarProperty Name="POItemNo" ColumnName="POItemNo" />
+          <ScalarProperty Name="PAId" ColumnName="PAId" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="RequestedOn" ColumnName="RequestedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="getrevisions">
+      <EntityTypeMapping TypeName="YSCMModel.getrevision">
+        <MappingFragment StoreEntitySet="getrevision">
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="getrevisions1">
+      <EntityTypeMapping TypeName="YSCMModel.getrevision1">
+        <MappingFragment StoreEntitySet="getrevisions">
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadApproverEmployees">
+      <EntityTypeMapping TypeName="YSCMModel.LoadApproverEmployee">
+        <MappingFragment StoreEntitySet="LoadApproverEmployee">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="roleorder" ColumnName="roleorder" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="minpAVAlue" ColumnName="minpAVAlue" />
+          <ScalarProperty Name="MaxPAValue" ColumnName="MaxPAValue" />
+          <ScalarProperty Name="LessBudget" ColumnName="LessBudget" />
+          <ScalarProperty Name="MoreBudget" ColumnName="MoreBudget" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadBuyerManagers">
+      <EntityTypeMapping TypeName="YSCMModel.LoadBuyerManager">
+        <MappingFragment StoreEntitySet="LoadBuyerManagers">
+          <ScalarProperty Name="EmpNo" ColumnName="EmpNo" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="RoleOrder" ColumnName="RoleOrder" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="BoolValidRevision" ColumnName="BoolValidRevision" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadItemsByIDs">
+      <EntityTypeMapping TypeName="YSCMModel.LoadItemsByID">
+        <MappingFragment StoreEntitySet="LoadItemsByID">
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="JobName" ColumnName="JobName" />
+          <ScalarProperty Name="JobCode" ColumnName="JobCode" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="Materialdescription" ColumnName="Materialdescription" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="BuyerGroup" ColumnName="BuyerGroup" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="SaleOrderNo" ColumnName="SaleOrderNo" />
+          <ScalarProperty Name="ProjectManager" ColumnName="ProjectManager" />
+          <ScalarProperty Name="paid" ColumnName="paid" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="itemstatus" ColumnName="itemstatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadItemsByPAIDs">
+      <EntityTypeMapping TypeName="YSCMModel.LoadItemsByPAID">
+        <MappingFragment StoreEntitySet="LoadItemsByPAID">
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="ProjectCode" ColumnName="ProjectCode" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="BuyerGroup" ColumnName="BuyerGroup" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="SaleOrderNo" ColumnName="SaleOrderNo" />
+          <ScalarProperty Name="ProjectManager" ColumnName="ProjectManager" />
+          <ScalarProperty Name="PAID" ColumnName="PAID" />
+          <ScalarProperty Name="RfqSplitItemId" ColumnName="RfqSplitItemId" />
+          <ScalarProperty Name="PONO" ColumnName="PONO" />
+          <ScalarProperty Name="POItemNo" ColumnName="POItemNo" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="PAItemID" ColumnName="PAItemID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="itemstatus" ColumnName="itemstatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadProjectManagers">
+      <EntityTypeMapping TypeName="YSCMModel.LoadProjectManager">
+        <MappingFragment StoreEntitySet="LoadProjectManagers">
+          <ScalarProperty Name="EmpNo" ColumnName="EmpNo" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="RoleOrder" ColumnName="RoleOrder" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="BoolValidRevision" ColumnName="BoolValidRevision" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPR_GetAssignEmployee">
+      <EntityTypeMapping TypeName="YSCMModel.MPR_GetAssignEmployee">
+        <MappingFragment StoreEntitySet="MPR_GetAssignEmployee">
+          <ScalarProperty Name="assignmentid" ColumnName="assignmentid" />
+          <ScalarProperty Name="MprRevisionId" ColumnName="MprRevisionId" />
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPR_GetAssignEmployeList">
+      <EntityTypeMapping TypeName="YSCMModel.MPR_GetAssignEmployeList">
+        <MappingFragment StoreEntitySet="MPR_GetAssignEmployeList">
+          <ScalarProperty Name="MprRevisionId" ColumnName="MprRevisionId" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRApproversViews">
+      <EntityTypeMapping TypeName="YSCMModel.MPRApproversView">
+        <MappingFragment StoreEntitySet="MPRApproversView">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRDepartmentsViews">
+      <EntityTypeMapping TypeName="YSCMModel.MPRDepartmentsView">
+        <MappingFragment StoreEntitySet="MPRDepartmentsView">
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="SecondApprover" ColumnName="SecondApprover" />
+          <ScalarProperty Name="ThirdApprover" ColumnName="ThirdApprover" />
+          <ScalarProperty Name="BoolInUse" ColumnName="BoolInUse" />
+          <ScalarProperty Name="SecondApproverName" ColumnName="SecondApproverName" />
+          <ScalarProperty Name="ThirdApproverName" ColumnName="ThirdApproverName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRRevisionDetails">
+      <EntityTypeMapping TypeName="YSCMModel.MPRRevisionDetail">
+        <MappingFragment StoreEntitySet="MPRRevisionDetails">
+          <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="DocumentDescription" ColumnName="DocumentDescription" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="ProjectManagerName" ColumnName="ProjectManagerName" />
+          <ScalarProperty Name="ProjectManager" ColumnName="ProjectManager" />
+          <ScalarProperty Name="JobName" ColumnName="JobName" />
+          <ScalarProperty Name="JobCode" ColumnName="JobCode" />
+          <ScalarProperty Name="GEPSApprovalId" ColumnName="GEPSApprovalId" />
+          <ScalarProperty Name="SaleOrderNo" ColumnName="SaleOrderNo" />
+          <ScalarProperty Name="LineItemNo" ColumnName="LineItemNo" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="BuyerGroupName" ColumnName="BuyerGroupName" />
+          <ScalarProperty Name="PurchaseTypeId" ColumnName="PurchaseTypeId" />
+          <ScalarProperty Name="PreferredVendorTypeId" ColumnName="PreferredVendorTypeId" />
+          <ScalarProperty Name="TargetedSpendAmount" ColumnName="TargetedSpendAmount" />
+          <ScalarProperty Name="TargetedSpendRemarks" ColumnName="TargetedSpendRemarks" />
+          <ScalarProperty Name="BoolPreferredVendor" ColumnName="BoolPreferredVendor" />
+          <ScalarProperty Name="JustificationForSinglePreferredVendor" ColumnName="JustificationForSinglePreferredVendor" />
+          <ScalarProperty Name="DeliveryRequiredBy" ColumnName="DeliveryRequiredBy" />
+          <ScalarProperty Name="IssuePurposeId" ColumnName="IssuePurposeId" />
+          <ScalarProperty Name="DispatchLocation" ColumnName="DispatchLocation" />
+          <ScalarProperty Name="ScopeId" ColumnName="ScopeId" />
+          <ScalarProperty Name="Scope" ColumnName="Scope" />
+          <ScalarProperty Name="TrainingRemarks" ColumnName="TrainingRemarks" />
+          <ScalarProperty Name="BoolDocumentationApplicable" ColumnName="BoolDocumentationApplicable" />
+          <ScalarProperty Name="GuaranteePeriod" ColumnName="GuaranteePeriod" />
+          <ScalarProperty Name="NoOfSetsOfQAP" ColumnName="NoOfSetsOfQAP" />
+          <ScalarProperty Name="InspectionRequired" ColumnName="InspectionRequired" />
+          <ScalarProperty Name="InspectionRequiredNew" ColumnName="InspectionRequiredNew" />
+          <ScalarProperty Name="InspectionComments" ColumnName="InspectionComments" />
+          <ScalarProperty Name="TestCertificates" ColumnName="TestCertificates" />
+          <ScalarProperty Name="ProcurementSourceId" ColumnName="ProcurementSourceId" />
+          <ScalarProperty Name="ProcurementSource" ColumnName="ProcurementSource" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="CustomsDutyId" ColumnName="CustomsDutyId" />
+          <ScalarProperty Name="ProjectDutyApplicableId" ColumnName="ProjectDutyApplicableId" />
+          <ScalarProperty Name="ExciseDutyReimbursableForBOs" ColumnName="ExciseDutyReimbursableForBOs" />
+          <ScalarProperty Name="VATReimbursableForBOs" ColumnName="VATReimbursableForBOs" />
+          <ScalarProperty Name="ServiceTaxReimbursableForBOs" ColumnName="ServiceTaxReimbursableForBOs" />
+          <ScalarProperty Name="ExciseDutyReimbursableForBOsNew" ColumnName="ExciseDutyReimbursableForBOsNew" />
+          <ScalarProperty Name="SalesTaxReimbursableForBOsNew" ColumnName="SalesTaxReimbursableForBOsNew" />
+          <ScalarProperty Name="SalesTaxReimbursableForBOs" ColumnName="SalesTaxReimbursableForBOs" />
+          <ScalarProperty Name="VATReimbursableForBOsNew" ColumnName="VATReimbursableForBOsNew" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedName" ColumnName="PreparedName" />
+          <ScalarProperty Name="PreparedOn" ColumnName="PreparedOn" />
+          <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
+          <ScalarProperty Name="CheckedName" ColumnName="CheckedName" />
+          <ScalarProperty Name="CheckedOn" ColumnName="CheckedOn" />
+          <ScalarProperty Name="CheckStatus" ColumnName="CheckStatus" />
+          <ScalarProperty Name="CheckerRemarks" ColumnName="CheckerRemarks" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
+          <ScalarProperty Name="ApprovedOn" ColumnName="ApprovedOn" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="ApproverRemarks" ColumnName="ApproverRemarks" />
+          <ScalarProperty Name="SecondApprover" ColumnName="SecondApprover" />
+          <ScalarProperty Name="SecondApproverName" ColumnName="SecondApproverName" />
+          <ScalarProperty Name="SecondApprovedOn" ColumnName="SecondApprovedOn" />
+          <ScalarProperty Name="SecondApproversStatus" ColumnName="SecondApproversStatus" />
+          <ScalarProperty Name="SecondApproverRemarks" ColumnName="SecondApproverRemarks" />
+          <ScalarProperty Name="ThirdApprover" ColumnName="ThirdApprover" />
+          <ScalarProperty Name="ThirdApproverName" ColumnName="ThirdApproverName" />
+          <ScalarProperty Name="ThirdApproverStatus" ColumnName="ThirdApproverStatus" />
+          <ScalarProperty Name="ThirdApproverStatusChangedOn" ColumnName="ThirdApproverStatusChangedOn" />
+          <ScalarProperty Name="ThirdApproverRemarks" ColumnName="ThirdApproverRemarks" />
+          <ScalarProperty Name="OCheckedBy" ColumnName="OCheckedBy" />
+          <ScalarProperty Name="OCheckedName" ColumnName="OCheckedName" />
+          <ScalarProperty Name="OCheckedOn" ColumnName="OCheckedOn" />
+          <ScalarProperty Name="OCheckStatus" ColumnName="OCheckStatus" />
+          <ScalarProperty Name="OCheckerRemarks" ColumnName="OCheckerRemarks" />
+          <ScalarProperty Name="OApprovedBy" ColumnName="OApprovedBy" />
+          <ScalarProperty Name="OApproverName" ColumnName="OApproverName" />
+          <ScalarProperty Name="OApprovedOn" ColumnName="OApprovedOn" />
+          <ScalarProperty Name="OApprovalStatus" ColumnName="OApprovalStatus" />
+          <ScalarProperty Name="OApproverRemarks" ColumnName="OApproverRemarks" />
+          <ScalarProperty Name="OSecondApprover" ColumnName="OSecondApprover" />
+          <ScalarProperty Name="OSecondApproverName" ColumnName="OSecondApproverName" />
+          <ScalarProperty Name="OSecondApprovedOn" ColumnName="OSecondApprovedOn" />
+          <ScalarProperty Name="OSecondApproversStatus" ColumnName="OSecondApproversStatus" />
+          <ScalarProperty Name="OSecondApproverRemarks" ColumnName="OSecondApproverRemarks" />
+          <ScalarProperty Name="OThirdApprover" ColumnName="OThirdApprover" />
+          <ScalarProperty Name="OThirdApproverName" ColumnName="OThirdApproverName" />
+          <ScalarProperty Name="OThirdApproverStatus" ColumnName="OThirdApproverStatus" />
+          <ScalarProperty Name="OThirdApproverStatusChangedOn" ColumnName="OThirdApproverStatusChangedOn" />
+          <ScalarProperty Name="OThirdApproverRemarks" ColumnName="OThirdApproverRemarks" />
+          <ScalarProperty Name="PurchaseDetailsReadBy" ColumnName="PurchaseDetailsReadBy" />
+          <ScalarProperty Name="PurchaseDetailsReadOn" ColumnName="PurchaseDetailsReadOn" />
+          <ScalarProperty Name="PurchasePersonnel" ColumnName="PurchasePersonnel" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="ExpectedDespatchDate" ColumnName="ExpectedDespatchDate" />
+          <ScalarProperty Name="PurchasePersonnelsComments" ColumnName="PurchasePersonnelsComments" />
+          <ScalarProperty Name="TechDocsReceivedDate" ColumnName="TechDocsReceivedDate" />
+          <ScalarProperty Name="CommercialOfferReceivedDate" ColumnName="CommercialOfferReceivedDate" />
+          <ScalarProperty Name="OfferDetailsMailedBy" ColumnName="OfferDetailsMailedBy" />
+          <ScalarProperty Name="OfferDetailsMailedOn" ColumnName="OfferDetailsMailedOn" />
+          <ScalarProperty Name="OfferDetailsViewedByCheckerOn" ColumnName="OfferDetailsViewedByCheckerOn" />
+          <ScalarProperty Name="OfferDetailsViewedByApproverOn" ColumnName="OfferDetailsViewedByApproverOn" />
+          <ScalarProperty Name="MaterialReceiptDate" ColumnName="MaterialReceiptDate" />
+          <ScalarProperty Name="EstimatedCost" ColumnName="EstimatedCost" />
+          <ScalarProperty Name="PreviousPOPrice" ColumnName="PreviousPOPrice" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="PurchaseCost" ColumnName="PurchaseCost" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="BoolValidRevision" ColumnName="BoolValidRevision" />
+          <ScalarProperty Name="PurchaseType" ColumnName="PurchaseType" />
+          <ScalarProperty Name="PreferredVendorType" ColumnName="PreferredVendorType" />
+          <ScalarProperty Name="ProjectDutyApplicable" ColumnName="ProjectDutyApplicable" />
+          <ScalarProperty Name="PlantLocation" ColumnName="PlantLocation" />
+          <ScalarProperty Name="MPRStatusId" ColumnName="MPRStatusId" />
+          <ScalarProperty Name="MPRStatus" ColumnName="MPRStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRRevisionDetails_woItems">
+      <EntityTypeMapping TypeName="YSCMModel.MPRRevisionDetails_woItems">
+        <MappingFragment StoreEntitySet="MPRRevisionDetails_woItems">
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="DocumentDescription" ColumnName="DocumentDescription" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="ProjectManagerName" ColumnName="ProjectManagerName" />
+          <ScalarProperty Name="ProjectManager" ColumnName="ProjectManager" />
+          <ScalarProperty Name="JobName" ColumnName="JobName" />
+          <ScalarProperty Name="JobCode" ColumnName="JobCode" />
+          <ScalarProperty Name="GEPSApprovalId" ColumnName="GEPSApprovalId" />
+          <ScalarProperty Name="SaleOrderNo" ColumnName="SaleOrderNo" />
+          <ScalarProperty Name="LineItemNo" ColumnName="LineItemNo" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+          <ScalarProperty Name="BuyerGroupName" ColumnName="BuyerGroupName" />
+          <ScalarProperty Name="PurchaseTypeId" ColumnName="PurchaseTypeId" />
+          <ScalarProperty Name="PreferredVendorTypeId" ColumnName="PreferredVendorTypeId" />
+          <ScalarProperty Name="TargetedSpendAmount" ColumnName="TargetedSpendAmount" />
+          <ScalarProperty Name="TargetedSpendRemarks" ColumnName="TargetedSpendRemarks" />
+          <ScalarProperty Name="BoolPreferredVendor" ColumnName="BoolPreferredVendor" />
+          <ScalarProperty Name="JustificationForSinglePreferredVendor" ColumnName="JustificationForSinglePreferredVendor" />
+          <ScalarProperty Name="DeliveryRequiredBy" ColumnName="DeliveryRequiredBy" />
+          <ScalarProperty Name="IssuePurposeId" ColumnName="IssuePurposeId" />
+          <ScalarProperty Name="DispatchLocation" ColumnName="DispatchLocation" />
+          <ScalarProperty Name="ScopeId" ColumnName="ScopeId" />
+          <ScalarProperty Name="Scope" ColumnName="Scope" />
+          <ScalarProperty Name="TrainingRemarks" ColumnName="TrainingRemarks" />
+          <ScalarProperty Name="BoolDocumentationApplicable" ColumnName="BoolDocumentationApplicable" />
+          <ScalarProperty Name="GuaranteePeriod" ColumnName="GuaranteePeriod" />
+          <ScalarProperty Name="NoOfSetsOfQAP" ColumnName="NoOfSetsOfQAP" />
+          <ScalarProperty Name="InspectionRequired" ColumnName="InspectionRequired" />
+          <ScalarProperty Name="InspectionRequiredNew" ColumnName="InspectionRequiredNew" />
+          <ScalarProperty Name="InspectionComments" ColumnName="InspectionComments" />
+          <ScalarProperty Name="TestCertificates" ColumnName="TestCertificates" />
+          <ScalarProperty Name="ProcurementSourceId" ColumnName="ProcurementSourceId" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="CustomsDutyId" ColumnName="CustomsDutyId" />
+          <ScalarProperty Name="ProjectDutyApplicableId" ColumnName="ProjectDutyApplicableId" />
+          <ScalarProperty Name="ExciseDutyReimbursableForBOs" ColumnName="ExciseDutyReimbursableForBOs" />
+          <ScalarProperty Name="VATReimbursableForBOs" ColumnName="VATReimbursableForBOs" />
+          <ScalarProperty Name="ServiceTaxReimbursableForBOs" ColumnName="ServiceTaxReimbursableForBOs" />
+          <ScalarProperty Name="ExciseDutyReimbursableForBOsNew" ColumnName="ExciseDutyReimbursableForBOsNew" />
+          <ScalarProperty Name="SalesTaxReimbursableForBOsNew" ColumnName="SalesTaxReimbursableForBOsNew" />
+          <ScalarProperty Name="SalesTaxReimbursableForBOs" ColumnName="SalesTaxReimbursableForBOs" />
+          <ScalarProperty Name="VATReimbursableForBOsNew" ColumnName="VATReimbursableForBOsNew" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedName" ColumnName="PreparedName" />
+          <ScalarProperty Name="PreparedOn" ColumnName="PreparedOn" />
+          <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
+          <ScalarProperty Name="CheckedName" ColumnName="CheckedName" />
+          <ScalarProperty Name="CheckedOn" ColumnName="CheckedOn" />
+          <ScalarProperty Name="CheckStatus" ColumnName="CheckStatus" />
+          <ScalarProperty Name="CheckerRemarks" ColumnName="CheckerRemarks" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
+          <ScalarProperty Name="ApprovedOn" ColumnName="ApprovedOn" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="ApproverRemarks" ColumnName="ApproverRemarks" />
+          <ScalarProperty Name="SecondApprover" ColumnName="SecondApprover" />
+          <ScalarProperty Name="SecondApproverName" ColumnName="SecondApproverName" />
+          <ScalarProperty Name="SecondApprovedOn" ColumnName="SecondApprovedOn" />
+          <ScalarProperty Name="SecondApproversStatus" ColumnName="SecondApproversStatus" />
+          <ScalarProperty Name="SecondApproverRemarks" ColumnName="SecondApproverRemarks" />
+          <ScalarProperty Name="ThirdApprover" ColumnName="ThirdApprover" />
+          <ScalarProperty Name="ThirdApproverName" ColumnName="ThirdApproverName" />
+          <ScalarProperty Name="ThirdApproverStatus" ColumnName="ThirdApproverStatus" />
+          <ScalarProperty Name="ThirdApproverStatusChangedOn" ColumnName="ThirdApproverStatusChangedOn" />
+          <ScalarProperty Name="ThirdApproverRemarks" ColumnName="ThirdApproverRemarks" />
+          <ScalarProperty Name="OCheckedBy" ColumnName="OCheckedBy" />
+          <ScalarProperty Name="OCheckedName" ColumnName="OCheckedName" />
+          <ScalarProperty Name="OCheckedOn" ColumnName="OCheckedOn" />
+          <ScalarProperty Name="OCheckStatus" ColumnName="OCheckStatus" />
+          <ScalarProperty Name="OCheckerRemarks" ColumnName="OCheckerRemarks" />
+          <ScalarProperty Name="OApprovedBy" ColumnName="OApprovedBy" />
+          <ScalarProperty Name="OApproverName" ColumnName="OApproverName" />
+          <ScalarProperty Name="OApprovedOn" ColumnName="OApprovedOn" />
+          <ScalarProperty Name="OApprovalStatus" ColumnName="OApprovalStatus" />
+          <ScalarProperty Name="OApproverRemarks" ColumnName="OApproverRemarks" />
+          <ScalarProperty Name="OSecondApprover" ColumnName="OSecondApprover" />
+          <ScalarProperty Name="OSecondApproverName" ColumnName="OSecondApproverName" />
+          <ScalarProperty Name="OSecondApprovedOn" ColumnName="OSecondApprovedOn" />
+          <ScalarProperty Name="OSecondApproversStatus" ColumnName="OSecondApproversStatus" />
+          <ScalarProperty Name="OSecondApproverRemarks" ColumnName="OSecondApproverRemarks" />
+          <ScalarProperty Name="OThirdApprover" ColumnName="OThirdApprover" />
+          <ScalarProperty Name="OThirdApproverName" ColumnName="OThirdApproverName" />
+          <ScalarProperty Name="OThirdApproverStatus" ColumnName="OThirdApproverStatus" />
+          <ScalarProperty Name="OThirdApproverStatusChangedOn" ColumnName="OThirdApproverStatusChangedOn" />
+          <ScalarProperty Name="OThirdApproverRemarks" ColumnName="OThirdApproverRemarks" />
+          <ScalarProperty Name="PurchaseDetailsReadBy" ColumnName="PurchaseDetailsReadBy" />
+          <ScalarProperty Name="PurchaseDetailsReadOn" ColumnName="PurchaseDetailsReadOn" />
+          <ScalarProperty Name="PurchasePersonnel" ColumnName="PurchasePersonnel" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="ExpectedDespatchDate" ColumnName="ExpectedDespatchDate" />
+          <ScalarProperty Name="PurchasePersonnelsComments" ColumnName="PurchasePersonnelsComments" />
+          <ScalarProperty Name="TechDocsReceivedDate" ColumnName="TechDocsReceivedDate" />
+          <ScalarProperty Name="CommercialOfferReceivedDate" ColumnName="CommercialOfferReceivedDate" />
+          <ScalarProperty Name="OfferDetailsMailedBy" ColumnName="OfferDetailsMailedBy" />
+          <ScalarProperty Name="OfferDetailsMailedOn" ColumnName="OfferDetailsMailedOn" />
+          <ScalarProperty Name="OfferDetailsViewedByCheckerOn" ColumnName="OfferDetailsViewedByCheckerOn" />
+          <ScalarProperty Name="OfferDetailsViewedByApproverOn" ColumnName="OfferDetailsViewedByApproverOn" />
+          <ScalarProperty Name="MaterialReceiptDate" ColumnName="MaterialReceiptDate" />
+          <ScalarProperty Name="EstimatedCost" ColumnName="EstimatedCost" />
+          <ScalarProperty Name="PreviousPOPrice" ColumnName="PreviousPOPrice" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="PurchaseCost" ColumnName="PurchaseCost" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="BoolValidRevision" ColumnName="BoolValidRevision" />
+          <ScalarProperty Name="PurchaseType" ColumnName="PurchaseType" />
+          <ScalarProperty Name="PreferredVendorType" ColumnName="PreferredVendorType" />
+          <ScalarProperty Name="ProcurementSource" ColumnName="ProcurementSource" />
+          <ScalarProperty Name="ProjectDutyApplicable" ColumnName="ProjectDutyApplicable" />
+          <ScalarProperty Name="PlantLocation" ColumnName="PlantLocation" />
+          <ScalarProperty Name="MPRStatusId" ColumnName="MPRStatusId" />
+          <ScalarProperty Name="MPRStatus" ColumnName="MPRStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MPRStatusTrackDetails">
+      <EntityTypeMapping TypeName="YSCMModel.MPRStatusTrackDetail">
+        <MappingFragment StoreEntitySet="MPRStatusTrackDetails">
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="StatusTrackId" ColumnName="StatusTrackId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAandCRMappings">
+      <EntityTypeMapping TypeName="YSCMModel.PAandCRMapping">
+        <MappingFragment StoreEntitySet="PAandCRMapping">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="AuthorizationType" ColumnName="AuthorizationType" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="minpavalue" ColumnName="minpavalue" />
+          <ScalarProperty Name="maxpavalue" ColumnName="maxpavalue" />
+          <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
+          <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+          <ScalarProperty Name="lessbudget" ColumnName="lessbudget" />
+          <ScalarProperty Name="morebudget" ColumnName="morebudget" />
+          <ScalarProperty Name="FunctionalRoleId" ColumnName="FunctionalRoleId" />
+          <ScalarProperty Name="roleorder" ColumnName="roleorder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RateContracts">
+      <EntityTypeMapping TypeName="YSCMModel.RateContract">
+        <MappingFragment StoreEntitySet="RateContract">
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="VendorVisibility" ColumnName="VendorVisibility" />
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="QuoteValidfrom" ColumnName="QuoteValidfrom" />
+          <ScalarProperty Name="QuoteValidTo" ColumnName="QuoteValidTo" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="StartQty" ColumnName="StartQty" />
+          <ScalarProperty Name="EndQty" ColumnName="EndQty" />
+          <ScalarProperty Name="ValidFrom" ColumnName="ValidFrom" />
+          <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RepeatOrdersViews">
+      <EntityTypeMapping TypeName="YSCMModel.RepeatOrdersView">
+        <MappingFragment StoreEntitySet="RepeatOrdersView">
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="Materialdescription" ColumnName="Materialdescription" />
+          <ScalarProperty Name="RfqSplitItemId" ColumnName="RfqSplitItemId" />
+          <ScalarProperty Name="RFQItemId" ColumnName="RFQItemId" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="HsNCode" ColumnName="HsNCode" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="PAItemID" ColumnName="PAItemID" />
+          <ScalarProperty Name="PONO" ColumnName="PONO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQCompareViews">
+      <EntityTypeMapping TypeName="YSCMModel.RFQCompareView">
+        <MappingFragment StoreEntitySet="RFQCompareView">
+          <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="MPRQuotationQty" ColumnName="MPRQuotationQty" />
+          <ScalarProperty Name="MprQuantity" ColumnName="MprQuantity" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+          <ScalarProperty Name="PODate" ColumnName="PODate" />
+          <ScalarProperty Name="POPrice" ColumnName="POPrice" />
+          <ScalarProperty Name="PORemarks" ColumnName="PORemarks" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="RfqDocId" ColumnName="RfqDocId" />
+          <ScalarProperty Name="RfqDocName" ColumnName="RfqDocName" />
+          <ScalarProperty Name="RfqDocStatusRemarks" ColumnName="RfqDocStatusRemarks" />
+          <ScalarProperty Name="RfqDocStatus" ColumnName="RfqDocStatus" />
+          <ScalarProperty Name="RfqDocStatusBy" ColumnName="RfqDocStatusBy" />
+          <ScalarProperty Name="RfqDocStatusDate" ColumnName="RfqDocStatusDate" />
+          <ScalarProperty Name="RfqDocPath" ColumnName="RfqDocPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQCompareView_BK17_02_2020">
+      <EntityTypeMapping TypeName="YSCMModel.RFQCompareView_BK17_02_2020">
+        <MappingFragment StoreEntitySet="RFQCompareView_BK17-02-2020">
+          <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="MPRQuotationQty" ColumnName="MPRQuotationQty" />
+          <ScalarProperty Name="MprQuantity" ColumnName="MprQuantity" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="RfqDocId" ColumnName="RfqDocId" />
+          <ScalarProperty Name="RfqDocName" ColumnName="RfqDocName" />
+          <ScalarProperty Name="RfqDocStatusRemarks" ColumnName="RfqDocStatusRemarks" />
+          <ScalarProperty Name="RfqDocStatus" ColumnName="RfqDocStatus" />
+          <ScalarProperty Name="RfqDocStatusBy" ColumnName="RfqDocStatusBy" />
+          <ScalarProperty Name="RfqDocStatusDate" ColumnName="RfqDocStatusDate" />
+          <ScalarProperty Name="RfqDocPath" ColumnName="RfqDocPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQItemsViews">
+      <EntityTypeMapping TypeName="YSCMModel.RFQItemsView">
+        <MappingFragment StoreEntitySet="RFQItemsView">
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Itemid" ColumnName="Itemid" />
+          <ScalarProperty Name="Materialdescription" ColumnName="Materialdescription" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="BoolValidRevision" ColumnName="BoolValidRevision" />
+          <ScalarProperty Name="Vendorid" ColumnName="Vendorid" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="rfqQty" ColumnName="rfqQty" />
+          <ScalarProperty Name="rfqUOM" ColumnName="rfqUOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQListViews">
+      <EntityTypeMapping TypeName="YSCMModel.RFQListView">
+        <MappingFragment StoreEntitySet="RFQListView">
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="QuoteValidfrom" ColumnName="QuoteValidfrom" />
+          <ScalarProperty Name="QuoteValidTo" ColumnName="QuoteValidTo" />
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="RequisitionId" ColumnName="RequisitionId" />
+          <ScalarProperty Name="RevisionId" ColumnName="RevisionId" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="BuyerGroup" ColumnName="BuyerGroup" />
+          <ScalarProperty Name="BuyerGroupId" ColumnName="BuyerGroupId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQQuoteViews">
+      <EntityTypeMapping TypeName="YSCMModel.RFQQuoteView">
+        <MappingFragment StoreEntitySet="RFQQuoteView">
+          <ScalarProperty Name="RateContract" ColumnName="RateContract" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="MPRQuotationQty" ColumnName="MPRQuotationQty" />
+          <ScalarProperty Name="MprQuantity" ColumnName="MprQuantity" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Itemid" ColumnName="Itemid" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="QuoteValidfrom" ColumnName="QuoteValidfrom" />
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="QuoteValidTo" ColumnName="QuoteValidTo" />
+          <ScalarProperty Name="ValidFrom" ColumnName="ValidFrom" />
+          <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
+          <ScalarProperty Name="StartQty" ColumnName="StartQty" />
+          <ScalarProperty Name="EndQty" ColumnName="EndQty" />
+          <ScalarProperty Name="RFQItemId" ColumnName="RFQItemId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQQuoteView1">
+      <EntityTypeMapping TypeName="YSCMModel.RFQQuoteView1">
+        <MappingFragment StoreEntitySet="RFQQuoteView1">
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="MPRQuotationQty" ColumnName="MPRQuotationQty" />
+          <ScalarProperty Name="MprQuantity" ColumnName="MprQuantity" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Itemid" ColumnName="Itemid" />
+          <ScalarProperty Name="Materialdescription" ColumnName="Materialdescription" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="RfqDocId" ColumnName="RfqDocId" />
+          <ScalarProperty Name="RfqDocName" ColumnName="RfqDocName" />
+          <ScalarProperty Name="RfqDocStatusRemarks" ColumnName="RfqDocStatusRemarks" />
+          <ScalarProperty Name="RfqDocStatus" ColumnName="RfqDocStatus" />
+          <ScalarProperty Name="RfqDocStatusBy" ColumnName="RfqDocStatusBy" />
+          <ScalarProperty Name="RfqDocStatusDate" ColumnName="RfqDocStatusDate" />
+          <ScalarProperty Name="RfqDocPath" ColumnName="RfqDocPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQQuoteView14022020">
+      <EntityTypeMapping TypeName="YSCMModel.RFQQuoteView14022020">
+        <MappingFragment StoreEntitySet="RFQQuoteView14022020">
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="ItemDeleteFlag" ColumnName="ItemDeleteFlag" />
+          <ScalarProperty Name="vendorQuoteQty" ColumnName="vendorQuoteQty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="Itemdetailsid" ColumnName="Itemdetailsid" />
+          <ScalarProperty Name="MPRQuotationQty" ColumnName="MPRQuotationQty" />
+          <ScalarProperty Name="MprQuantity" ColumnName="MprQuantity" />
+          <ScalarProperty Name="TargetSpend" ColumnName="TargetSpend" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Itemid" ColumnName="Itemid" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="QuoteValidfrom" ColumnName="QuoteValidfrom" />
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="QuoteValidTo" ColumnName="QuoteValidTo" />
+          <ScalarProperty Name="ValidFrom" ColumnName="ValidFrom" />
+          <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
+          <ScalarProperty Name="StartQty" ColumnName="StartQty" />
+          <ScalarProperty Name="EndQty" ColumnName="EndQty" />
+          <ScalarProperty Name="RFQItemId" ColumnName="RFQItemId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQView140202020">
+      <EntityTypeMapping TypeName="YSCMModel.RFQView140202020">
+        <MappingFragment StoreEntitySet="RFQView140202020">
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="RFQType" ColumnName="RFQType" />
+          <ScalarProperty Name="QuoteValidfrom" ColumnName="QuoteValidfrom" />
+          <ScalarProperty Name="QuoteValidTo" ColumnName="QuoteValidTo" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="ActiveRevision" ColumnName="ActiveRevision" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="IGSTPercentage" ColumnName="IGSTPercentage" />
+          <ScalarProperty Name="CGSTPercentage" ColumnName="CGSTPercentage" />
+          <ScalarProperty Name="SGSTPercentage" ColumnName="SGSTPercentage" />
+          <ScalarProperty Name="RequestRemarks" ColumnName="RequestRemarks" />
+          <ScalarProperty Name="MfgPartNo" ColumnName="MfgPartNo" />
+          <ScalarProperty Name="MfgModelNo" ColumnName="MfgModelNo" />
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="StartQty" ColumnName="StartQty" />
+          <ScalarProperty Name="EndQty" ColumnName="EndQty" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeliveryDays" ColumnName="DeliveryDays" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="ValidFrom" ColumnName="ValidFrom" />
+          <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserPermissions">
+      <EntityTypeMapping TypeName="YSCMModel.UserPermission">
+        <MappingFragment StoreEntitySet="UserPermissions">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="AccessNameID" ColumnName="AccessNameID" />
+          <ScalarProperty Name="AccessName" ColumnName="AccessName" />
+          <ScalarProperty Name="RoleAccessNameid" ColumnName="RoleAccessNameid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorEmployeeViews">
+      <EntityTypeMapping TypeName="YSCMModel.VendorEmployeeView">
+        <MappingFragment StoreEntitySet="VendorEmployeeView">
+          <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="userType" ColumnName="userType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

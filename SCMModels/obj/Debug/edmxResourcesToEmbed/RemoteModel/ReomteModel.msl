@@ -1,0 +1,385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="VSCMModelStoreContainer" CdmEntityContainer="VSCMEntities">
+    <EntitySetMapping Name="RemoteBankDetailsForVendors">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteBankDetailsForVendor">
+        <MappingFragment StoreEntitySet="RemoteBankDetailsForVendor">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BankDetails" ColumnName="BankDetails" />
+          <ScalarProperty Name="BankerName" ColumnName="BankerName" />
+          <ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
+          <ScalarProperty Name="AccountHolderName" ColumnName="AccountHolderName" />
+          <ScalarProperty Name="LocationOrBranch" ColumnName="LocationOrBranch" />
+          <ScalarProperty Name="AccNo" ColumnName="AccNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteCurrencyHistories">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteCurrencyHistory">
+        <MappingFragment StoreEntitySet="RemoteCurrencyHistory">
+          <ScalarProperty Name="CurrencyHistoryId" ColumnName="CurrencyHistoryId" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="EffectiveFrom" ColumnName="EffectiveFrom" />
+          <ScalarProperty Name="EffectiveTo" ColumnName="EffectiveTo" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="editedBy" ColumnName="editedBy" />
+          <ScalarProperty Name="EditedDate" ColumnName="EditedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteCurrencyMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteCurrencyMaster">
+        <MappingFragment StoreEntitySet="RemoteCurrencyMaster">
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
+          <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="updateddate" ColumnName="updateddate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteNatureOfBusinessMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteNatureOfBusinessMaster">
+        <MappingFragment StoreEntitySet="RemoteNatureOfBusinessMaster">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NatureOfBusinessType" ColumnName="NatureOfBusinessType" />
+          <ScalarProperty Name="SubmittedOn" ColumnName="SubmittedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQCommunications">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQCommunication">
+        <MappingFragment StoreEntitySet="RemoteRFQCommunications">
+          <ScalarProperty Name="RfqCCid" ColumnName="RfqCCid" />
+          <ScalarProperty Name="RfqItemsId" ColumnName="RfqItemsId" />
+          <ScalarProperty Name="RfqRevisionId" ColumnName="RfqRevisionId" />
+          <ScalarProperty Name="RemarksFrom" ColumnName="RemarksFrom" />
+          <ScalarProperty Name="RemarksTo" ColumnName="RemarksTo" />
+          <ScalarProperty Name="SendEmail" ColumnName="SendEmail" />
+          <ScalarProperty Name="SetReminder" ColumnName="SetReminder" />
+          <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
+          <ScalarProperty Name="RemarksDate" ColumnName="RemarksDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQDocuments">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQDocument">
+        <MappingFragment StoreEntitySet="RemoteRFQDocuments">
+          <ScalarProperty Name="RfqDocId" ColumnName="RfqDocId" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="rfqItemsid" ColumnName="rfqItemsid" />
+          <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+          <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
+          <ScalarProperty Name="uploadedDate" ColumnName="uploadedDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+          <ScalarProperty Name="StatusBy" ColumnName="StatusBy" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQItems">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQItem">
+        <MappingFragment StoreEntitySet="RemoteRFQItems">
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="RFQRevisionId" ColumnName="RFQRevisionId" />
+          <ScalarProperty Name="MPRItemDetailsid" ColumnName="MPRItemDetailsid" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+          <ScalarProperty Name="QuotationQty" ColumnName="QuotationQty" />
+          <ScalarProperty Name="VendorModelNo" ColumnName="VendorModelNo" />
+          <ScalarProperty Name="HSNCode" ColumnName="HSNCode" />
+          <ScalarProperty Name="CustomDuty" ColumnName="CustomDuty" />
+          <ScalarProperty Name="FreightPercentage" ColumnName="FreightPercentage" />
+          <ScalarProperty Name="FreightAmount" ColumnName="FreightAmount" />
+          <ScalarProperty Name="PFPercentage" ColumnName="PFPercentage" />
+          <ScalarProperty Name="PFAmount" ColumnName="PFAmount" />
+          <ScalarProperty Name="IGSTPercentage" ColumnName="IGSTPercentage" />
+          <ScalarProperty Name="CGSTPercentage" ColumnName="CGSTPercentage" />
+          <ScalarProperty Name="SGSTPercentage" ColumnName="SGSTPercentage" />
+          <ScalarProperty Name="taxInclusiveOfDiscount" ColumnName="taxInclusiveOfDiscount" />
+          <ScalarProperty Name="RequestRemarks" ColumnName="RequestRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQItemsInfoes">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQItemsInfo">
+        <MappingFragment StoreEntitySet="RemoteRFQItemsInfo">
+          <ScalarProperty Name="RFQSplitItemId" ColumnName="RFQSplitItemId" />
+          <ScalarProperty Name="RFQItemsId" ColumnName="RFQItemsId" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQMaster">
+        <MappingFragment StoreEntitySet="RemoteRFQMasters">
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="MPRRevisionId" ColumnName="MPRRevisionId" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="RFQUniqueNo" ColumnName="RFQUniqueNo" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQReminderTrackings">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQReminderTracking">
+        <MappingFragment StoreEntitySet="RemoteRFQReminderTracking">
+          <ScalarProperty Name="Reminderid" ColumnName="Reminderid" />
+          <ScalarProperty Name="rfqccid" ColumnName="rfqccid" />
+          <ScalarProperty Name="ReminderTo" ColumnName="ReminderTo" />
+          <ScalarProperty Name="MailsSentOn" ColumnName="MailsSentOn" />
+          <ScalarProperty Name="Acknowledgementon" ColumnName="Acknowledgementon" />
+          <ScalarProperty Name="AcknowledgementRemarks" ColumnName="AcknowledgementRemarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQRevisions">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQRevision">
+        <MappingFragment StoreEntitySet="RemoteRFQRevisions">
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="rfqMasterId" ColumnName="rfqMasterId" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="PackingForwarding" ColumnName="PackingForwarding" />
+          <ScalarProperty Name="ExciseDuty" ColumnName="ExciseDuty" />
+          <ScalarProperty Name="SalesTax" ColumnName="SalesTax" />
+          <ScalarProperty Name="Freight" ColumnName="Freight" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="CustomsDuty" ColumnName="CustomsDuty" />
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="PaymentTermDays" ColumnName="PaymentTermDays" />
+          <ScalarProperty Name="PaymentTermRemarks" ColumnName="PaymentTermRemarks" />
+          <ScalarProperty Name="BankGuarantee" ColumnName="BankGuarantee" />
+          <ScalarProperty Name="DeliveryMinWeeks" ColumnName="DeliveryMinWeeks" />
+          <ScalarProperty Name="DeliveryMaxWeeks" ColumnName="DeliveryMaxWeeks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQStatus">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQStatu">
+        <MappingFragment StoreEntitySet="RemoteRFQStatus">
+          <ScalarProperty Name="RfqStatusId" ColumnName="RfqStatusId" />
+          <ScalarProperty Name="RfqRevisionId" ColumnName="RfqRevisionId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="updatedby" ColumnName="updatedby" />
+          <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRfqTerms">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRfqTerm">
+        <MappingFragment StoreEntitySet="RemoteRfqTerms">
+          <ScalarProperty Name="VRfqTermsid" ColumnName="VRfqTermsid" />
+          <ScalarProperty Name="RfqRevisionId" ColumnName="RfqRevisionId" />
+          <ScalarProperty Name="termsid" ColumnName="termsid" />
+          <ScalarProperty Name="TermGroup" ColumnName="TermGroup" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="VendorResponse" ColumnName="VendorResponse" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="SyncStatus" ColumnName="SyncStatus" />
+          <ScalarProperty Name="SyncDate" ColumnName="SyncDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteRFQVendorTerms">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteRFQVendorTerm">
+        <MappingFragment StoreEntitySet="RemoteRFQVendorTerms">
+          <ScalarProperty Name="RFQTermsid" ColumnName="RFQTermsid" />
+          <ScalarProperty Name="RFQversionId" ColumnName="RFQversionId" />
+          <ScalarProperty Name="VendorTermsid" ColumnName="VendorTermsid" />
+          <ScalarProperty Name="updatedBY" ColumnName="updatedBY" />
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteShipmentModeMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteShipmentModeMaster">
+        <MappingFragment StoreEntitySet="RemoteShipmentModeMaster">
+          <ScalarProperty Name="ShipmentModeid" ColumnName="ShipmentModeid" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+          <ScalarProperty Name="DeletedBY" ColumnName="DeletedBY" />
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteStateMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteStateMaster">
+        <MappingFragment StoreEntitySet="RemoteStateMaster">
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+          <ScalarProperty Name="StateName" ColumnName="StateName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteUnitMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteUnitMaster">
+        <MappingFragment StoreEntitySet="RemoteUnitMaster">
+          <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+          <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+          <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteVendorMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteVendorMaster">
+        <MappingFragment StoreEntitySet="RemoteVendorMaster">
+          <ScalarProperty Name="Vendorid" ColumnName="Vendorid" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="OldVendorCode" ColumnName="OldVendorCode" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+          <ScalarProperty Name="AuGr" ColumnName="AuGr" />
+          <ScalarProperty Name="PaymentTermCode" ColumnName="PaymentTermCode" />
+          <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+          <ScalarProperty Name="Emailid" ColumnName="Emailid" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="AutoAssignmentofRFQ" ColumnName="AutoAssignmentofRFQ" />
+          <ScalarProperty Name="Deleteflag" ColumnName="Deleteflag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteVendorRegisterDocumenetMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteVendorRegisterDocumenetMaster">
+        <MappingFragment StoreEntitySet="RemoteVendorRegisterDocumenetMaster">
+          <ScalarProperty Name="DocumentationTypeId" ColumnName="DocumentationTypeId" />
+          <ScalarProperty Name="Documentype" ColumnName="Documentype" />
+          <ScalarProperty Name="IsNewRegister" ColumnName="IsNewRegister" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteVendorRegisterDocumentDetails">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteVendorRegisterDocumentDetail">
+        <MappingFragment StoreEntitySet="RemoteVendorRegisterDocumentDetails">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="PhysicalPath" ColumnName="PhysicalPath" />
+          <ScalarProperty Name="UploadedOn" ColumnName="UploadedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DocumentationTypeId" ColumnName="DocumentationTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteVendorRegisterMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteVendorRegisterMaster">
+        <MappingFragment StoreEntitySet="RemoteVendorRegisterMaster">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Onetimevendor" ColumnName="Onetimevendor" />
+          <ScalarProperty Name="EvaluationRequired" ColumnName="EvaluationRequired" />
+          <ScalarProperty Name="VendorNoInSAP" ColumnName="VendorNoInSAP" />
+          <ScalarProperty Name="RequestedOn" ColumnName="RequestedOn" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="LocalBranchOffice" ColumnName="LocalBranchOffice" />
+          <ScalarProperty Name="PhoneAndExtn" ColumnName="PhoneAndExtn" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+          <ScalarProperty Name="NatureofBusiness" ColumnName="NatureofBusiness" />
+          <ScalarProperty Name="PANNo" ColumnName="PANNo" />
+          <ScalarProperty Name="CINNo" ColumnName="CINNo" />
+          <ScalarProperty Name="TanNo" ColumnName="TanNo" />
+          <ScalarProperty Name="PaymentTerms" ColumnName="PaymentTerms" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteVendorRFQTerms">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteVendorRFQTerm">
+        <MappingFragment StoreEntitySet="RemoteVendorRFQTerms">
+          <ScalarProperty Name="VendorTermsid" ColumnName="VendorTermsid" />
+          <ScalarProperty Name="TermsCategoryId" ColumnName="TermsCategoryId" />
+          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="Indexno" ColumnName="Indexno" />
+          <ScalarProperty Name="deleteFlag" ColumnName="deleteFlag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemoteVendorUserMasters">
+      <EntityTypeMapping TypeName="VSCMModel.RemoteVendorUserMaster">
+        <MappingFragment StoreEntitySet="RemoteVendorUserMaster">
+          <ScalarProperty Name="Vuserid" ColumnName="Vuserid" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="SuperUser" ColumnName="SuperUser" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFQPendingQuotations">
+      <EntityTypeMapping TypeName="VSCMModel.RFQPendingQuotation">
+        <MappingFragment StoreEntitySet="RFQPendingQuotations">
+          <ScalarProperty Name="RfqMasterId" ColumnName="RfqMasterId" />
+          <ScalarProperty Name="rfqRevisionId" ColumnName="rfqRevisionId" />
+          <ScalarProperty Name="RFQNo" ColumnName="RFQNo" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="RFQValidDate" ColumnName="RFQValidDate" />
+          <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
