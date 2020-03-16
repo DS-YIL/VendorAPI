@@ -46,6 +46,7 @@ namespace SCMAPI.Controllers
             email.fromemail= ConfigurationManager.AppSettings["fromemail"];
             bool exists = this._rfqBusenessAcess.sendLinkForForgetPassword(email);
             return Json(exists);
+            //tets2
         }
         [HttpPost]
         [Route("Resetpassword")]
