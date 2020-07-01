@@ -1709,7 +1709,11 @@ namespace DALayer.RFQ
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// insert data from vendor 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public List<RfqItemModel> InsertRfqItemInfo(RfqItemModel model)
         {
             statuscheckmodel status = new statuscheckmodel();
@@ -1719,15 +1723,50 @@ namespace DALayer.RFQ
             double? totalprice = 0;
             try
             {
-                //for remoteserver
-                if (model != null)
+              //  int spiltitemid = 0;
+               // double? totalprice = 0;
+                int RFQItemsId = 0;
+                var rfqremoteitem = vscm.RemoteRFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault();
+                rfqremoteitem.HSNCode = model.HSNCode;
+                rfqremoteitem.QuotationQty = model.QuotationQty;
+                rfqremoteitem.VendorModelNo = model.VendorModelNo;
+                rfqremoteitem.IGSTPercentage = model.IGSTPercentage;
+                rfqremoteitem.SGSTPercentage = model.SGSTPercentage;
+                rfqremoteitem.CGSTPercentage = model.CGSTPercentage;
+                rfqremoteitem.MfgPartNo = model.MfgPartNo;
+                rfqremoteitem.MfgModelNo = model.MfgModelNo;
+                rfqremoteitem.PFAmount = model.PFAmount;
+                rfqremoteitem.PFPercentage = model.PFPercentage;
+                rfqremoteitem.FreightAmount = model.FreightAmount;
+                rfqremoteitem.FreightPercentage = model.FreightPercentage;
+                rfqremoteitem.CustomDuty = model.CustomDuty;
+                rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                //int rfqitemsid = rfqremoteitem.RFQItemsId;
+                vscm.SaveChanges();
+
+                //yscm update
+                var rfqitem = obj.RFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault();
+                rfqitem.HSNCode = model.HSNCode;
+                rfqitem.QuotationQty = model.QuotationQty;
+                rfqitem.VendorModelNo = model.VendorModelNo;
+                rfqitem.IGSTPercentage = model.IGSTPercentage;
+                rfqitem.SGSTPercentage = model.SGSTPercentage;
+                rfqitem.CGSTPercentage = model.CGSTPercentage;
+                rfqitem.MfgPartNo = model.MfgPartNo;
+                rfqitem.MfgModelNo = model.MfgModelNo;
+                rfqitem.PFAmount = model.PFAmount;
+                rfqitem.PFPercentage = model.PFPercentage;
+                rfqitem.FreightAmount = model.FreightAmount;
+                rfqitem.FreightPercentage = model.FreightPercentage;
+                rfqitem.CustomDuty = model.CustomDuty;
+                rfqitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                //int rfqitemsid = rfqremoteitem.RFQItemsId;
+                obj.SaveChanges();
+                if (model.multipleitem == "yes")
                 {
-                    var Remotedata = new RemoteRFQItem();
-                    var items = new RemoteRFQItemsInfo();
-                    int bomid = 0;
                     foreach (var item in model.iteminfo)
                     {
-
+                        RFQItemsId = item.RFQItemsId;
                         var info = new RemoteRfqVendorBOM();
                         info.ItemDescription = item.ItemDescriptionForMultiple;
                         info.ItemName = item.ItemNameForMultiple;
@@ -1759,51 +1798,95 @@ namespace DALayer.RFQ
                         info.DeleteFlag = false;
                         vscm.RemoteRfqVendorBOMs.Add(info);
                         vscm.SaveChanges();
-                        bomid = info.RFQVendorbomItemId;
-                        List <RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == item.RFQItemsId && li.DeleteFlag==false).ToList<RemoteRfqVendorBOM>();
-                       
+                        int bomid = info.RFQVendorbomItemId;
+
+                        //in yscm
+
+                        var infos = new RfqVendorBOM();
+                        infos.RFQVendorbomItemId = bomid;
+                        infos.ItemDescription = item.ItemDescriptionForMultiple;
+                        infos.ItemName = item.ItemNameForMultiple;
+                        infos.RfqItemsId = item.RFQItemsId;
+                        infos.HSNCode = model.HSNCode;
+                        infos.QuotationQty = model.QuotationQty;
+                        infos.VendorModelNo = model.VendorModelNo;
+                        infos.IGSTPercentage = model.IGSTPercentage;
+                        infos.SGSTPercentage = model.SGSTPercentage;
+                        infos.CGSTPercentage = model.CGSTPercentage;
+                        infos.MfgPartNo = model.MfgPartNo;
+                        infos.MfgModelNo = model.MfgModelNo;
+                        infos.PFPercentage = model.PFPercentage;
+                        infos.PFAmount = model.PFAmount;
+                        infos.PFPercentage = model.PFPercentage;
+                        infos.FreightAmount = model.FreightAmount;
+                        infos.CustomDuty = model.CustomDuty;
+                        //rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                        infos.Qty = item.Quantity;
+                        infos.UOM = item.UOM;
+                        infos.UnitPrice = item.UnitPrice;
+                        infos.DiscountPercentage = item.DiscountPercentage;
+                        infos.Discount = item.Discount;
+                        infos.CurrencyId = item.CurrencyID;
+                        infos.CurrencyValue = item.CurrencyValue;
+                        infos.Remarks = item.Remarks;
+                        infos.DeliveryDate = item.DeliveryDate;
+                        infos.ItemDescription = model.ItemDescription;
+                        infos.DeleteFlag = false;
+                        obj.RfqVendorBOMs.Add(infos);
+                        obj.SaveChanges();
+
+
+                        List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == RFQItemsId && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
+
                         foreach (var data1 in itemsforupdate)
                         {
                             double? subtotalprice = 0;
                             subtotalprice = Convert.ToDouble(data1.Qty) * Convert.ToDouble(data1.UnitPrice);
-                            if (Convert.ToInt32(data1.Discount)!=0)
+                            if (Convert.ToInt32(data1.Discount) != 0)
                             {
-                              double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
+                                double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
                                 subtotalprice = Discount;
                             }
-                             if (Convert.ToInt32(data1.DiscountPercentage) !=0)
+                            if (Convert.ToInt32(data1.DiscountPercentage) != 0)
                             {
-                               double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage)/100);
+                                double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage) / 100);
                                 subtotalprice = DiscountPercentage;
                             }
-                             if (Convert.ToInt32(data1.FreightAmount)!=0)
+                            if (Convert.ToInt32(data1.FreightAmount) != 0)
                             {
                                 double? FreightAmount = subtotalprice - Convert.ToDouble(data1.FreightAmount);
                                 subtotalprice = FreightAmount;
                             }
-                             if (Convert.ToInt32(data1.FreightPercentage) != 0)
+                            if (Convert.ToInt32(data1.FreightPercentage) != 0)
                             {
-                                double? FreightPercentage= (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
+                                double? FreightPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
                                 subtotalprice = FreightPercentage;
                             }
-                             if (Convert.ToInt32(data1.PFAmount) != 0)
+                            if (Convert.ToInt32(data1.PFAmount) != 0)
                             {
                                 double? PFAmount = subtotalprice - Convert.ToDouble(data1.PFAmount);
                                 subtotalprice = PFAmount;
                             }
-                             if (Convert.ToInt32(data1.PFPercentage) != 0)
+                            if (Convert.ToInt32(data1.PFPercentage) != 0)
                             {
 
-                                double? PFPercentage = (subtotalprice* Convert.ToDouble(data1.PFPercentage) / 100);
+                                double? PFPercentage = (subtotalprice * Convert.ToDouble(data1.PFPercentage) / 100);
                                 subtotalprice += PFPercentage;
                             }
-                            totalprice += subtotalprice; 
-                               
+                            totalprice += subtotalprice;
+
                         }
-                        RemoteRFQItemsInfo_N itemsinfo = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
-                        if(itemsinfo!=null)
+                        RfqVendorBOM bompriceupdate = obj.RfqVendorBOMs.Where(li => li.RFQVendorbomItemId == bomid).FirstOrDefault();
+                        if (bompriceupdate != null)
                         {
-                            itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
+                            bompriceupdate.UnitPrice = Convert.ToInt32(totalprice);
+                            obj.SaveChanges();
+                        }
+
+                        RemoteRFQItemsInfo_N itemsinfos = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == RFQItemsId).FirstOrDefault();
+                        if (itemsinfos != null)
+                        {
+                            itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
                             vscm.SaveChanges();
                         }
                         else
@@ -1825,28 +1908,93 @@ namespace DALayer.RFQ
                             vscm.SaveChanges();
                             spiltitemid = remoteinfo.RFQSplitItemId;
                         }
+
+                        RFQItemsInfo_N rfqinsertdata = obj.RFQItemsInfo_N.Where(li => li.RFQSplitItemId == spiltitemid).FirstOrDefault();
+                        if (itemsinfos != null)
+                        {
+                            itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
+                            vscm.SaveChanges();
+                        }
+                        else
+                        {
+                            var remoteinfo = new RFQItemsInfo_N();
+                            remoteinfo.RFQItemsId = item.RFQItemsId;
+                            remoteinfo.Qty =item.Quantity;
+                            remoteinfo.UOM = item.UOM;
+                            remoteinfo.UnitPrice = item.UnitPrice;
+                            remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                            remoteinfo.Discount = item.Discount;
+                            remoteinfo.CurrencyId = item.CurrencyID;
+                            remoteinfo.CurrencyValue = item.CurrencyValue;
+                            remoteinfo.Remarks = item.Remarks;
+                            remoteinfo.DeliveryDate = item.DeliveryDate;
+                            remoteinfo.RFQSplitItemId = spiltitemid;
+                            //remoteinfo.SyncDate = System.DateTime.Now;
+
+                            obj.RFQItemsInfo_N.Add(remoteinfo);
+                            obj.SaveChanges();
+                            //spiltitemid = remoteinfo.RFQSplitItemId;
+                        }
                     }
+                }
+                else if (model.multipleitem == "no")
+                {
                     foreach (var item in model.iteminfo)
                     {
+                        //RemoteRFQItemsInfo_N itemsinfos = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
+                        //if (itemsinfos != null)
+                        //{
+                        //    itemsinfos.Qty = 1;//item.Quantity;
+                        //    itemsinfos.UOM = item.UOM;
+                        //    itemsinfos.UnitPrice = item.UnitPrice;
+                        //    itemsinfos.DiscountPercentage = item.DiscountPercentage;
+                        //    itemsinfos.Discount = item.Discount;
+                        //    itemsinfos.CurrencyId = item.CurrencyID;
+                        //    itemsinfos.CurrencyValue = item.CurrencyValue;
+                        //    itemsinfos.Remarks = item.Remarks;
+                        //    itemsinfos.DeliveryDate = item.DeliveryDate;
+                        //    itemsinfos.SyncDate = System.DateTime.Now;
+                        //    vscm.SaveChanges();
+                        //}
+                        //else
+                        //{
+                            var remoteinfo = new RemoteRFQItemsInfo_N();
+                            remoteinfo.RFQItemsId = item.RFQItemsId;
+                            remoteinfo.Qty = item.Quantity;
+                            remoteinfo.UOM = item.UOM;
+                            remoteinfo.UnitPrice = item.UnitPrice;
+                            remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                            remoteinfo.Discount = item.Discount;
+                            remoteinfo.CurrencyId = item.CurrencyID;
+                            remoteinfo.CurrencyValue = item.CurrencyValue;
+                            remoteinfo.Remarks = item.Remarks;
+                            remoteinfo.DeliveryDate = item.DeliveryDate;
+                            remoteinfo.SyncDate = System.DateTime.Now;
 
-                        var info = new RfqVendorBOM();
-                        info.RFQVendorbomItemId = bomid;
-                        info.ItemDescription = item.ItemDescriptionForMultiple;
-                        info.ItemName = item.ItemNameForMultiple;
-                        info.RfqItemsId = item.RFQItemsId;
-                        info.HSNCode = model.HSNCode;
-                        info.QuotationQty = model.QuotationQty;
-                        info.VendorModelNo = model.VendorModelNo;
-                        info.IGSTPercentage = model.IGSTPercentage;
-                        info.SGSTPercentage = model.SGSTPercentage;
-                        info.CGSTPercentage = model.CGSTPercentage;
-                        info.MfgPartNo = model.MfgPartNo;
-                        info.MfgModelNo = model.MfgModelNo;
-                        info.PFPercentage = model.PFPercentage;
-                        info.PFAmount = model.PFAmount;
-                        info.PFPercentage = model.PFPercentage;
-                        info.FreightAmount = model.FreightAmount;
-                        info.CustomDuty = model.CustomDuty;
+                            vscm.RemoteRFQItemsInfo_N.Add(remoteinfo);
+                            vscm.SaveChanges();
+                            spiltitemid = remoteinfo.RFQSplitItemId;
+                        //}
+
+                        //RFQItemsInfo_N rfqinsertdata = obj.RFQItemsInfo_N.Where(li => li.RFQSplitItemId == spiltitemid).FirstOrDefault();
+                        //if (itemsinfos != null)
+                        //{
+                        //    itemsinfos.RFQItemsId = item.RFQItemsId;
+                        //    itemsinfos.Qty = 1;//item.Quantity;
+                        //    itemsinfos.UOM = item.UOM;
+                        //    itemsinfos.UnitPrice = item.UnitPrice;
+                        //    itemsinfos.DiscountPercentage = item.DiscountPercentage;
+                        //    itemsinfos.Discount = item.Discount;
+                        //    itemsinfos.CurrencyId = item.CurrencyID;
+                        //    itemsinfos.CurrencyValue = item.CurrencyValue;
+                        //    itemsinfos.Remarks = item.Remarks;
+                        //    itemsinfos.DeliveryDate = item.DeliveryDate;
+                        //    vscm.SaveChanges();
+                        //}
+                        //else
+                        //{
+                            var info = new RFQItemsInfo_N();
+                        info.RFQItemsId = item.RFQItemsId;
                         info.Qty = item.Quantity;
                         info.UOM = item.UOM;
                         info.UnitPrice = item.UnitPrice;
@@ -1855,57 +2003,314 @@ namespace DALayer.RFQ
                         info.CurrencyId = item.CurrencyID;
                         info.CurrencyValue = item.CurrencyValue;
                         info.Remarks = item.Remarks;
+                        info.RFQSplitItemId = spiltitemid;
                         info.DeliveryDate = item.DeliveryDate;
-                        info.ItemDescription = model.ItemDescription;
-                        info.DeleteFlag = false;
-                        obj.RfqVendorBOMs.Add(info);
-                        obj.SaveChanges();
-                       
-                    }
-
-                        foreach (var item in model.iteminfo)
-                    {
-                       RFQItemsInfo_N itemsinfo = obj.RFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
-                        if(itemsinfo!=null)
-                        {
-                            itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
-                            obj.SaveChanges();
-                        }
-                        else
-                        {
-                            var info = new RFQItemsInfo_N();
-                            info.RFQSplitItemId = spiltitemid;
-                            info.RFQItemsId = item.RFQItemsId;
-                            info.Qty = 1;//item.Quantity;
-                            info.UOM = item.UOM;
-                            info.UnitPrice = Convert.ToDecimal(totalprice);
-                            info.DiscountPercentage = item.DiscountPercentage;
-                            info.Discount = item.Discount;
-                            info.CurrencyId = item.CurrencyID;
-                            info.CurrencyValue = item.CurrencyValue;
-                            info.Remarks = item.Remarks;
-                            info.DeliveryDate = item.DeliveryDate;
-                            info.DeleteFlag = false;
+                            //remoteinfo.SyncDate = System.DateTime.Now;
 
                             obj.RFQItemsInfo_N.Add(info);
                             obj.SaveChanges();
-                        }
-                        eachobj.errormsg = "Success";
-                    }
-                    var rfqitems = obj.MPRRfqItems.Where(x => x.RfqItemsid == model.RFQItemID).FirstOrDefault();
-                    var infos=new MPRRfqItemInfo();
-                    if (rfqitems != null)
-                         infos = obj.MPRRfqItemInfos.Where(li => li.MPRRFQitemId == rfqitems.MPRRFQitemId).FirstOrDefault();
-                    if (infos.Mprrfqsplititemid!= 0)
-                    {
-                        infos.rfqsplititemid = spiltitemid;
-                        infos.MPRRFQitemId = rfqitems.MPRRFQitemId;
-                        obj.SaveChanges();
-                    }
-                    _listobj.Add(eachobj);
+                            //spiltitemid = remoteinfo.RFQSplitItemId;
+                       // }
 
+                    }
                 }
+
+                //for remoteserver
+                //if (model != null)
+                //{
+                //    var Remotedata = new RemoteRFQItem();
+                //    var items = new RemoteRFQItemsInfo();
+                //    int bomid = 0;
+                //    var rfqremoteitem =new RemoteRFQItems_N();
+                //    var rfqitem = obj.RFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault();
+                //    var rfqitems = new RFQItems_N();
+                //    // var rfqremoteitemyscm=obj.RFQItemsInfoes
+
+                //    rfqremoteitem.HSNCode = model.HSNCode;
+                //        rfqremoteitem.QuotationQty = model.QuotationQty;
+                //        rfqremoteitem.VendorModelNo = model.VendorModelNo;
+                //        rfqremoteitem.IGSTPercentage = model.IGSTPercentage;
+                //        rfqremoteitem.SGSTPercentage = model.SGSTPercentage;
+                //        rfqremoteitem.CGSTPercentage = model.CGSTPercentage;
+                //        rfqremoteitem.MfgPartNo = model.MfgPartNo;
+                //        rfqremoteitem.MfgModelNo = model.MfgModelNo;
+                //        rfqremoteitem.PFAmount = model.PFAmount;
+                //        rfqremoteitem.PFPercentage = model.PFPercentage;
+                //        rfqremoteitem.FreightAmount = model.FreightAmount;
+                //        rfqremoteitem.FreightPercentage = model.FreightPercentage;
+                //        rfqremoteitem.CustomDuty = model.CustomDuty;
+
+                //        rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                //    // vscm.RemoteRFQItems_N.Add(rfqremoteitem);
+                //    int rfqitemsid = rfqremoteitem.RFQItemsId;
+                //        vscm.SaveChanges();
+
+                //    //yscm update
+                //    if (rfqitem != null)
+                //    {
+                //        rfqitem.HSNCode = model.HSNCode;
+                //        rfqitem.QuotationQty = model.QuotationQty;
+                //        rfqitem.VendorModelNo = model.VendorModelNo;
+                //        rfqitem.IGSTPercentage = model.IGSTPercentage;
+                //        rfqitem.SGSTPercentage = model.SGSTPercentage;
+                //        rfqitem.CGSTPercentage = model.CGSTPercentage;
+                //        rfqitem.MfgPartNo = model.MfgPartNo;
+                //        rfqitem.MfgModelNo = model.MfgModelNo;
+                //        rfqitem.PFAmount = model.PFAmount;
+                //        rfqitem.PFPercentage = model.PFPercentage;
+                //        rfqitem.FreightAmount = model.FreightAmount;
+                //        rfqitem.FreightPercentage = model.FreightPercentage;
+                //        rfqitem.CustomDuty = model.CustomDuty;
+
+                //        rfqitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                //        // vscm.RemoteRFQItems_N.Add(rfqremoteitem);
+                //        obj.SaveChanges();
+                //    }
+                //    else
+                //    {
+
+                //        rfqitems.HSNCode = model.HSNCode;
+                //        rfqitems.QuotationQty = model.QuotationQty;
+                //        rfqitems.VendorModelNo = model.VendorModelNo;
+                //        rfqitems.IGSTPercentage = model.IGSTPercentage;
+                //        rfqitems.SGSTPercentage = model.SGSTPercentage;
+                //        rfqitems.CGSTPercentage = model.CGSTPercentage;
+                //        rfqitems.MfgPartNo = model.MfgPartNo;
+                //        rfqitems.MfgModelNo = model.MfgModelNo;
+                //        rfqitems.PFAmount = model.PFAmount;
+                //        rfqitems.PFPercentage = model.PFPercentage;
+                //        rfqitems.FreightAmount = model.FreightAmount;
+                //        rfqitems.FreightPercentage = model.FreightPercentage;
+                //        rfqitems.CustomDuty = model.CustomDuty;
+
+                //        rfqitems.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                //        // vscm.RemoteRFQItems_N.Add(rfqremoteitem);
+                //        obj.RFQItems_N.Add(rfqitems);
+                //    }
+                //    foreach (var item in model.iteminfo)
+                //    {
+
+                //        var info = new RemoteRfqVendorBOM();
+                //        info.ItemDescription = item.ItemDescriptionForMultiple;
+                //        info.ItemName = item.ItemNameForMultiple;
+                //        info.RfqItemsId = item.RFQItemsId;
+                //        info.HSNCode = model.HSNCode;
+                //        info.QuotationQty = model.QuotationQty;
+                //        info.VendorModelNo = model.VendorModelNo;
+                //        info.IGSTPercentage = model.IGSTPercentage;
+                //        info.SGSTPercentage = model.SGSTPercentage;
+                //        info.CGSTPercentage = model.CGSTPercentage;
+                //        info.MfgPartNo = model.MfgPartNo;
+                //        info.MfgModelNo = model.MfgModelNo;
+                //        info.PFPercentage = model.PFPercentage;
+                //        info.PFAmount = model.PFAmount;
+                //        info.PFPercentage = model.PFPercentage;
+                //        info.FreightAmount = model.FreightAmount;
+                //        info.CustomDuty = model.CustomDuty;
+                //        //rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                //        info.Qty = item.Quantity;
+                //        info.UOM = item.UOM;
+                //        info.UnitPrice = item.UnitPrice;
+                //        info.DiscountPercentage = item.DiscountPercentage;
+                //        info.Discount = item.Discount;
+                //        info.CurrencyId = item.CurrencyID;
+                //        info.CurrencyValue = item.CurrencyValue;
+                //        info.Remarks = item.Remarks;
+                //        info.DeliveryDate = item.DeliveryDate;
+                //        info.ItemDescription = model.ItemDescription;
+                //        info.DeleteFlag = false;
+                //        vscm.RemoteRfqVendorBOMs.Add(info);
+                //        vscm.SaveChanges();
+                //        bomid = info.RFQVendorbomItemId;
+                //        if (model.multipleitem == "yes") { 
+                //        List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == item.RFQItemsId && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
+
+                //        foreach (var data1 in itemsforupdate)
+                //        {
+                //            double? subtotalprice = 0;
+                //            subtotalprice = Convert.ToDouble(data1.Qty) * Convert.ToDouble(data1.UnitPrice);
+                //            if (Convert.ToInt32(data1.Discount) != 0)
+                //            {
+                //                double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
+                //                subtotalprice = Discount;
+                //            }
+                //            if (Convert.ToInt32(data1.DiscountPercentage) != 0)
+                //            {
+                //                double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage) / 100);
+                //                subtotalprice = DiscountPercentage;
+                //            }
+                //            if (Convert.ToInt32(data1.FreightAmount) != 0)
+                //            {
+                //                double? FreightAmount = subtotalprice - Convert.ToDouble(data1.FreightAmount);
+                //                subtotalprice = FreightAmount;
+                //            }
+                //            if (Convert.ToInt32(data1.FreightPercentage) != 0)
+                //            {
+                //                double? FreightPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
+                //                subtotalprice = FreightPercentage;
+                //            }
+                //            if (Convert.ToInt32(data1.PFAmount) != 0)
+                //            {
+                //                double? PFAmount = subtotalprice - Convert.ToDouble(data1.PFAmount);
+                //                subtotalprice = PFAmount;
+                //            }
+                //            if (Convert.ToInt32(data1.PFPercentage) != 0)
+                //            {
+
+                //                double? PFPercentage = (subtotalprice * Convert.ToDouble(data1.PFPercentage) / 100);
+                //                subtotalprice += PFPercentage;
+                //            }
+                //            totalprice += subtotalprice;
+
+                //        }
+                //            RemoteRFQItemsInfo_N itemsinfos = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
+                //            if (itemsinfos != null)
+                //            {
+                //                itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
+                //                vscm.SaveChanges();
+                //            }
+                //        }
+                //        else
+                //        {
+                //            var remoteinfo = new RemoteRFQItemsInfo_N();
+                //            remoteinfo.RFQItemsId = item.RFQItemsId;
+                //            remoteinfo.Qty = 1;//item.Quantity;
+                //            remoteinfo.UOM = item.UOM;
+                //            remoteinfo.UnitPrice = item.UnitPrice;
+                //            remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                //            remoteinfo.Discount = item.Discount;
+                //            remoteinfo.CurrencyId = item.CurrencyID;
+                //            remoteinfo.CurrencyValue = item.CurrencyValue;
+                //            remoteinfo.Remarks = item.Remarks;
+                //            remoteinfo.DeliveryDate = item.DeliveryDate;
+                //            remoteinfo.SyncDate = System.DateTime.Now;
+
+                //            vscm.RemoteRFQItemsInfo_N.Add(remoteinfo);
+                //            vscm.SaveChanges();
+                //            spiltitemid = remoteinfo.RFQSplitItemId;
+                //        }
+                //        RemoteRFQItemsInfo_N itemsinfo = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
+                //        if (itemsinfo != null)
+                //        {
+                //        //    itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
+                //        //    vscm.SaveChanges();
+                //        }
+                //        else
+                //        {
+                //            var remoteinfo = new RemoteRFQItemsInfo_N();
+                //            remoteinfo.RFQItemsId = item.RFQItemsId;
+                //            remoteinfo.Qty = 1;//item.Quantity;
+                //            remoteinfo.UOM = item.UOM;
+                //            remoteinfo.UnitPrice = item.UnitPrice;
+                //            remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                //            remoteinfo.Discount = item.Discount;
+                //            remoteinfo.CurrencyId = item.CurrencyID;
+                //            remoteinfo.CurrencyValue = item.CurrencyValue;
+                //            remoteinfo.Remarks = item.Remarks;
+                //            remoteinfo.DeliveryDate = item.DeliveryDate;
+                //            remoteinfo.SyncDate = System.DateTime.Now;
+
+                //            vscm.RemoteRFQItemsInfo_N.Add(remoteinfo);
+                //            vscm.SaveChanges();
+                //            spiltitemid = remoteinfo.RFQSplitItemId;
+                //        }
+                //    }
+                //    foreach (var item in model.iteminfo)
+                //    {
+
+                //        var info = new RfqVendorBOM();
+                //        info.RFQVendorbomItemId = bomid;
+                //        info.ItemDescription = item.ItemDescriptionForMultiple;
+                //        info.ItemName = item.ItemNameForMultiple;
+                //        info.RfqItemsId = item.RFQItemsId;
+                //        info.HSNCode = model.HSNCode;
+                //        info.QuotationQty = model.QuotationQty;
+                //        info.VendorModelNo = model.VendorModelNo;
+                //        info.IGSTPercentage = model.IGSTPercentage;
+                //        info.SGSTPercentage = model.SGSTPercentage;
+                //        info.CGSTPercentage = model.CGSTPercentage;
+                //        info.MfgPartNo = model.MfgPartNo;
+                //        info.MfgModelNo = model.MfgModelNo;
+                //        info.PFPercentage = model.PFPercentage;
+                //        info.PFAmount = model.PFAmount;
+                //        info.PFPercentage = model.PFPercentage;
+                //        info.FreightAmount = model.FreightAmount;
+                //        info.CustomDuty = model.CustomDuty;
+                //        info.Qty = item.Quantity;
+                //        info.UOM = item.UOM;
+                //        info.UnitPrice = item.UnitPrice;
+                //        info.DiscountPercentage = item.DiscountPercentage;
+                //        info.Discount = item.Discount;
+                //        info.CurrencyId = item.CurrencyID;
+                //        info.CurrencyValue = item.CurrencyValue;
+                //        info.Remarks = item.Remarks;
+                //        info.DeliveryDate = item.DeliveryDate;
+                //        info.ItemDescription = model.ItemDescription;
+                //        info.DeleteFlag = false;
+                //        obj.RfqVendorBOMs.Add(info);
+                //        obj.SaveChanges();
+
+                //    }
+
+                //    foreach (var item in model.iteminfo)
+                //    {
+                //        RFQItemsInfo_N itemsinfo = obj.RFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
+                //        if (itemsinfo != null)
+                //        {
+                //            itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
+                //            obj.SaveChanges();
+                //        }
+                //        else
+                //        {
+                //            var info = new RFQItemsInfo_N();
+                //            info.RFQSplitItemId = spiltitemid;
+                //            info.RFQItemsId = item.RFQItemsId;
+                //            info.Qty = 1;//item.Quantity;
+                //            info.UOM = item.UOM;
+                //            info.UnitPrice = Convert.ToDecimal(totalprice);
+                //            info.DiscountPercentage = item.DiscountPercentage;
+                //            info.Discount = item.Discount;
+                //            info.CurrencyId = item.CurrencyID;
+                //            info.CurrencyValue = item.CurrencyValue;
+                //            info.Remarks = item.Remarks;
+                //            info.DeliveryDate = item.DeliveryDate;
+                //            info.DeleteFlag = false;
+
+                //            obj.RFQItemsInfo_N.Add(info);
+                //            obj.SaveChanges();
+                //        }
+                //        eachobj.errormsg = "Success";
+                //    }
+                //    var rfqitemsss = obj.MPRRfqItems.Where(x => x.RfqItemsid == model.RFQItemID).FirstOrDefault();
+                //    var infos = new MPRRfqItemInfo();
+                //    if (rfqitems != null)
+                //        infos = obj.MPRRfqItemInfos.Where(li => li.MPRRFQitemId == rfqitemsss.MPRRFQitemId).FirstOrDefault();
+                //    if (infos.Mprrfqsplititemid != 0)
+                //    {
+                //        infos.rfqsplititemid = spiltitemid;
+                //        infos.MPRRFQitemId = rfqitemsss.MPRRFQitemId;
+                //        obj.SaveChanges();
+                //    }
+                //    _listobj.Add(eachobj);
+
+
+                //}
+                var rfqitems = new RFQItems_N();
+                var mpritemsdetailsid = obj.RFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault();
+                var rfqitemsss = obj.MPRRfqItems.Where(x => x.RfqItemsid == model.RFQItemID && x.MPRItemDetailsid == mpritemsdetailsid.MPRItemDetailsid).FirstOrDefault();
+                var infosdata = new MPRRfqItemInfo();
+                //if (rfqitems != null)
+                //    infosdata = obj.MPRRfqItemInfos.Where(li => li.MPRRFQitemId == rfqitemsss.MPRRFQitemId).FirstOrDefault();
+                ////if (infosdata.Mprrfqsplititemid != 0)
+                //{
+                infosdata.rfqsplititemid = spiltitemid;
+                infosdata.MPRRFQitemId = rfqitemsss.MPRRFQitemId;
+                //infosdata.
+                obj.MPRRfqItemInfos.Add(infosdata);
+                obj.SaveChanges();
+           // }
                 return _listobj;
+              
 
             }
             catch (Exception ex)
@@ -1920,6 +2325,7 @@ namespace DALayer.RFQ
             RfqItemModel eachobj = new RfqItemModel();
             List<RfqItemModel> _listobj = new List<RfqItemModel>();
             int spiltitemid = 0;
+            double? totalprice = 0;
             try
             {
                 //for remoteserver
@@ -1947,14 +2353,14 @@ namespace DALayer.RFQ
                         rfqremoteitem.FreightAmount = model.FreightAmount;
                         rfqremoteitem.FreightPercentage = model.FreightPercentage;
                         rfqremoteitem.CustomDuty = model.CustomDuty;
-                       
+
                         rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
                         // vscm.RemoteRFQItems_N.Add(rfqremoteitem);
                         vscm.SaveChanges();
                         eachobj.QuotationQty = model.QuotationQty;
                         eachobj.ItemUnitPrice = model.ItemUnitPrice;
                     }
-                    
+
                     foreach (var item in model.iteminfo)
                     {
 
@@ -1974,10 +2380,94 @@ namespace DALayer.RFQ
                             remoteiteminfo.SyncDate = System.DateTime.Now;
                             remoteiteminfo.DeleteFlag = false;
                             // vscm.RemoteRFQItemsInfoes.Add(remoteinfo);
+
+                            vscm.SaveChanges();
+
+                           
+                        }
+                        int idBOM = Convert.ToInt32(model.RFQVendorbomItemId);
+                        RemoteRfqVendorBOM databom = vscm.RemoteRfqVendorBOMs.Where(x => x.RFQVendorbomItemId == idBOM).FirstOrDefault();
+                        if(databom != null)
+                        {
+                            databom.RfqItemsId = item.RFQItemsId;
+                            databom.HSNCode = model.HSNCode;
+                            databom.QuotationQty = model.QuotationQty;
+                            databom.VendorModelNo = model.VendorModelNo;
+                            databom.IGSTPercentage = model.IGSTPercentage;
+                            databom.SGSTPercentage = model.SGSTPercentage;
+                            databom.CGSTPercentage = model.CGSTPercentage;
+                            databom.MfgPartNo = model.MfgPartNo;
+                            databom.MfgModelNo = model.MfgModelNo;
+                            databom.PFPercentage = model.PFPercentage;
+                            databom.PFAmount = model.PFAmount;
+                            databom.PFPercentage = model.PFPercentage;
+                            databom.FreightAmount = model.FreightAmount;
+                            databom.CustomDuty = model.CustomDuty;
+                            databom.Qty = item.Quantity;
+                            databom.UOM = item.UOM;
+                            databom.UnitPrice = item.UnitPrice;
+                            databom.DiscountPercentage = item.DiscountPercentage;
+                            databom.Discount = item.Discount;
+                            databom.CurrencyId = item.CurrencyID;
+                            databom.CurrencyValue = item.CurrencyValue;
+                            databom.Remarks = item.Remarks;
+                            databom.DeliveryDate = item.DeliveryDate;
+                            databom.ItemDescription = model.ItemDescription;
+                            databom.DeleteFlag = false;
+                            //obj.RfqVendorBOMs.Add(databom);
                             vscm.SaveChanges();
                         }
+                        List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == item.RFQItemsId && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
+
+                        foreach (var data1 in itemsforupdate)
+                        {
+                            double? subtotalprice = 0;
+                            subtotalprice = Convert.ToDouble(data1.Qty) * Convert.ToDouble(data1.UnitPrice);
+                            if (Convert.ToInt32(data1.Discount) != 0)
+                            {
+                                double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
+                                subtotalprice = Discount;
+                            }
+                            if (Convert.ToInt32(data1.DiscountPercentage) != 0)
+                            {
+                                double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage) / 100);
+                                subtotalprice = DiscountPercentage;
+                            }
+                            if (Convert.ToInt32(data1.FreightAmount) != 0)
+                            {
+                                double? FreightAmount = subtotalprice - Convert.ToDouble(data1.FreightAmount);
+                                subtotalprice = FreightAmount;
+                            }
+                            if (Convert.ToInt32(data1.FreightPercentage) != 0)
+                            {
+                                double? FreightPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
+                                subtotalprice = FreightPercentage;
+                            }
+                            if (Convert.ToInt32(data1.PFAmount) != 0)
+                            {
+                                double? PFAmount = subtotalprice - Convert.ToDouble(data1.PFAmount);
+                                subtotalprice = PFAmount;
+                            }
+                            if (Convert.ToInt32(data1.PFPercentage) != 0)
+                            {
+
+                                double? PFPercentage = (subtotalprice * Convert.ToDouble(data1.PFPercentage) / 100);
+                                subtotalprice += PFPercentage;
+                            }
+                            totalprice += subtotalprice;
+
+                        }
+
+                        RemoteRFQItemsInfo_N itemsinfo = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
+                        if (itemsinfo != null)
+                        {
+                            itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
+                            vscm.SaveChanges();
+                            
+                        }
+                       
                     }
-                   
+
                     //var data = new RFQItems_N();
                     //var rfqitem = obj.RFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault();
                     //rfqitem.HSNCode = model.HSNCode;
@@ -2034,7 +2524,46 @@ namespace DALayer.RFQ
                             obj.SaveChanges();
                             eachobj.errormsg = "Success";
                         }
-                      
+                        int idBOM = Convert.ToInt32(model.RFQVendorbomItemId);
+                        RfqVendorBOM databom = obj.RfqVendorBOMs.Where(x => x.RFQVendorbomItemId == idBOM).FirstOrDefault();
+                        if (databom != null)
+                        {
+                            databom.RfqItemsId = item.RFQItemsId;
+                            databom.HSNCode = model.HSNCode;
+                            databom.QuotationQty = model.QuotationQty;
+                            databom.VendorModelNo = model.VendorModelNo;
+                            databom.IGSTPercentage = model.IGSTPercentage;
+                            databom.SGSTPercentage = model.SGSTPercentage;
+                            databom.CGSTPercentage = model.CGSTPercentage;
+                            databom.MfgPartNo = model.MfgPartNo;
+                            databom.MfgModelNo = model.MfgModelNo;
+                            databom.PFPercentage = model.PFPercentage;
+                            databom.PFAmount = model.PFAmount;
+                            databom.PFPercentage = model.PFPercentage;
+                            databom.FreightAmount = model.FreightAmount;
+                            databom.CustomDuty = model.CustomDuty;
+                            databom.Qty = item.Quantity;
+                            databom.UOM = item.UOM;
+                            databom.UnitPrice = item.UnitPrice;
+                            databom.DiscountPercentage = item.DiscountPercentage;
+                            databom.Discount = item.Discount;
+                            databom.CurrencyId = item.CurrencyID;
+                            databom.CurrencyValue = item.CurrencyValue;
+                            databom.Remarks = item.Remarks;
+                            databom.DeliveryDate = item.DeliveryDate;
+                            databom.ItemDescription = model.ItemDescription;
+                            databom.DeleteFlag = false;
+                            //obj.RfqVendorBOMs.Add(databom);
+                            obj.SaveChanges();
+                        }
+                        RFQItemsInfo_N itemsinfo = obj.RFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId).FirstOrDefault();
+                        if (itemsinfo != null)
+                        {
+                            itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
+                            obj.SaveChanges();
+
+                        }
+
                     }
                     _listobj.Add(eachobj);
 
@@ -2051,7 +2580,7 @@ namespace DALayer.RFQ
 
 
         //delete
-        public async Task<statuscheckmodel> DeleteRfqIteminfoByid(int id,int rfqitemid)
+        public async Task<statuscheckmodel> DeleteRfqIteminfoByid(int id, int rfqitemid)
         {
             statuscheckmodel status = new statuscheckmodel();
             try
@@ -2059,7 +2588,7 @@ namespace DALayer.RFQ
                 double? totalprice = 0;
                 //vscm.Database.Connection.Open();
                 var Remotedata = vscm.RemoteRFQItemsInfo_N.Where(x => x.RFQSplitItemId == id && x.DeleteFlag == false).FirstOrDefault();
-                var remotebomdata = vscm.RemoteRfqVendorBOMs.Where(x => x.RfqItemsId == rfqitemid && x.DeleteFlag==false).ToList();
+                var remotebomdata = vscm.RemoteRfqVendorBOMs.Where(x => x.RfqItemsId == rfqitemid && x.DeleteFlag == false).ToList();
                 var bomdata = obj.RfqVendorBOMs.Where(x => x.RfqItemsId == rfqitemid && x.DeleteFlag == false).ToList();
                 if (Remotedata != null)
                 {
@@ -2067,15 +2596,15 @@ namespace DALayer.RFQ
                     Remotedata.DeleteFlag = true;
                     vscm.SaveChanges();
                 }
-                if(remotebomdata!=null)
+                if (remotebomdata != null)
                 {
                     foreach (var items in remotebomdata)
                     {
                         items.DeleteFlag = true;
                         vscm.SaveChanges();
                     }
-                    
-                    
+
+
                 }
                 if (bomdata != null)
                 {
@@ -2084,7 +2613,7 @@ namespace DALayer.RFQ
                         items.DeleteFlag = true;
                         obj.SaveChanges();
                     }
-                    
+
                 }
                 List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == id && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
 
@@ -2293,18 +2822,19 @@ namespace DALayer.RFQ
 
         //edit
         public async Task<RemoteRFQRevisions_N> GetRfqDetailsById(int revisionId)
-         {
+        {
             //obj.Configuration.ProxyCreationEnabled = false;
-            RemoteRFQRevisions_N rev = vscm.RemoteRFQRevisions_N.Include(x => x.RemoteRFQItems_N).Where(li => li.rfqRevisionId == revisionId && li.DeleteFlag==false).FirstOrDefault();
-            rev.RemoteRFQItems_N = rev.RemoteRFQItems_N.Where(li=>li.DeleteFlag==false).ToList();
+          RemoteRFQRevisions_N rev = vscm.RemoteRFQRevisions_N.Include(x => x.RemoteRFQItems_N).Where(li => li.rfqRevisionId == revisionId && li.DeleteFlag == false).FirstOrDefault();
+            rev.RemoteRFQItems_N = rev.RemoteRFQItems_N.Where(li => li.DeleteFlag == false).ToList();
             foreach (RemoteRFQItems_N item in rev.RemoteRFQItems_N)
             {
-                item.RemoteRFQItemsInfo_N = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId && li.DeleteFlag==false).ToList();
-                item.RemoteRFQDocuments = vscm.RemoteRFQDocuments.Where(li => li.rfqItemsid == item.RFQItemsId && li.rfqRevisionId == rev.RevisionNo  && li.DocumentType.Equals(1) && li.DeleteFlag==false).ToList();
-                item.RemoteRfqVendorBOMs = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId==item.RFQItemsId).ToList();
+                item.RemoteRFQItemsInfo_N = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == item.RFQItemsId && li.DeleteFlag == false).ToList();
+                item.RemoteRFQDocuments = vscm.RemoteRFQDocuments.Where(li => li.rfqItemsid == item.RFQItemsId && li.rfqRevisionId == rev.RevisionNo && li.DocumentType==1).ToList();
+                item.RemoteRFQDocuments = item.RemoteRFQDocuments.Where(li => li.DeleteFlag == false).ToList();
+                item.RemoteRfqVendorBOMs = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == item.RFQItemsId).ToList();
                 item.RemoteRfqVendorBOMs = item.RemoteRfqVendorBOMs.Where(li => li.DeleteFlag == false).ToList();
             }
-           
+
             //foreach (RemoteRFQItems_N item in rev.RemoteRFQItems_N)
             //{
             //    item.RemoteRFQDocuments = vscm.RemoteRFQDocuments.Where(li => li.rfqItemsid == item.RFQItemsId && li.rfqRevisionId == rev.RevisionNo && li.DeleteFlag.Equals(false) && li.rfqItemsid != null).ToList();
@@ -3356,7 +3886,7 @@ namespace DALayer.RFQ
                 var data = new GlobalGroupEmployee();
                 data.GlobalGroupId = model.GlobalGroupId;
                 data.EmployeeNo = model.EmployeeNo;
-               // data.UpdatedOn = model.UpdatedOn;
+                // data.UpdatedOn = model.UpdatedOn;
                 obj.GlobalGroupEmployees.Add(data);
                 obj.SaveChanges();
 
@@ -3836,24 +4366,25 @@ namespace DALayer.RFQ
             }
         }
         public async Task<List<V_RFQList>> GetRfqByVendorId(rfqFilterParams obj)
-         {
+        {
             List<RFQMasterModel> model = new List<RFQMasterModel>();
             try
             {
                 List<V_RFQList> data = null;
                 int vendorid = Convert.ToInt32(obj.VendorId);
-                if ((obj.typeOfFilter=="other")) {
+                if ((obj.typeOfFilter == "other"))
+                {
                     data = new List<V_RFQList>();
-                     data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == true).ToList();
+                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false).ToList();
 
                 }
-                else if(obj.typeOfFilter=="true")
+                else if (obj.typeOfFilter == "true")
                 {
-                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid  && x.DeleteFlag == false && x.VendorVisiblity == true && (x.RFQValidDate>=obj.FromDate && x.RFQValidDate <= obj.ToDate) ||  x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
+                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false && (x.RFQValidDate >= obj.FromDate && x.RFQValidDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
                 }
-                else if(obj.typeOfFilter=="false")
+                else if (obj.typeOfFilter == "false")
                 {
-                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid  && x.DeleteFlag == false && x.VendorVisiblity == true && (x.CreatedDate >= obj.FromDate && x.CreatedDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
+                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false && (x.CreatedDate >= obj.FromDate && x.CreatedDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
                     //data = vscm.RemoteRFQMasters.Where(x => x.VendorId == vendorid && x.RFQNo == obj.RFQNo && x.DeleteFlag == false && x.VendorVisiblity == true).Include(x => x.RemoteRFQRevisions_N.Select(li => li.CreatedDate >= obj.FromDate && li.CreatedDate <= obj.ToDate)).OrderByDescending(x => x.MPRRevisionId).ToList();
                 }
                 //if (data != null)
@@ -3912,7 +4443,7 @@ namespace DALayer.RFQ
             return mprRevisionDetails;
         }
 
-        List<VendorRegistrationModel>InsertVendordata(VendorRegistrationModel model)
+        List<VendorRegistrationModel> InsertVendordata(VendorRegistrationModel model)
         {
             try
             {
@@ -4165,7 +4696,7 @@ namespace DALayer.RFQ
                         RemoteVendorRegisterMaster Remotedata = vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == model.VendorId).FirstOrDefault<RemoteVendorRegisterMaster>();
                         if (Remotedata != null)
                         {
-                           // Remotedata.Id = model.UniqueId;
+                            // Remotedata.Id = model.UniqueId;
                             Remotedata.Onetimevendor = model.Onetimevendor;
                             Remotedata.EvaluationRequired = model.EvaluationRequired;
                             Remotedata.VendorNoInSAP = model.VendorNoInSAP;
@@ -4241,7 +4772,7 @@ namespace DALayer.RFQ
 
                     }
                     //yscm
-                    
+
                     if (model.VendorCode == "")
                     {
                         var yscmdata = new VendorRegisterMaster();
@@ -4267,7 +4798,7 @@ namespace DALayer.RFQ
                         yscmdata.RequestedOn = DateTime.Now;
                         yscmdata.PaymentTerms = model.PaymentTerms;
                         yscmdata.Address = model.street;
-                       // yscmdata.City = model.City;
+                        // yscmdata.City = model.City;
                         yscmdata.PhoneAndExtn = model.PhoneAndExtn;
                         yscmdata.TanNo = model.TanNo;
                         yscmdata.Onetimevendor = model.Onetimevendor;
@@ -4351,9 +4882,9 @@ namespace DALayer.RFQ
 
                     }
                 }
-                   
-                    return RegistrationModelobj;
-                
+
+                return RegistrationModelobj;
+
             }
             catch (Exception ex)
             {
@@ -4433,7 +4964,7 @@ namespace DALayer.RFQ
         public bool DeletefileAttachedforDocuments(RFQDocument model)
         {
             Boolean deletestatus = false;
-            RemoteRFQDocument remotedatafordelete = vscm.RemoteRFQDocuments.Where(li => li.rfqRevisionId == model.rfqRevisionId && li.DocumentType == model.DocumentType && li.UploadedBy == model.UploadedBy && li.Path == model.DocumentName && li.rfqItemsid == model.rfqItemsid).FirstOrDefault();
+            RemoteRFQDocument remotedatafordelete = vscm.RemoteRFQDocuments.Where(li=>li.DocumentType == model.DocumentType && li.UploadedBy == model.UploadedBy && li.DocumentName == model.DocumentName && (li.rfqItemsid == model.rfqItemsid || li.rfqRevisionId==model.rfqRevisionId)).FirstOrDefault();
             if (remotedatafordelete != null)
             {
                 remotedatafordelete.DeleteFlag = true;
@@ -4445,8 +4976,8 @@ namespace DALayer.RFQ
                 deletestatus = false;
             }
 
-            RFQDocument remotedatafordeleteYSCM = obj.RFQDocuments.Where(li => li.rfqRevisionId == model.rfqRevisionId && li.Path == model.DocumentName && li.DocumentType == model.DocumentType && li.UploadedBy == model.UploadedBy && li.rfqItemsid == model.rfqItemsid).FirstOrDefault();
-            if (remotedatafordelete != null)
+            RFQDocument remotedatafordeleteYSCM = obj.RFQDocuments.Where(li=> li.DocumentName == model.DocumentName && li.DocumentType == model.DocumentType && li.UploadedBy == model.UploadedBy && (li.rfqItemsid == model.rfqItemsid || li.rfqRevisionId==model.rfqRevisionId)).FirstOrDefault();
+            if (remotedatafordeleteYSCM != null)
             {
                 remotedatafordeleteYSCM.DeleteFlag = true;
                 obj.SaveChanges();
@@ -4652,7 +5183,7 @@ namespace DALayer.RFQ
         public List<RemoteRFQDocument> GetRfqdocumentdetailsById(int revisionId)
         {
             List<RemoteRFQDocument> _listobj = new List<RemoteRFQDocument>();
-            _listobj = vscm.RemoteRFQDocuments.Where(li => li.rfqRevisionId == revisionId && li.rfqItemsid.Equals(null) && li.DocumentType != 1 && li.DeleteFlag.Equals(false)).ToList();
+            _listobj = vscm.RemoteRFQDocuments.Where(li => li.rfqRevisionId == revisionId && li.DocumentType != 1 && li.DeleteFlag==false).ToList();
             return _listobj;
         }
 
@@ -4681,30 +5212,44 @@ namespace DALayer.RFQ
         {
             VendorRegistrationModel listobj = new VendorRegistrationModel();
             RemoteVendorRegisterMaster getdata = vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == vendorId).FirstOrDefault();
+            if (getdata != null)
+            {
+                listobj.VendorName = getdata.VendorName;
+                listobj.VendorNoInSAP = getdata.VendorNoInSAP;
+                listobj.City = getdata.City;
+                listobj.CINNo = getdata.CINNo;
+                listobj.PhoneAndExtn = getdata.PhoneAndExtn;
+                listobj.PostalCode = getdata.PostalCode;
+                listobj.street = getdata.Address;
+            }
 
-            listobj.VendorName = getdata.VendorName;
-            listobj.VendorNoInSAP = getdata.VendorNoInSAP;
-            listobj.VendorName = getdata.VendorName;
-            listobj.street = getdata.Address;
             return listobj;
             // throw new NotImplementedException();
         }
 
-        public string changepassword(Changepassword obj)
+        public string changepassword(Changepassword objs)
         {
             string msg = string.Empty;
-            if (obj != null)
+            if (objs != null)
             {
-                RemoteVendorUserMaster chnagepwdobj = vscm.RemoteVendorUserMasters.Where(li => li.VendorId == obj.VendorId && li.pwd==obj.CurrentPassword).FirstOrDefault();
-                if (chnagepwdobj.pwd == obj.CurrentPassword)
+                RemoteVendorUserMaster remotechnagepwdobj = vscm.RemoteVendorUserMasters.Where(li => li.VendorId == objs.VendorId && li.pwd == objs.CurrentPassword).FirstOrDefault();
+                if (remotechnagepwdobj.pwd == objs.CurrentPassword)
                 {
-                    chnagepwdobj.pwd = obj.NewPassword;
+                    remotechnagepwdobj.pwd = objs.NewPassword;
                     vscm.SaveChanges();
                     msg = "OK";
                 }
-                else 
+                else
                 {
                     msg = "error";
+                }
+                
+                VendorUserMaster chnagepwdobj = obj.VendorUserMasters.Where(li => li.VendorId == objs.VendorId && li.pwd == objs.CurrentPassword).FirstOrDefault();
+                if (chnagepwdobj.pwd == objs.CurrentPassword)
+                {
+                    chnagepwdobj.pwd = objs.NewPassword;
+                    obj.SaveChanges();
+                    msg = "OK";
                 }
             }
             return msg;
@@ -4716,7 +5261,7 @@ namespace DALayer.RFQ
             try
             {
                 VSCMEntities yscmobj = new VSCMEntities();
-                RemoteRFQRevisions_N mprrevisionDetail = yscmobj.RemoteRFQRevisions_N.Include(li=>li.RemoteRFQMaster).Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RemoteRFQRevisions_N>();
+                RemoteRFQRevisions_N mprrevisionDetail = yscmobj.RemoteRFQRevisions_N.Include(li => li.RemoteRFQMaster).Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RemoteRFQRevisions_N>();
                 using (var db = new YSCMEntities()) //ok
                 {
 
@@ -4724,16 +5269,16 @@ namespace DALayer.RFQ
                     //var issueOfPurpose = mprrevisionDetail.IssuePurposeId == 1 ? "For Enquiry" : "For Issuing PO";
                     EmailSend emlSndngList = new EmailSend();
 
-                    emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel = 'stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' ></head><body><div class='container'><table border='1' class='table table-bordered table-sm'><tr><td><b>RFQ Number</b></td><td>" + mprrevisionDetail.RemoteRFQMaster.RFQNo + "</td></tr></table><br/><br/><span>" + "</span><br/><br/><b>Click here to redirect : </b>&nbsp<a href='http://10.29.15.183:85/'>http://10.29.15.183:85/</a></div></body></html>";
+                    emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear,</p><p>RFQNO:" + mprrevisionDetail.RemoteRFQMaster.RFQNo + "</p><p style = 'margin-bottom:0px;' > Regards,</p><p> Vendor Team.</p></div></body></html>";
                     // emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel = 'stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' ></head><body><div class='container'><table border='1' class='table table-bordered table-sm'><tr><td><b>MPR Number</b></td><td>" +"<b>Click here to redirect : </b>&nbsp<a href='http://10.29.15.165:99/'>http://10.29.15.165:99/</a></div></body></html>";
                     Employee Email = db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.BuyergroupEmail).FirstOrDefault<Employee>();
-                    emlSndngList.Subject = "Response From Vendor  on RFQNumber:";// + mprrevisionDetail.RemoteRFQMaster.RFQNo;
-                    emlSndngList.ToEmailId = "shashikala.k@in.yokogawa.com";//(db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
+                    emlSndngList.Subject = "Response From Vendor  on RFQNumber: " + mprrevisionDetail.RemoteRFQMaster.RFQNo;// + mprrevisionDetail.RemoteRFQMaster.RFQNo;
+                    emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
                     emlSndngList.FrmEmailId = "yilinfo@in.yokogawa.com";
                     //emlSndngList.ToEmailId = "shashikala.k@in.yokogawa.com";
                     this.sendEmail(emlSndngList);
-                    
-                   
+
+
 
                 }
             }
@@ -4754,7 +5299,7 @@ namespace DALayer.RFQ
             if (!string.IsNullOrEmpty(emlSndngList.CC))
                 mailMessage.CC.Add(emlSndngList.CC);
             if (!string.IsNullOrEmpty(emlSndngList.BCC))
-                mailMessage.CC.Add(emlSndngList.BCC);
+                mailMessage.Bcc.Add(emlSndngList.BCC);
             mailMessage.Body = emlSndngList.Body;
             mailMessage.IsBodyHtml = true;
             mailMessage.BodyEncoding = Encoding.UTF8;
@@ -4763,7 +5308,7 @@ namespace DALayer.RFQ
             //mailClient.EnableSsl = false;
             mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             mailClient.Send(mailMessage);
-           
+
             //MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
             //SmtpClient client = new SmtpClient();
             //if (!string.IsNullOrEmpty(emlSndngList.Subject))
@@ -4780,7 +5325,7 @@ namespace DALayer.RFQ
             return true;
         }
 
-       
+
 
         public class EmailSend
         {
@@ -4799,8 +5344,8 @@ namespace DALayer.RFQ
                 double? totalprice = 0;
                 //vscm.Database.Connection.Open();
                 var Remotedata = vscm.RemoteRFQItemsInfo_N.Where(x => x.RFQSplitItemId == id && x.DeleteFlag == false).FirstOrDefault();
-                var remotebomdata = vscm.RemoteRfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag==false).FirstOrDefault();
-                var bomdata = obj.RfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid&& x.DeleteFlag==false).FirstOrDefault();
+                var remotebomdata = vscm.RemoteRfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag == false).FirstOrDefault();
+                var bomdata = obj.RfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag == false).FirstOrDefault();
                 //if (Remotedata != null)
                 //{
 
@@ -4897,8 +5442,8 @@ namespace DALayer.RFQ
         public bool checkemail(Changepassword emailId)
         {
             bool exists = false;
-            RemoteVendorUserMaster emailidexists = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == emailId.emailid && li.Active==true).FirstOrDefault();
-            if(emailidexists!=null)
+            RemoteVendorUserMaster emailidexists = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == emailId.emailid && li.Active == true).FirstOrDefault();
+            if (emailidexists != null)
             {
                 exists = true;
             }
@@ -4911,14 +5456,14 @@ namespace DALayer.RFQ
 
         public bool sendLinkForForgetPassword(forgetpassword model)
         {
-           
+
             string token = Guid.NewGuid().ToString();
-           // DateTime expirydateandtime = System.DateTime.Now.AddHours(24);
+            // DateTime expirydateandtime = System.DateTime.Now.AddHours(24);
             forgetpassword passwordobj = new forgetpassword();
             passwordobj.emailid = model.emailid;
             passwordobj.Expirydatetime = System.DateTime.Now.AddMinutes(Convert.ToInt32(model.tokenduration));
             passwordobj.URLCreatedOn = System.DateTime.Now;
-            passwordobj.URL = model.baseURL + model.emailid+"/"+token;
+            passwordobj.URL = model.baseURL + model.emailid + "/" + token;
             var obj = new RemoteForgetPassword();
             obj.Token = token;
             obj.emailId = model.emailid;
@@ -4931,7 +5476,7 @@ namespace DALayer.RFQ
             EmailSend emailobj = new EmailSend();
             emailobj.Subject = "Reset password";
             // emailobj.Body = "Please click the  link to reset the password  " + obj.ResetURL;
-            emailobj.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear User,</p><p>Please use the following URL to  reset the password in Vendor Portal.</p><p style = 'font-weight:600;text-decoration:underline'> LINK </p><p id= 'linkid'>"+ obj.ResetURL+ "</p><p style='color:red;'> The above link will be active for 120 minutes from the time of receiving this email. </p><p style='margin-bottom:0px;'>Regards,</p><p> YIL CMM Team.</p></div></body></html>";
+            emailobj.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear User,</p><p>Please use the following URL to  reset the password in Vendor Portal.</p><p style = 'font-weight:600;text-decoration:underline'> LINK </p><p id= 'linkid'>" + obj.ResetURL + "</p><p style='color:red;'> The above link will be active for 120 minutes from the time of receiving this email. </p><p style='margin-bottom:0px;'>Regards,</p><p> YIL CMM Team.</p></div></body></html>";
             emailobj.ToEmailId = model.emailid;
             emailobj.FrmEmailId = model.fromemail;
 
@@ -4941,7 +5486,7 @@ namespace DALayer.RFQ
 
         public bool sendMailForgetPassword(forgetpassword model)
         {
-            
+
             EmailSend emailobj = new EmailSend();
             emailobj.Subject = "Password Reset Status";
             //emailobj.Body = "Reset password updated Successfully";
@@ -4957,15 +5502,15 @@ namespace DALayer.RFQ
             string status = "";
             if (model != null)
             {
-                RemoteForgetPassword tokenvalid = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId==model.emailid && li.TokenUsed==false).FirstOrDefault();
-                if(tokenvalid != null)
+                RemoteForgetPassword tokenvalid = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid && li.TokenUsed == false).FirstOrDefault();
+                if (tokenvalid != null)
                 {
-                    if(tokenvalid.ExpirtyDateAndTime >= System.DateTime.Now && tokenvalid.TokenUsed == false)
+                    if (tokenvalid.ExpirtyDateAndTime >= System.DateTime.Now && tokenvalid.TokenUsed == false)
                     {
-                        RemoteVendorUserMaster remoteresetpwd = vscm.RemoteVendorUserMasters.Where(li=>li.Vuserid==model.emailid).FirstOrDefault();
+                        RemoteVendorUserMaster remoteresetpwd = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == model.emailid).FirstOrDefault();
                         remoteresetpwd.pwd = model.ConfirmPassword;
                         vscm.SaveChanges();
-                        VendorUserMaster resetpwd = obj.VendorUserMasters.Where(li=>li.Vuserid==model.emailid).FirstOrDefault();
+                        VendorUserMaster resetpwd = obj.VendorUserMasters.Where(li => li.Vuserid == model.emailid).FirstOrDefault();
                         resetpwd.pwd = model.ConfirmPassword;
                         obj.SaveChanges();
                         tokenvalid.TokenUsed = true;
@@ -4973,7 +5518,7 @@ namespace DALayer.RFQ
                         status = "Updated Successfully";
                         sendMailForgetPassword(model);
                     }
-                    
+
                 }
             }
             return status;
@@ -4981,22 +5526,313 @@ namespace DALayer.RFQ
         public bool CheckLinkExpiryOrNot(forgetpassword model)
         {
             bool status = false;
-             
-                RemoteForgetPassword tokenvalidcheck = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid).FirstOrDefault();
-                if (tokenvalidcheck != null)
+
+            RemoteForgetPassword tokenvalidcheck = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid).FirstOrDefault();
+            if (tokenvalidcheck != null)
+            {
+                if (tokenvalidcheck.ExpirtyDateAndTime < System.DateTime.Now)
                 {
-                    if (tokenvalidcheck.ExpirtyDateAndTime < System.DateTime.Now)
-                    {
                     status = true;
-                    }
-                else {
+                }
+                else
+                {
                     status = false;
 
                 }
-                   
-                }
-            
+
+            }
+
             return status;
+        }
+
+
+
+       public int insertdata(RfqItemModel model)
+        {
+            int spiltitemid = 0;
+            double? totalprice = 0;
+            int RFQItemsId = 0;
+            var rfqremoteitem = vscm.RemoteRFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault(); 
+            rfqremoteitem.HSNCode = model.HSNCode;
+            rfqremoteitem.QuotationQty = model.QuotationQty;
+            rfqremoteitem.VendorModelNo = model.VendorModelNo;
+            rfqremoteitem.IGSTPercentage = model.IGSTPercentage;
+            rfqremoteitem.SGSTPercentage = model.SGSTPercentage;
+            rfqremoteitem.CGSTPercentage = model.CGSTPercentage;
+            rfqremoteitem.MfgPartNo = model.MfgPartNo;
+            rfqremoteitem.MfgModelNo = model.MfgModelNo;
+            rfqremoteitem.PFAmount = model.PFAmount;
+            rfqremoteitem.PFPercentage = model.PFPercentage;
+            rfqremoteitem.FreightAmount = model.FreightAmount;
+            rfqremoteitem.FreightPercentage = model.FreightPercentage;
+            rfqremoteitem.CustomDuty = model.CustomDuty;
+            rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+            //int rfqitemsid = rfqremoteitem.RFQItemsId;
+            vscm.SaveChanges();
+
+            //yscm update
+            var rfqitem = obj.RFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault(); 
+            rfqitem.HSNCode = model.HSNCode;
+            rfqitem.QuotationQty = model.QuotationQty;
+            rfqitem.VendorModelNo = model.VendorModelNo;
+            rfqitem.IGSTPercentage = model.IGSTPercentage;
+            rfqitem.SGSTPercentage = model.SGSTPercentage;
+            rfqitem.CGSTPercentage = model.CGSTPercentage;
+            rfqitem.MfgPartNo = model.MfgPartNo;
+            rfqitem.MfgModelNo = model.MfgModelNo;
+            rfqitem.PFAmount = model.PFAmount;
+            rfqitem.PFPercentage = model.PFPercentage;
+            rfqitem.FreightAmount = model.FreightAmount;
+            rfqitem.FreightPercentage = model.FreightPercentage;
+            rfqitem.CustomDuty = model.CustomDuty;
+            rfqitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+            //int rfqitemsid = rfqremoteitem.RFQItemsId;
+            obj.SaveChanges();
+            if (model.multipleitem == "yes")
+            {
+                foreach (var item in model.iteminfo)
+                {
+                    RFQItemsId = item.RFQItemsId;
+                    var info = new RemoteRfqVendorBOM();
+                    info.ItemDescription = item.ItemDescriptionForMultiple;
+                    info.ItemName = item.ItemNameForMultiple;
+                    info.RfqItemsId = item.RFQItemsId;
+                    info.HSNCode = model.HSNCode;
+                    info.QuotationQty = model.QuotationQty;
+                    info.VendorModelNo = model.VendorModelNo;
+                    info.IGSTPercentage = model.IGSTPercentage;
+                    info.SGSTPercentage = model.SGSTPercentage;
+                    info.CGSTPercentage = model.CGSTPercentage;
+                    info.MfgPartNo = model.MfgPartNo;
+                    info.MfgModelNo = model.MfgModelNo;
+                    info.PFPercentage = model.PFPercentage;
+                    info.PFAmount = model.PFAmount;
+                    info.PFPercentage = model.PFPercentage;
+                    info.FreightAmount = model.FreightAmount;
+                    info.CustomDuty = model.CustomDuty;
+                    //rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                    info.Qty = item.Quantity;
+                    info.UOM = item.UOM;
+                    info.UnitPrice = item.UnitPrice;
+                    info.DiscountPercentage = item.DiscountPercentage;
+                    info.Discount = item.Discount;
+                    info.CurrencyId = item.CurrencyID;
+                    info.CurrencyValue = item.CurrencyValue;
+                    info.Remarks = item.Remarks;
+                    info.DeliveryDate = item.DeliveryDate;
+                    info.ItemDescription = model.ItemDescription;
+                    info.DeleteFlag = false;
+                    vscm.RemoteRfqVendorBOMs.Add(info);
+                    vscm.SaveChanges();
+                    int bomid = info.RFQVendorbomItemId;
+
+                    //in yscm
+
+                    var infos = new RfqVendorBOM();
+                    infos.RFQVendorbomItemId = bomid;
+                    infos.ItemDescription = item.ItemDescriptionForMultiple;
+                    infos.ItemName = item.ItemNameForMultiple;
+                    infos.RfqItemsId = item.RFQItemsId;
+                    infos.HSNCode = model.HSNCode;
+                    infos.QuotationQty = model.QuotationQty;
+                    infos.VendorModelNo = model.VendorModelNo;
+                    infos.IGSTPercentage = model.IGSTPercentage;
+                    infos.SGSTPercentage = model.SGSTPercentage;
+                    infos.CGSTPercentage = model.CGSTPercentage;
+                    infos.MfgPartNo = model.MfgPartNo;
+                    infos.MfgModelNo = model.MfgModelNo;
+                    infos.PFPercentage = model.PFPercentage;
+                    infos.PFAmount = model.PFAmount;
+                    infos.PFPercentage = model.PFPercentage;
+                    infos.FreightAmount = model.FreightAmount;
+                    infos.CustomDuty = model.CustomDuty;
+                    //rfqremoteitem.taxInclusiveOfDiscount = model.taxInclusiveOfDiscount;
+                    infos.Qty = item.Quantity;
+                    infos.UOM = item.UOM;
+                    infos.UnitPrice = item.UnitPrice;
+                    infos.DiscountPercentage = item.DiscountPercentage;
+                    infos.Discount = item.Discount;
+                    infos.CurrencyId = item.CurrencyID;
+                    infos.CurrencyValue = item.CurrencyValue;
+                    infos.Remarks = item.Remarks;
+                    infos.DeliveryDate = item.DeliveryDate;
+                    infos.ItemDescription = model.ItemDescription;
+                    infos.DeleteFlag = false;
+                    obj.RfqVendorBOMs.Add(infos);
+                    obj.SaveChanges();
+
+
+                    List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == RFQItemsId && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
+
+                    foreach (var data1 in itemsforupdate)
+                    {
+                        double? subtotalprice = 0;
+                        subtotalprice = Convert.ToDouble(data1.Qty) * Convert.ToDouble(data1.UnitPrice);
+                        if (Convert.ToInt32(data1.Discount) != 0)
+                        {
+                            double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
+                            subtotalprice = Discount;
+                        }
+                        if (Convert.ToInt32(data1.DiscountPercentage) != 0)
+                        {
+                            double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage) / 100);
+                            subtotalprice = DiscountPercentage;
+                        }
+                        if (Convert.ToInt32(data1.FreightAmount) != 0)
+                        {
+                            double? FreightAmount = subtotalprice - Convert.ToDouble(data1.FreightAmount);
+                            subtotalprice = FreightAmount;
+                        }
+                        if (Convert.ToInt32(data1.FreightPercentage) != 0)
+                        {
+                            double? FreightPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
+                            subtotalprice = FreightPercentage;
+                        }
+                        if (Convert.ToInt32(data1.PFAmount) != 0)
+                        {
+                            double? PFAmount = subtotalprice - Convert.ToDouble(data1.PFAmount);
+                            subtotalprice = PFAmount;
+                        }
+                        if (Convert.ToInt32(data1.PFPercentage) != 0)
+                        {
+
+                            double? PFPercentage = (subtotalprice * Convert.ToDouble(data1.PFPercentage) / 100);
+                            subtotalprice += PFPercentage;
+                        }
+                        totalprice += subtotalprice;
+
+                    }
+                    RfqVendorBOM bompriceupdate = obj.RfqVendorBOMs.Where(li => li.RFQVendorbomItemId == bomid).FirstOrDefault();
+                    if (bompriceupdate != null)
+                    {
+                        bompriceupdate.UnitPrice = Convert.ToInt32(totalprice);
+                        obj.SaveChanges();
+                    }
+
+                    RemoteRFQItemsInfo_N itemsinfos = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == RFQItemsId).FirstOrDefault();
+                    if (itemsinfos != null)
+                    {
+                        itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
+                        vscm.SaveChanges();
+                    }
+                    else
+                    {
+                        var remoteinfo = new RemoteRFQItemsInfo_N();
+                        remoteinfo.RFQItemsId = item.RFQItemsId;
+                        remoteinfo.Qty = 1;//item.Quantity;
+                        remoteinfo.UOM = item.UOM;
+                        remoteinfo.UnitPrice = item.UnitPrice;
+                        remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                        remoteinfo.Discount = item.Discount;
+                        remoteinfo.CurrencyId = item.CurrencyID;
+                        remoteinfo.CurrencyValue = item.CurrencyValue;
+                        remoteinfo.Remarks = item.Remarks;
+                        remoteinfo.DeliveryDate = item.DeliveryDate;
+                        remoteinfo.SyncDate = System.DateTime.Now;
+
+                        vscm.RemoteRFQItemsInfo_N.Add(remoteinfo);
+                        vscm.SaveChanges();
+                        spiltitemid = remoteinfo.RFQSplitItemId;
+                    }
+
+                    RFQItemsInfo_N rfqinsertdata = obj.RFQItemsInfo_N.Where(li => li.RFQSplitItemId == spiltitemid).FirstOrDefault();
+                    if (itemsinfos != null)
+                    {
+                        itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
+                        vscm.SaveChanges();
+                    }
+                    else
+                    {
+                        var remoteinfo = new RFQItemsInfo_N();
+                        remoteinfo.RFQItemsId = item.RFQItemsId;
+                        remoteinfo.Qty = 1;//item.Quantity;
+                        remoteinfo.UOM = item.UOM;
+                        remoteinfo.UnitPrice = item.UnitPrice;
+                        remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                        remoteinfo.Discount = item.Discount;
+                        remoteinfo.CurrencyId = item.CurrencyID;
+                        remoteinfo.CurrencyValue = item.CurrencyValue;
+                        remoteinfo.Remarks = item.Remarks;
+                        remoteinfo.DeliveryDate = item.DeliveryDate;
+                        //remoteinfo.SyncDate = System.DateTime.Now;
+
+                        obj.RFQItemsInfo_N.Add(remoteinfo);
+                        obj.SaveChanges();
+                        //spiltitemid = remoteinfo.RFQSplitItemId;
+                    }
+                }
+            }
+            else if (model.multipleitem == "no")
+            {
+                foreach (var item in model.iteminfo)
+                {
+                    RemoteRFQItemsInfo_N itemsinfos = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == RFQItemsId).FirstOrDefault();
+                    if (itemsinfos != null)
+                    {
+                        itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
+                        vscm.SaveChanges();
+                    }
+                    else
+                    {
+                        var remoteinfo = new RemoteRFQItemsInfo_N();
+                        remoteinfo.RFQItemsId = item.RFQItemsId;
+                        remoteinfo.Qty = 1;//item.Quantity;
+                        remoteinfo.UOM = item.UOM;
+                        remoteinfo.UnitPrice = item.UnitPrice;
+                        remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                        remoteinfo.Discount = item.Discount;
+                        remoteinfo.CurrencyId = item.CurrencyID;
+                        remoteinfo.CurrencyValue = item.CurrencyValue;
+                        remoteinfo.Remarks = item.Remarks;
+                        remoteinfo.DeliveryDate = item.DeliveryDate;
+                        remoteinfo.SyncDate = System.DateTime.Now;
+
+                        vscm.RemoteRFQItemsInfo_N.Add(remoteinfo);
+                        vscm.SaveChanges();
+                        spiltitemid = remoteinfo.RFQSplitItemId;
+                    }
+
+                    RFQItemsInfo_N rfqinsertdata = obj.RFQItemsInfo_N.Where(li => li.RFQSplitItemId == spiltitemid).FirstOrDefault();
+                    if (itemsinfos != null)
+                    {
+                        itemsinfos.UnitPrice = Convert.ToDecimal(totalprice);
+                        vscm.SaveChanges();
+                    }
+                    else
+                    {
+                        var remoteinfo = new RFQItemsInfo_N();
+                        remoteinfo.RFQItemsId = item.RFQItemsId;
+                        remoteinfo.Qty = 1;//item.Quantity;
+                        remoteinfo.UOM = item.UOM;
+                        remoteinfo.UnitPrice = item.UnitPrice;
+                        remoteinfo.DiscountPercentage = item.DiscountPercentage;
+                        remoteinfo.Discount = item.Discount;
+                        remoteinfo.CurrencyId = item.CurrencyID;
+                        remoteinfo.CurrencyValue = item.CurrencyValue;
+                        remoteinfo.Remarks = item.Remarks;
+                        remoteinfo.DeliveryDate = item.DeliveryDate;
+                        //remoteinfo.SyncDate = System.DateTime.Now;
+
+                        obj.RFQItemsInfo_N.Add(remoteinfo);
+                        obj.SaveChanges();
+                        //spiltitemid = remoteinfo.RFQSplitItemId;
+                    }
+
+                }
+            }
+            return 1;
+            
+        }
+
+        public bool checkrfqitemexists(int rfqitemsid)
+        {
+            Boolean returndata = false;
+            RemoteRfqVendorBOM obj = vscm.RemoteRfqVendorBOMs.Where(x => x.RfqItemsId == rfqitemsid && x.DeleteFlag == false).FirstOrDefault();
+            if(obj!=null)
+            {
+                returndata = true;
+            }
+            return returndata;
         }
     }
 

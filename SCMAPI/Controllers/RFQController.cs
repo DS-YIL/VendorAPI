@@ -195,7 +195,7 @@ namespace SCMAPI.Controllers
                 {
                     //string url = "10.29.15.183:90/Api/mpr/uploadfile";
                     var postedFile = httpRequest.Files[i];
-                    filePath = ConfigurationManager.AppSettings["AttachedDocPath"] + "\\" + filename;
+                    filePath = ConfigurationManager.AppSettings["AttachedDocPath"] + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM")) + "\\" + "\\" + filename;
                     //  fileserverpath= ConfigurationManager.AppSettings["AttachedDocPathForServer"] + "\\" + filename;
                     string dbfilePath = filename + "\\" + postedFile.FileName;
                     if (!Directory.Exists(filePath))
@@ -228,7 +228,7 @@ namespace SCMAPI.Controllers
                         eachobj.RfqRevisionId = RFQRevId;
 
                     }
-                    eachobj.Path = dbfilePath;
+                    eachobj.Path = string.Format(DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + dbfilePath);
                     eachobj.IsDeleted = false;
                     obj.Add(eachobj);
 
@@ -602,7 +602,7 @@ namespace SCMAPI.Controllers
                 for (int i = 0; i <= httpRequest.Files.Count - 1; i++)
                 {
                     var postedFile = httpRequest.Files[i];
-                    filePath = ConfigurationManager.AppSettings["AttachedDocPathForVendorReg"] + "\\" + docid + "_" + vendorid;
+                    filePath = ConfigurationManager.AppSettings["c"] + "\\" + docid + "_" + vendorid;
                     string dbfilePath = docid + "_" + vendorid + "\\" + postedFile.FileName;
                     if (!Directory.Exists(filePath))
                         Directory.CreateDirectory(filePath);
@@ -668,16 +668,18 @@ namespace SCMAPI.Controllers
             var eachobj = new RFQDocument();
             string[] listofdata = { };
             string filename = model.PhysicalPath;
-            string[] parts = model.PhysicalPath.Split('_');
-            string lastWord = parts[0];
+            
+            //string lastWord = parts[0];
             string[] path = model.PhysicalPath.Split('\\');
+            string[] parts = path[2].Split('_');
             //listofdata = lastWord.Split(',');
-            eachobj.Path = ConfigurationManager.AppSettings["AttachedDocPath"] + "\\" + parts[0] + "_" + parts[1] + "\\" + model.PhysicalPath;
+            //eachobj.Path = ConfigurationManager.AppSettings["AttachedDocPath"] + "\\" + parts[0] + "_" + parts[1] + "\\" + model.PhysicalPath;
+            eachobj.Path = model.PhysicalPath;
             if (parts[0].Contains("Technical"))
             {
                 parts[0] = parts[0].Replace("Technical", "");
                 eachobj.DocumentType = 1;
-                eachobj.rfqItemsid = Convert.ToInt32(parts[1]);
+                eachobj.rfqItemsid = Convert.ToInt32(parts[0]);
             }
             else
             {
@@ -685,9 +687,9 @@ namespace SCMAPI.Controllers
             }
 
             eachobj.rfqRevisionId = Convert.ToInt32(parts[0]);
-            string[] uploadedby = parts[2].Split('\\');
-            eachobj.UploadedBy = uploadedby[0];
-            eachobj.DocumentName = model.PhysicalPath;
+            //string uploadedby = parts[2];
+            eachobj.UploadedBy = parts[2];
+            eachobj.DocumentName = path[3];//model.PhysicalPath;
 
             return Ok(this._rfqBusenessAcess.DeletefileAttachedforDocuments(eachobj));
         }
@@ -909,10 +911,11 @@ namespace SCMAPI.Controllers
         public IHttpActionResult finalsubmitfromVendor(int RFQRevisionId)
         {
             VSCMEntities vscm = new VSCMEntities();
+            YSCMEntities obj = new YSCMEntities();
             Boolean check = false;
-            check = this._rfqBusenessAcess.sendemailfromvendor(RFQRevisionId);
-            if (check == true)
-            {
+         
+            //if (check == true)
+            //{
 
                 RemoteRFQStatu statusobj = new RemoteRFQStatu();
                 statusobj.RfqRevisionId = RFQRevisionId;
@@ -921,12 +924,28 @@ namespace SCMAPI.Controllers
                 statusobj.updatedDate = System.DateTime.Now;
                 vscm.RemoteRFQStatus.Add(statusobj);
                 vscm.SaveChanges();
-            }
+            int rfqstatusid = statusobj.RfqStatusId;
+            RFQStatu statusobjs = new RFQStatu();
+            statusobjs.RfqStatusId = rfqstatusid;
+                statusobjs.RfqRevisionId = RFQRevisionId;
+                statusobjs.StatusId = 8;
+                statusobjs.DeleteFlag = false;
+                statusobjs.updatedDate = System.DateTime.Now;
+                obj.RFQStatus.Add(statusobjs);
+            
+                obj.SaveChanges();
+            check = this._rfqBusenessAcess.sendemailfromvendor(RFQRevisionId);
+            //  }
             return Json(check);
+        }
+        [HttpGet]
+        [Route("checkrfqitemsid")]
+        public IHttpActionResult checkrfqitemsid(int rfqitemsid)
+        {
+            return Ok(this._rfqBusenessAcess.checkrfqitemexists(rfqitemsid));
         }
 
 
-
-    }   
+        }   
 
 }

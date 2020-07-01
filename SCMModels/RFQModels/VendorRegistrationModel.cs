@@ -47,7 +47,7 @@ namespace SCMModels.RFQModels
         public int DocumentationTypeId { get; set; }
         public int statid { get; set; }
         public string fileattach1 { get; set; }
-        
+       
         
         // List<documentDetails> docDetailsList = new List<documentDetails>();
 

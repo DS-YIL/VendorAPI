@@ -515,6 +515,11 @@ namespace BALayer.RFQ
             return this._rfqDataAcess.CheckLinkExpiryOrNot(model);
         }
 
+        public bool checkrfqitemexists(int rfqitemsid)
+        {
+            return this._rfqDataAcess.checkrfqitemexists(rfqitemsid);
+        }
+
 
         //public List<RfqDocumentsModel> InsertDocumentTOYSCM(RfqDocumentsModel model)
         //{

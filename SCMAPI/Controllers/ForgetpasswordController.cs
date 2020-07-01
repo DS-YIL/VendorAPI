@@ -66,6 +66,52 @@ namespace SCMAPI.Controllers
             //test
             return Ok(this._rfqBusenessAcess.CheckLinkExpiryOrNot(model));
         }
-    
-}
+        [Route("UploadFile")]
+        [HttpPost]
+        public IHttpActionResult UploadFile()
+        {
+            var httpRequest = HttpContext.Current.Request;
+            var serverPath = ConfigurationManager.AppSettings["AttachedDocPath"];
+            string parsedFileName = "";
+            var revisionId = httpRequest.Files.AllKeys[0];
+            if (httpRequest.Files.Count > 0)
+            {
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    byte[] fileData = null;
+                    using (var binaryReader = new BinaryReader(postedFile.InputStream))
+                    {
+                        fileData = binaryReader.ReadBytes(postedFile.ContentLength);
+                    }
+
+
+
+                    GC.Collect();
+                    parsedFileName = string.Format(DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + revisionId + "\\" + ToValidFileName(postedFile.FileName));
+                    serverPath = serverPath + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM")) + "\\" + revisionId;
+                    var path = Path.Combine(serverPath, ToValidFileName(postedFile.FileName));
+                    if (!Directory.Exists(serverPath))
+                        Directory.CreateDirectory(serverPath);
+                    var memory = new MemoryStream();
+                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                    var updatedStream = new MemoryStream(fileData);
+                    updatedStream.Seek(0, SeekOrigin.Begin);
+                    updatedStream.CopyToAsync(fs).Wait();
+                    fs.Flush();
+                    GC.Collect();
+                }
+            }
+            return Ok(parsedFileName);
+
+
+
+        }
+        private static string ToValidFileName(string fileName)
+        {
+            fileName = fileName.ToLower().Replace(" ", "_").Replace("(", "_").Replace(")", "_").Replace("&", "_").Replace("*", "_").Replace("-", "_").Replace("+", "_");
+            return string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
+        }
+
+    }
 }

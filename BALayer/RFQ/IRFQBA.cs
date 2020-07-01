@@ -111,6 +111,7 @@ namespace BALayer.RFQ
         bool sendLinkForForgetPassword(forgetpassword email);
         string Resetpassword(forgetpassword model);
         bool CheckLinkExpiryOrNot(forgetpassword model);
+        bool checkrfqitemexists(int rfqitemsid);
     }
 
 }

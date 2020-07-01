@@ -20,5 +20,7 @@ namespace SCMAPI.Controllers
 
             return Redirect("http://vscm-1089815394.ap-south-1.elb.amazonaws.com/");
         }
+
+
     }
 }

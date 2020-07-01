@@ -14,6 +14,8 @@ namespace SCMModels.RFQModels
             iteminfo = new List<RfqItemInfoModel>();
             documents = new List<RfqDocumentsModel>();
         }
+        public string multipleitem { get; set; }
+        public string RFQVendorbomItemId { get; set; }
         public int RFQItemID { get; set; }
         public int RFQRevisionId { get; set; }
         public int? MRPItemsDetailsID { get; set; }
