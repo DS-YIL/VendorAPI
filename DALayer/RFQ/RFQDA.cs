@@ -4375,7 +4375,7 @@ namespace DALayer.RFQ
                 if ((obj.typeOfFilter == "other"))
                 {
                     data = new List<V_RFQList>();
-                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false).ToList();
+                    data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == true).ToList();
 
                 }
                 else if (obj.typeOfFilter == "true")
