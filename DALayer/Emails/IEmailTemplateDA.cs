@@ -8,6 +8,7 @@ namespace DALayer.Emails
 {
 	public interface IEmailTemplateDA
 	{
-		bool prepareEmailTemplate(string typeOfuser,int revisionId, string FrmEmailId, string ToEmailId, string Remarks);
+		bool sendmailtoRequestor(int RFQRevisionId);
+		bool sendMailtoBuyer(int VendorId);
 	}
 }

@@ -1,98 +1,145 @@
 ﻿using SCMModels.SCMModels;
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
+using SCMModels.RemoteModel;
+using DALayer.Common;
 
 namespace DALayer.Emails
 {
 	public class EmailTemplateDA : IEmailTemplateDA
 	{
-		public bool prepareEmailTemplate(string typeOfUser, int revisionId,string FrmEmailId, string ToEmailId,string Remarks)
+		private ErrorLog log = new ErrorLog();
+		public bool sendmailtoRequestor(int RFQRevisionId)
 		{
-
 			try
 			{
+				VSCMEntities yscmobj = new VSCMEntities();
+				RemoteRFQRevisions_N rfqrevisiondetails = yscmobj.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RemoteRFQRevisions_N>();
+				RemoteRFQMaster rfqmasterDetails = yscmobj.RemoteRFQMasters.Where(li => li.RfqMasterId == rfqrevisiondetails.rfqMasterId).FirstOrDefault<RemoteRFQMaster>();
+				var fromMail = ConfigurationManager.AppSettings["fromemail"];
+				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+				mpripaddress = mpripaddress + "SCM/MPRForm/" + rfqmasterDetails.MPRRevisionId + "";
+				var rfqipaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+				rfqipaddress = rfqipaddress + "SCM/VendorQuoteView/" + rfqrevisiondetails.rfqRevisionId + "";
 				using (var db = new YSCMEntities()) //ok
 				{
-					MPRRevisionDetail mprrevisionDetails = db.MPRRevisionDetails.Where(li => li.RevisionId == revisionId).FirstOrDefault<MPRRevisionDetail>();
-					var issueOfPurpose = mprrevisionDetails.IssuePurposeId == 1 ? "For Enquiry" : "For Issuing PO";
-					EmailSend emlSndngList = new EmailSend();				
-					if (typeOfUser == "")
-					{
-						emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel = 'stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' ></head><body><div class='container'><table border='1' class='table table-bordered table-sm'><tr><td><b>MPR Number</b></td><td>" + mprrevisionDetails.DocumentNo + "</td><td><b>Document Description</b></td><td>" + mprrevisionDetails.DocumentDescription + "</td><td><b>Purpose of Iussing MPR</b></td><td>" + issueOfPurpose + "</td></tr><tr><td><b>Department</b></td><td>" + mprrevisionDetails.DepartmentName + "</td><td><b>Project Manager</td></td><td>" + mprrevisionDetails.ProjectManagerName + "</td><td><b>Job Code</b></td><td>" + mprrevisionDetails.JobCode + "</td></tr><tr><td><b>Client Name</b></td><td>" + mprrevisionDetails.ClientName + "</td><td><b>Job Name</b></td><td>" + mprrevisionDetails.JobName + "</td><td><b>Buyer Group</b></td><td>" + mprrevisionDetails.BuyerGroupName + "</td></tr><tr><td><b>Checker Name</b></td><td>" + mprrevisionDetails.CheckedName + "</td><td><b>Checker Status</b></td><td>" + mprrevisionDetails.CheckStatus + "</td><td><b>Checker Remarks</b></td><td>" + mprrevisionDetails.CheckerRemarks + "</td></tr><tr><td><b>Approver Name</b></td><td>" + mprrevisionDetails.ApproverName + "</td><td><b>Approver Status</b></td><td>" + mprrevisionDetails.ApprovalStatus + "</td><td><b>Approver Remarks</b></td><td>" + mprrevisionDetails.ApproverRemarks + "</td></tr></table><br/><br/><span><b>Remarks : <b/>"+Remarks+"</span><br/><br/><b>Click here to redirect : </b>&nbsp<a href='http://10.29.15.165:99/'>http://10.29.15.165:99/</a></div></body></html>";
-						Employee frmEmail = db.Employees.Where(li => li.EmployeeNo == FrmEmailId).FirstOrDefault<Employee>();
-						emlSndngList.FrmEmailId = frmEmail.EMail;
-						emlSndngList.Subject = "Comments From " + frmEmail.Name;
-						emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == ToEmailId).FirstOrDefault<Employee>()).EMail;
-						this.sensEmail(emlSndngList);
-					}
-					else
-					{
-						emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel = 'stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' ></head><body><div class='container'><table border='1' class='table table-bordered table-sm'><tr><td><b>MPR Number</b></td><td>" + mprrevisionDetails.DocumentNo + "</td><td><b>Document Description</b></td><td>" + mprrevisionDetails.DocumentDescription + "</td><td><b>Purpose of Iussing MPR</b></td><td>" + issueOfPurpose + "</td></tr><tr><td><b>Department</b></td><td>" + mprrevisionDetails.DepartmentName + "</td><td><b>Project Manager</td></td><td>" + mprrevisionDetails.ProjectManagerName + "</td><td><b>Job Code</b></td><td>" + mprrevisionDetails.JobCode + "</td></tr><tr><td><b>Client Name</b></td><td>" + mprrevisionDetails.ClientName + "</td><td><b>Job Name</b></td><td>" + mprrevisionDetails.JobName + "</td><td><b>Buyer Group</b></td><td>" + mprrevisionDetails.BuyerGroupName + "</td></tr><tr><td><b>Checker Name</b></td><td>" + mprrevisionDetails.CheckedName + "</td><td><b>Checker Status</b></td><td>" + mprrevisionDetails.CheckStatus + "</td><td><b>Checker Remarks</b></td><td>" + mprrevisionDetails.CheckerRemarks + "</td></tr><tr><td><b>Approver Name</b></td><td>" + mprrevisionDetails.ApproverName + "</td><td><b>Approver Status</b></td><td>" + mprrevisionDetails.ApprovalStatus + "</td><td><b>Approver Remarks</b></td><td>" + mprrevisionDetails.ApproverRemarks + "</td></tr></table><br/><br/><b>Click here to redirect : </b>&nbsp<a href='http://10.29.15.165:99/'>http://10.29.15.165:99/</a></div></body></html>";
-						if (typeOfUser == "Requestor")
-						{
-							emlSndngList.FrmEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.PreparedBy).FirstOrDefault<Employee>()).EMail;
-							emlSndngList.Subject = "MPR Information: " + mprrevisionDetails.DocumentNo + " ; " + "Approver Status: " + mprrevisionDetails.ApprovalStatus;
-							emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.CheckedBy).FirstOrDefault<Employee>()).EMail;
-							this.sensEmail(emlSndngList);
-							emlSndngList.Subject = "MPR Information: " + mprrevisionDetails.DocumentNo + " ; " + "Checker Status: " + mprrevisionDetails.CheckStatus;
-							emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.ApprovedBy).FirstOrDefault<Employee>()).EMail;
-							this.sensEmail(emlSndngList);
-						}
-						if (typeOfUser == "Checker")
-						{
-							//emlSndngList.FrmEmailId = "Developer@in.yokogawa.com";
-							//emlSndngList.ToEmailId = "Developer@in.yokogawa.com";
-							emlSndngList.FrmEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.CheckedBy).FirstOrDefault<Employee>()).EMail;
-							emlSndngList.Subject = "MPR Information: " + mprrevisionDetails.DocumentNo + " ; " + "Checker Status: " + mprrevisionDetails.CheckStatus + " ; " + "Approver Status: " + mprrevisionDetails.ApprovalStatus;
-							emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.PreparedBy).FirstOrDefault<Employee>()).EMail;
-							this.sensEmail(emlSndngList);
-							emlSndngList.Subject = "MPR Information: " + mprrevisionDetails.DocumentNo + " ; " + "Checker Status: " + mprrevisionDetails.CheckStatus;
-							emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.ApprovedBy).FirstOrDefault<Employee>()).EMail;
-							this.sensEmail(emlSndngList);
-						}
-						if (typeOfUser == "Approver")
-						{
-							emlSndngList.FrmEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.ApprovedBy).FirstOrDefault<Employee>()).EMail;
-							emlSndngList.Subject = "MPR Information: " + mprrevisionDetails.DocumentNo + " ; " + "Checker Status: " + mprrevisionDetails.CheckStatus + " ; " + "Approver Status: " + mprrevisionDetails.ApprovalStatus;
-							emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.PreparedBy).FirstOrDefault<Employee>()).EMail;
-							this.sensEmail(emlSndngList);
-							emlSndngList.Subject = "MPR Information: " + mprrevisionDetails.DocumentNo + " ; " + "Approver Status: " + mprrevisionDetails.ApprovalStatus;
-							emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.CheckedBy).FirstOrDefault<Employee>()).EMail;
-							this.sensEmail(emlSndngList);
-						}
-					}
+					EmailSend emlSndngList = new EmailSend();
+					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Comments by Vendor</p></div><br/><div><b  style='color:#40bfbf;'>TO View MPR: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'>TO View RFQ: <a href='" + rfqipaddress + "'>" + rfqipaddress + "</a></b></body></html>";
+					Employee Email = db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>();
+					emlSndngList.Subject = "Communication From Vendor  on RFQNumber: " + rfqmasterDetails.RFQNo;// + mprrevisionDetail.RemoteRFQMaster.RFQNo;
+					emlSndngList.FrmEmailId = fromMail;
+					var toEMail = Convert.ToString(rfqrevisiondetails.CreatedBy);
+					emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == toEMail).FirstOrDefault<Employee>()).EMail;
+					emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
+
+					this.sendEmail(emlSndngList);
 
 				}
 			}
 			catch (Exception ex)
 			{
-				throw ex;
+				log.ErrorMessage("EmailTemplate", "sendmailtoRequestor", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return true;
+		}
+		public bool sendMailtoBuyer(int VendorId)
+		{
+			try
+			{
+				using (var db = new YSCMEntities()) //ok
+				{
+					var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+					mpripaddress = mpripaddress + "SCM/VendorRegInitiate/" + VendorId + "";
+					var fromMail = ConfigurationManager.AppSettings["fromemail"];
+					VendorRegApprovalProcess vendorProcessDetails = db.VendorRegApprovalProcesses.Where(li => li.Vendorid == VendorId).FirstOrDefault();
+					EmailSend emlSndngList = new EmailSend();
+					emlSndngList.Subject = "Vendor Registration response";
+					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Comments by Vendor</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
+					emlSndngList.FrmEmailId = fromMail;
+					emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == vendorProcessDetails.IntiatedBy).FirstOrDefault<Employee>()).EMail;
+					this.sendEmail(emlSndngList);
 
+				}
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("EmailTemplate", "sendMailtoBuyer", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
+		}
+		public bool sendEmail(EmailSend emlSndngList)
+		{
+			bool validEmail = IsValidEmail(emlSndngList.ToEmailId);
+			if (!string.IsNullOrEmpty(emlSndngList.ToEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId) && validEmail)
+			{
+				var BCC = ConfigurationManager.AppSettings["BCC"];
+				var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
+				MailMessage mailMessage = new MailMessage();
+				mailMessage.From = new MailAddress(emlSndngList.FrmEmailId); //From Email Id
+				string[] ToMuliId = emlSndngList.ToEmailId.Split(',');
+				foreach (string ToEMailId in ToMuliId)
+				{
+					mailMessage.To.Add(new MailAddress(ToEMailId)); //adding multiple TO Email Id
+				}
+				SmtpClient client = new SmtpClient();
+				if (!string.IsNullOrEmpty(emlSndngList.Subject))
+					mailMessage.Subject = emlSndngList.Subject;
+
+				if (!string.IsNullOrEmpty(emlSndngList.CC))
+				{
+					string[] CCId = emlSndngList.CC.Split(',');
+
+					foreach (string CCEmail in CCId)
+					{
+						mailMessage.CC.Add(new MailAddress(CCEmail)); //Adding Multiple CC email Id
+					}
+				}
+
+				if (!string.IsNullOrEmpty(emlSndngList.BCC))
+				{
+					string[] bccid = emlSndngList.BCC.Split(',');
+
+
+					foreach (string bccEmailId in bccid)
+					{
+						mailMessage.Bcc.Add(new MailAddress(bccEmailId)); //Adding Multiple BCC email Id
+					}
+				}
+
+				if (!string.IsNullOrEmpty(BCC))
+					mailMessage.Bcc.Add(new MailAddress(BCC));
+				mailMessage.Body = emlSndngList.Body;
+				mailMessage.IsBodyHtml = true;
+				mailMessage.BodyEncoding = Encoding.UTF8;
+				SmtpClient mailClient = new SmtpClient(SMTPServer, 25);
+				//SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
+				//mailClient.EnableSsl = true;
+				mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+				mailClient.Send(mailMessage);
+			}
+			return true;
 		}
 
-		public bool sensEmail(EmailSend emlSndngList)
+		/*Name of Function : <<IsValidEmail>>  Author :<<Prasanna>>  
+		  Date of Creation <<07-08-2020>>
+		  Purpose : <<validate mail>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		bool IsValidEmail(string email)
 		{
-			MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
-			SmtpClient client = new SmtpClient();
-			if (!string.IsNullOrEmpty(emlSndngList.Subject))
-				mailMessage.Subject = emlSndngList.Subject;
-			if (!string.IsNullOrEmpty(emlSndngList.CC))
-				mailMessage.CC.Add(emlSndngList.CC);
-			mailMessage.Body = emlSndngList.Body;
-			mailMessage.IsBodyHtml = true;
-			mailMessage.BodyEncoding = Encoding.UTF8;
-			SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
-			mailClient.EnableSsl = true;
-			//mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-			mailClient.Send(mailMessage);
-			return true;
+			try
+			{
+				var addr = new System.Net.Mail.MailAddress(email);
+				return addr.Address == email;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 	}
 
@@ -101,6 +148,7 @@ namespace DALayer.Emails
 		public string FrmEmailId { get; set; }
 		public string ToEmailId { get; set; }
 		public string CC { get; set; }
+		public string BCC { get; set; }
 		public string Subject { get; set; }
 		public string Body { get; set; }
 	}

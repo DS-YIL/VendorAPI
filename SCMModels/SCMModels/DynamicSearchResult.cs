@@ -55,11 +55,11 @@ namespace SCMModels
         public string VendorId { get; set; }
         public string DocumentNo { get; set; }
     }
-    public class DataModel
-    {
-        public List<RFQQuoteView> RFQQuoteViewList { get; set; }
-        public List<YILTermsandCondition> TermsList { get; set; }
-    }
+    //public class DataModel
+    //{
+    //    public List<RFQQuoteView> RFQQuoteViewList { get; set; }
+    //    public List<YILTermsandCondition> TermsList { get; set; }
+    //}
     public class EmployeeModel
     {
         public string EmployeeNo { get; set; }

@@ -12,9 +12,9 @@ using DALayer.Login;
 using BALayer;
 using DALayer.MPR;
 using BALayer.MPR;
-using DALayer.Emails;
 using DALayer.RFQ;
 using BALayer.RFQ;
+using DALayer.Emails;
 
 namespace SCMAPI
 {
@@ -31,13 +31,11 @@ namespace SCMAPI
 			//BundleConfig.RegisterBundles(BundleTable.Bundles);
 			var container = new Container();
             container.Register<ILoginBA, LoginBA>();
-            container.Register<ILoginDA, LoginDA>();
-            container.Register<IMPRBA, MPRBA>();
-			container.Register<IMPRDA, MPRDA>();
+            container.Register<ILoginDA, LoginDA>();       
 			container.Register<IRFQBA, RFQBA>();
 			container.Register<IRFQDA, RFQDA>();
 			container.Register<IEmailTemplateDA, EmailTemplateDA>();
-            container.Register<IConfigAccessInterfaceBA, ConfigAccessRepoBA>();
+			container.Register<IConfigAccessInterfaceBA, ConfigAccessRepoBA>();
             container.Register<IConfigAccessInterfaceDA, ConfigAccessRepoDA>();
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
 		}

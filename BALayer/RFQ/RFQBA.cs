@@ -20,47 +20,15 @@ namespace BALayer.RFQ
         {
             this._rfqDataAcess = RFQDA;
         }
-        public List<RFQQuoteView> getRFQItems(int RevisionId)
-        {
-            return this._rfqDataAcess.getRFQItems(RevisionId);
-        }
-        public bool updateVendorQuotes(List<RFQQuoteView> RFQQuoteViewList, List<YILTermsandCondition> termsList)
-        {
-            return this._rfqDataAcess.updateVendorQuotes(RFQQuoteViewList, termsList);
-
-        }
-        public DataTable getRFQCompareItems(int RevisionId)
-        {
-            return this._rfqDataAcess.getRFQCompareItems(RevisionId);
-
-        }
-        public bool rfqStatusUpdate(List<RFQQuoteView> vendorList)
-        {
-            return this._rfqDataAcess.rfqStatusUpdate(vendorList);
-
-        }
+      
 
         ///rfqmodule
-        public statuscheckmodel CommunicationAdd(RfqCommunicationModel model)
-        {
-            return _rfqDataAcess.CommunicationAdd(model);
-        }
-
-        public async Task<statuscheckmodel> CreateRfQ(RfqRevisionModel model)
-        {
-            return await _rfqDataAcess.CreateRfQ(model);
-        }
-
+     
+       
         public statuscheckmodel DeleteBulkItemsByItemId(List<int> id)
         {
             return _rfqDataAcess.DeleteBulkItemsByItemId(id);
         }
-
-        public statuscheckmodel DeleteRfqById(int rfqmasterid)
-        {
-            return _rfqDataAcess.DeleteRfqById(rfqmasterid);
-        }
-
         public statuscheckmodel DeleteRfqItemById(int id)
         {
             return _rfqDataAcess.DeleteRfqItemById(id);
@@ -70,21 +38,6 @@ namespace BALayer.RFQ
         {
             return _rfqDataAcess.DeleteRfqRevisionbyId(id);
         }
-
-        public async Task<List<RfqRevisionModel>> GetAllrevisionRFQs()
-        {
-            return await _rfqDataAcess.GetAllrevisionRFQs();
-        }
-
-        public async Task<List<RFQMasterModel>> getallrfqlist()
-        {
-            return await _rfqDataAcess.getallrfqlist();
-        }
-
-        //public async Task<List<RFQRevision>> GetAllRFQs()
-        //{
-        //    return await _rfqdata.GetAllRFQs();
-        //}
 
         public List<VendormasterModel> GetAllvendorList()
         {
@@ -99,11 +52,6 @@ namespace BALayer.RFQ
         public async Task<List<RfqItemModel>> GetItemsByRevisionId(int revisionid)
         {
             return await _rfqDataAcess.GetItemsByRevisionId(revisionid);
-        }
-
-        public async Task<RFQMasterModel> GetRFQById(int masterID)
-        {
-            return await _rfqDataAcess.GetRFQById(masterID);
         }
 
         public Task<RfqRevisionModel> getrfqrevisionbyid(int id)
@@ -144,26 +92,10 @@ namespace BALayer.RFQ
             return await _rfqDataAcess.UpdateSingleRfqItem(model);
         }
 
-        public async Task<statuscheckmodel> CreateNewRfq(RFQMasterModel model)
-        {
-            return await _rfqDataAcess.CreateNewRfq(model);
-        }
-
         public async Task<RemoteRFQRevisions_N> GetRfqDetailsById(int revisionId)
         {
             return await _rfqDataAcess.GetRfqDetailsById(revisionId);
         }
-
-        public async Task<VendormasterModel> GetvendorById(int id)
-        {
-            return await _rfqDataAcess.GetvendorById(id);
-        }
-
-        public async Task<statuscheckmodel> InsertVendorterms(VendorRfqtermModel vendor)
-        {
-            return await _rfqDataAcess.InsertVendorterms(vendor);
-        }
-
         public List<RfqItemModel> InsertRfqItemInfo(RfqItemModel model)
         {
             return  _rfqDataAcess.InsertRfqItemInfo(model);
@@ -282,10 +214,7 @@ namespace BALayer.RFQ
         {
             return await _rfqDataAcess.GetAllMPRBuyerGroups();
         }
-         public async Task<List<MPRApproversViewModel>> GetAllMPRApprovers()
-        {
-            return await _rfqDataAcess.GetAllMPRApprovers();
-        }
+       
         public async Task<statuscheckmodel> InsertMprBuyerGroups(MPRBuyerGroupModel model)
         {
             return await _rfqDataAcess.InsertMprBuyerGroups(model);
@@ -377,11 +306,7 @@ namespace BALayer.RFQ
         {
             return await _rfqDataAcess.UpdateRFQTerms(model);
         }
-       public List<RFQListView> getRFQList(rfqFilterParams Rfqfilterparams)
-        {
-            return  _rfqDataAcess.getRFQList(Rfqfilterparams);
-        }
-
+      
         public List<VendorRegistrationModel> InsertVendordata(VendorRegistrationModel obj)
         {
             return _rfqDataAcess.InsertVendordata(obj);
@@ -405,11 +330,11 @@ namespace BALayer.RFQ
             //throw new NotImplementedException();
         }
 
-        public List<documentDetails> InsertDocuments(List<documentDetails> obj)
+        public List<RemoteVendorRegisterDocumentDetail> InsertDocuments(List<documentDetails> obj)
         {
             return _rfqDataAcess.InsertDocuments(obj);
         }
-       public  List<VendorRegistrationModel> SaveVendorDetails(VendorRegistrationModel model)
+       public RemoteVendorRegisterMaster SaveVendorDetails(VendorRegistrationModel model)
         {
             return _rfqDataAcess.SaveVendorDetails(model);
         }

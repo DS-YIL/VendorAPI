@@ -52,7 +52,8 @@ namespace SCMModels.RFQModels
         public List<RfqDocumentsModel> documents { get; set; }
         public string MfgPartNo { get; set; }
         public string MfgModelNo { get; set; }
-        public int RFQSplitItemId { get; set; }
+		public string ManufacturerName { get; set; }
+		public int RFQSplitItemId { get; set; }
         public string errormsg { get; set; }
         public List<RFQTerms> rfqterms { get; set; }
         

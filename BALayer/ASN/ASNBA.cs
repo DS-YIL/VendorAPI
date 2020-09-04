@@ -51,17 +51,14 @@ namespace BALayer.ASN
         {
             return _asnDataAcess.InsertDocuments_Invoice(model);
         }
-            public Task<statuscheckmodel> CreateInvoice(InvoiceModel invoiceModel )
+            public Task<InvoiceDetail> UpdateInvoice(InvoiceDetail invoiceModel )
         {
         
-            return _asnDataAcess.CreateInvoice(invoiceModel);
+            return _asnDataAcess.UpdateInvoice(invoiceModel);
 
         }
 
-        public Task<statuscheckmodel> EditInvoice(InvoiceModel invoiceModel)
-        {
-            return _asnDataAcess.EditInvoice(invoiceModel);
-        }
+      
 
         public InvoiceModel GetInvoiceDetails(string invoiceNo)
         {

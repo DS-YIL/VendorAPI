@@ -71,8 +71,8 @@ namespace SCMAPI.Controllers
         public IHttpActionResult UploadFile()
         {
             var httpRequest = HttpContext.Current.Request;
-            var serverPath = ConfigurationManager.AppSettings["AttachedDocPath"];
-            string parsedFileName = "";
+			var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+			string parsedFileName = "";
             var revisionId = httpRequest.Files.AllKeys[0];
             if (httpRequest.Files.Count > 0)
             {
@@ -107,7 +107,54 @@ namespace SCMAPI.Controllers
 
 
         }
-        private static string ToValidFileName(string fileName)
+
+		[Route("UploadVendorRegFile")]
+		[HttpPost]
+		public IHttpActionResult UploadVendorRegFile()
+		{
+			var filePath = "";
+			string dbfilePath = "";
+			List<RemoteVendorRegisterDocumentDetail> listobj = new List<RemoteVendorRegisterDocumentDetail>();
+			var httpRequest = HttpContext.Current.Request;
+			var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+			if (httpRequest.Files.Count > 0)
+			{
+				string filename = string.Empty;
+				string[] listdata;
+				string VUniqueId, docid, vendorid, docType;
+				foreach (string file in httpRequest.Files)
+				{
+					filename = file;
+					break;
+				}
+				listdata = filename.Split('_');
+				VUniqueId = listdata[0];
+				vendorid = listdata[1];
+				docid = listdata[2];
+				docType = listdata[3];
+				for (int i = 0; i <= httpRequest.Files.Count - 1; i++)
+				{
+					var postedFile = httpRequest.Files[i];
+					filePath = serverPath + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + VUniqueId + "_" + vendorid + "_" + docid + "_" + docType);
+					dbfilePath = string.Format(DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + VUniqueId + "_" + vendorid + "_" + docid + "_" + docType + "\\" + ToValidFileName(postedFile.FileName));
+					if (!Directory.Exists(filePath))
+						Directory.CreateDirectory(filePath);
+					filePath = Path.Combine(filePath, ToValidFileName(postedFile.FileName));
+					postedFile.SaveAs(filePath);
+					//List<documentDetails> obj = new List<documentDetails>();
+					//documentDetails eachobj = new documentDetails();
+					//eachobj.DocumentationTypeId = Convert.ToInt32(docid);
+					//eachobj.DocumentName = postedFile.FileName;
+					//eachobj.PhysicalPath = dbfilePath;
+					//eachobj.VendorId = Convert.ToInt32(vendorid);
+					//obj.Add(eachobj);
+					//listobj = _rfqBusenessAcess.InsertDocuments(obj);
+
+				}
+			}
+			return Ok(dbfilePath);
+		}
+		private static string ToValidFileName(string fileName)
         {
             fileName = fileName.ToLower().Replace(" ", "_").Replace("(", "_").Replace(")", "_").Replace("&", "_").Replace("*", "_").Replace("-", "_").Replace("+", "_");
             return string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
