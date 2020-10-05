@@ -1,4 +1,6 @@
 ﻿using BALayer.RFQ;
+using DALayer.Common;
+using Newtonsoft.Json;
 using SCMModels;
 using SCMModels.MPRMasterModels;
 using SCMModels.RemoteModel;
@@ -13,6 +15,9 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,6 +31,7 @@ namespace SCMAPI.Controllers
 	public class RFQController : ApiController
 	{
 		private readonly IRFQBA _rfqBusenessAcess;
+		private ErrorLog log = new ErrorLog();
 		public RFQController(IRFQBA rfqBA)
 		{
 			this._rfqBusenessAcess = rfqBA;
@@ -106,7 +112,7 @@ namespace SCMAPI.Controllers
 			{
 				string filename = string.Empty;
 				string[] listdata;
-				string RFQRevId, RFQItemId, updatedBy, updatedRevisionId;
+				string RFQRevId, RFQItemId, updatedBy, updatedRevisionId, pageType;
 				foreach (string file in httpRequest.Files)
 				{
 					filename = file;
@@ -117,14 +123,17 @@ namespace SCMAPI.Controllers
 				RFQRevId = listdata[0];
 				RFQItemId = listdata[1];
 				updatedBy = listdata[2];
-
+				pageType = listdata[3];
 				for (int i = 0; i <= httpRequest.Files.Count - 1; i++)
 				{
 					//string url = "10.29.15.183:90/Api/mpr/uploadfile";
 					var postedFile = httpRequest.Files[i];
-					filePath = HttpContext.Current.Server.MapPath("~/VSCMDocs") + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM")) + "\\" + "\\" + ToValidFileName(filename);
+					//var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+					var serverPath = ConfigurationManager.AppSettings["AttachedDocPath"];
+					filePath = serverPath + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM")) + "\\" + RFQRevId + "_" + RFQItemId + "_" + updatedBy + "_" + pageType;
+					//filePath = HttpContext.Current.Server.MapPath("~/VSCMDocs") + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM")) + "\\" + RFQRevId + "_" + RFQItemId + "_" + updatedBy + "_" + pageType;
 					//  fileserverpath= ConfigurationManager.AppSettings["AttachedDocPathForServer"] + "\\" + filename;
-					string dbfilePath = filename + "\\" + postedFile.FileName;
+					string dbfilePath = filename + "\\" + ToValidFileName(postedFile.FileName);
 					if (!Directory.Exists(filePath))
 						Directory.CreateDirectory(filePath);
 					filePath = Path.Combine(filePath, ToValidFileName(postedFile.FileName));
@@ -144,7 +153,7 @@ namespace SCMAPI.Controllers
 					eachobj.UploadedDate = System.DateTime.Now;
 					if (RFQRevId.Contains("Technical"))
 					{
-						eachobj.DocumentType = 1;
+						eachobj.DocumentType = 6;
 						eachobj.RfqItemsId = Convert.ToInt32(RFQItemId);
 						updatedRevisionId = RFQRevId.Replace("Technical", "");
 						eachobj.RfqRevisionId = RFQRevId;
@@ -166,6 +175,7 @@ namespace SCMAPI.Controllers
 				}
 
 			}
+			uploadfileToScm(httpRequest, "InsertVscmVendorQuoteDocument");
 			return Json(listobj);
 		}
 
@@ -461,45 +471,56 @@ namespace SCMAPI.Controllers
 		[HttpPost]
 		public IHttpActionResult UploadFile()
 		{
+
 			var filePath = "";
 			string dbfilePath = "";
-			List<RemoteVendorRegisterDocumentDetail> listobj = new List<RemoteVendorRegisterDocumentDetail>();
-			var httpRequest = HttpContext.Current.Request;
-			var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
-			if (httpRequest.Files.Count > 0)
+			try
 			{
-				string filename = string.Empty;
-				string[] listdata;
-				string VUniqueId, docid, vendorid, docType;
-				foreach (string file in httpRequest.Files)
+				List<RemoteVendorRegisterDocumentDetail> listobj = new List<RemoteVendorRegisterDocumentDetail>();
+				var httpRequest = HttpContext.Current.Request;
+				//var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+				var serverPath = ConfigurationManager.AppSettings["AttachedDocPath"];
+				if (httpRequest.Files.Count > 0)
 				{
-					filename = file;
-					break;
-				}
-				listdata = filename.Split('_');
-				VUniqueId = listdata[0];
-				vendorid = listdata[1];
-				docid = listdata[2];
-				docType = listdata[3];
-				for (int i = 0; i <= httpRequest.Files.Count - 1; i++)
-				{
-					var postedFile = httpRequest.Files[i];
-					filePath = serverPath + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + VUniqueId + "_" + vendorid + "_" + docid + "_" + docType);
-					dbfilePath = string.Format(DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + VUniqueId + "_" + vendorid + "_" + docid + "_" + docType + "\\" + ToValidFileName(postedFile.FileName));
-					if (!Directory.Exists(filePath))
-						Directory.CreateDirectory(filePath);
-					filePath = Path.Combine(filePath, ToValidFileName(postedFile.FileName));
-					postedFile.SaveAs(filePath);
-					//List<documentDetails> obj = new List<documentDetails>();
-					//documentDetails eachobj = new documentDetails();
-					//eachobj.DocumentationTypeId = Convert.ToInt32(docid);
-					//eachobj.DocumentName = postedFile.FileName;
-					//eachobj.PhysicalPath = dbfilePath;
-					//eachobj.VendorId = Convert.ToInt32(vendorid);
-					//obj.Add(eachobj);
-					//listobj = _rfqBusenessAcess.InsertDocuments(obj);
+					string filename = string.Empty;
+					string[] listdata;
+					string VUniqueId, docid, vendorid, docType;
+					foreach (string file in httpRequest.Files)
+					{
+						filename = file;
+						break;
+					}
+					listdata = filename.Split('_');
+					VUniqueId = listdata[0];
+					vendorid = listdata[1];
+					docid = listdata[2];
+					docType = listdata[3];
+					for (int i = 0; i <= httpRequest.Files.Count - 1; i++)
+					{
+						var postedFile = httpRequest.Files[i];
+						filePath = serverPath + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + VUniqueId + "_" + vendorid + "_" + docid + "_" + docType);
+						dbfilePath = string.Format(DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + VUniqueId + "_" + vendorid + "_" + docid + "_" + docType + "\\" + ToValidFileName(postedFile.FileName));
+						if (!Directory.Exists(filePath))
+							Directory.CreateDirectory(filePath);
+						filePath = Path.Combine(filePath, ToValidFileName(postedFile.FileName));
+						postedFile.SaveAs(filePath);
+						//List<documentDetails> obj = new List<documentDetails>();
+						//documentDetails eachobj = new documentDetails();
+						//eachobj.DocumentationTypeId = Convert.ToInt32(docid);
+						//eachobj.DocumentName = postedFile.FileName;
+						//eachobj.PhysicalPath = dbfilePath;
+						//eachobj.VendorId = Convert.ToInt32(vendorid);
+						//obj.Add(eachobj);
+						//listobj = _rfqBusenessAcess.InsertDocuments(obj);
 
+					}
 				}
+
+				uploadfileToScm(httpRequest, "UploadVscmFile");
+			}
+			catch (Exception e)
+			{
+				log.ErrorMessage("VendorRFQController", "UploadFile", e.Message.ToString());
 			}
 			return Ok(dbfilePath);
 		}
@@ -834,6 +855,49 @@ namespace SCMAPI.Controllers
 			return Ok(this._rfqBusenessAcess.checkrfqitemexists(rfqitemsid));
 		}
 
+		public bool uploadfileToScm(HttpRequest request, string method)
+		{
+			//http://10.29.15.183:90/Api/mpr/UploadVscmFile/
+			string serviceUrl = ConfigurationManager.AppSettings["SCMDocUploadPath"];
+			//log.ErrorMessage("VendorRFQController", "serviceurl called", serviceUrl);
+			serviceUrl = serviceUrl + method;
+			bool status = false;
+			byte[] fileArray = null;
+			//var re = request.Files.AllKeys[0];
+			string fileName = request.Files[0].FileName;
+			using (var binaryReader = new BinaryReader(request.Files[0].InputStream))
+			{
+				fileArray = binaryReader.ReadBytes(request.Files[0].ContentLength);
+			}
+			try
+			{
+				using (var client = new HttpClient())
+				{
+					//client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+					//client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+					using (var content = new MultipartFormDataContent())
+					{
+						var fileContent = new ByteArrayContent(fileArray);//(System.IO.File.ReadAllBytes(fileName));
+						fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+						{
+							FileName = fileName
+						};
+						content.Add(fileContent);
+						//log.ErrorMessage("VendorRFQController", "postmethod before called", serviceUrl);
+						//ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+						var result = client.PostAsync(serviceUrl, content).Result;
+						//log.ErrorMessage("VendorRFQController", "postmethod After  called", serviceUrl);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				log.ErrorMessage("VendorRFQController", "uploadfileToScm", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+				//Log the exception
+			}
+			return status;
+		}
 
 	}
 

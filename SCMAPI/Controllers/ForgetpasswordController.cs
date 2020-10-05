@@ -116,7 +116,8 @@ namespace SCMAPI.Controllers
 			string dbfilePath = "";
 			List<RemoteVendorRegisterDocumentDetail> listobj = new List<RemoteVendorRegisterDocumentDetail>();
 			var httpRequest = HttpContext.Current.Request;
-			var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+			//var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+			var serverPath = ConfigurationManager.AppSettings["AttachedDocPath"];
 			if (httpRequest.Files.Count > 0)
 			{
 				string filename = string.Empty;

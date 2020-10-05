@@ -6,6 +6,7 @@ using SCMModels.RFQModels;
 using SCMModels.SCMModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
@@ -4116,7 +4117,7 @@ namespace DALayer.RFQ
 					remotedataforvendorcommyscm.RfqCCid = rfqccid;
 					obj.RFQCommunications.Add(remotedataforvendorcommyscm);
 					obj.SaveChanges();
-					emailTemplateDA.sendmailtoRequestor(model.RfqRevisionId);
+					emailTemplateDA.sendCommunicationmailtoRequestor(model.RfqRevisionId, model.Remarks);
 					msg = "OK";
 
 
@@ -4312,27 +4313,8 @@ namespace DALayer.RFQ
 		{
 			try
 			{
-				VSCMEntities yscmobj = new VSCMEntities();
-				RemoteRFQRevisions_N mprrevisionDetail = yscmobj.RemoteRFQRevisions_N.Include(li => li.RemoteRFQMaster).Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RemoteRFQRevisions_N>();
-				using (var db = new YSCMEntities()) //ok
-				{
 
-					RFQRevisions_N mprrevisionDetails = db.RFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RFQRevisions_N>();
-					//var issueOfPurpose = mprrevisionDetail.IssuePurposeId == 1 ? "For Enquiry" : "For Issuing PO";
-					EmailSend emlSndngList = new EmailSend();
-
-					emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear,</p><p>RFQNO:" + mprrevisionDetail.RemoteRFQMaster.RFQNo + "</p><p style = 'margin-bottom:0px;' > Regards,</p><p> Vendor Team.</p></div></body></html>";
-					// emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel = 'stylesheet' href = 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' ></head><body><div class='container'><table border='1' class='table table-bordered table-sm'><tr><td><b>MPR Number</b></td><td>" +"<b>Click here to redirect : </b>&nbsp<a href='http://10.29.15.165:99/'>http://10.29.15.165:99/</a></div></body></html>";
-					Employee Email = db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.BuyergroupEmail).FirstOrDefault<Employee>();
-					emlSndngList.Subject = "Communication From Vendor  on RFQNumber: " + mprrevisionDetail.RemoteRFQMaster.RFQNo;// + mprrevisionDetail.RemoteRFQMaster.RFQNo;
-					emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == mprrevisionDetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
-					emlSndngList.FrmEmailId = "yilinfo@in.yokogawa.com";
-					//emlSndngList.ToEmailId = "shashikala.k@in.yokogawa.com";
-					this.sendEmail(emlSndngList);
-
-
-
-				}
+				this.emailTemplateDA.sendQuotemailtoRequestor(RFQRevisionId);
 			}
 			catch (Exception ex)
 			{
@@ -4342,7 +4324,8 @@ namespace DALayer.RFQ
 		}
 		public bool sendEmail(EmailSend emlSndngList)
 		{
-			emlSndngList.BCC = "shashikala.k@in.yokogawa.com";
+			emlSndngList.BCC = ConfigurationManager.AppSettings["BCC"];
+			var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
 			// string smtp= ConfigurationManager.AppSettings["AttachedDocPath"];
 			MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
 			SmtpClient client = new SmtpClient();
@@ -4356,7 +4339,7 @@ namespace DALayer.RFQ
 			mailMessage.IsBodyHtml = true;
 			mailMessage.BodyEncoding = Encoding.UTF8;
 			//SmtpClient mailClient = new SmtpClient("localhost", 25);
-			SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
+			SmtpClient mailClient = new SmtpClient(SMTPServer, 25);
 			//mailClient.EnableSsl = false;
 			mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 			mailClient.Send(mailMessage);

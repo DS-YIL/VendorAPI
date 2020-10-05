@@ -20,7 +20,7 @@ namespace SCMModels.RFQModels
         public int RfqRevisionId { get; set; }
         public int RfqMasterId { get; set; }
         public int RfqRevisionNo { get; set; }
-        public int CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime RfqValidDate { get; set; }
         public string PackingForwading { get; set; }

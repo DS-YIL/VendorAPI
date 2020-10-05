@@ -8,7 +8,8 @@ namespace DALayer.Emails
 {
 	public interface IEmailTemplateDA
 	{
-		bool sendmailtoRequestor(int RFQRevisionId);
+		bool sendQuotemailtoRequestor(int RFQRevisionId);
+		bool sendCommunicationmailtoRequestor(int RFQRevisionId, string Remarks);
 		bool sendMailtoBuyer(int VendorId);
 	}
 }
