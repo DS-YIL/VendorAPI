@@ -1,4 +1,5 @@
-﻿using DALayer.Emails;
+﻿using DALayer.Common;
+using DALayer.Emails;
 using SCMModels;
 using SCMModels.MPRMasterModels;
 using SCMModels.RemoteModel;
@@ -21,6 +22,7 @@ namespace DALayer.RFQ
 	public class RFQDA : IRFQDA
 	{
 		private IEmailTemplateDA emailTemplateDA = default(IEmailTemplateDA);
+		private ErrorLog log = new ErrorLog();
 		public RFQDA(IEmailTemplateDA EmailTemplateDA)
 		{
 			this.emailTemplateDA = EmailTemplateDA;
@@ -80,13 +82,14 @@ namespace DALayer.RFQ
 				}
 
 				status.Sid = model.RfqMasterId;
-				return status;
+
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
 
-				throw;
+				log.ErrorMessage("RFQDA", "UpdateRfqRevision", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
 			}
+			return status;
 		}
 		public async Task<statuscheckmodel> UpdateBulkRfqRevision(RfqRevisionModel model)
 		{
@@ -118,13 +121,14 @@ namespace DALayer.RFQ
 
 				}
 				status.Sid = model.RfqMasterId;
-				return status;
+
 			}
 			catch (Exception ex)
 			{
 
-				throw;
+				log.ErrorMessage("RFQDA", "UpdateBulkRfqRevision", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return status;
 		}
 		public async Task<statuscheckmodel> UpdateRfqItemByBulk(RfqItemModel model)
 		{
@@ -178,12 +182,13 @@ namespace DALayer.RFQ
 						obj.SaveChanges();
 					}
 				}
-				return status;
+
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "UpdateRfqItemByBulk", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return status;
 		}
 		public async Task<List<RfqItemModel>> GetItemsByRevisionId(int revisionid)
 		{
@@ -227,13 +232,14 @@ namespace DALayer.RFQ
 				}
 
 
-				return rfq;
+
 			}
 
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "GetItemsByRevisionId", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return rfq;
 		}
 
 		public async Task<statuscheckmodel> UpdateSingleRfqItem(RfqItemModel model)
@@ -281,12 +287,13 @@ namespace DALayer.RFQ
 				}
 				int id = remotedata.RFQItemsId;
 				status.Sid = id;
-				return status;
+
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "UpdateSingleRfqItem", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return status;
 		}
 		public statuscheckmodel DeleteRfqRevisionbyId(int id)
 		{
@@ -299,13 +306,15 @@ namespace DALayer.RFQ
 					data.DeleteFlag = true;
 					obj.SaveChanges();
 				}
-				return staus;
+
 			}
 			catch (Exception ex)
 			{
 
-				throw;
+				log.ErrorMessage("RFQDA", "DeleteRfqRevisionbyId", ex.Message + "; " + ex.StackTrace.ToString());
+
 			}
+			return staus;
 		}
 		public statuscheckmodel DeleteRfqItemById(int id)
 		{
@@ -318,12 +327,13 @@ namespace DALayer.RFQ
 					data.DeleteFlag = true;
 					obj.SaveChanges();
 				}
-				return status;
+
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "DeleteRfqItemById", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return status;
 		}
 		public statuscheckmodel DeleteBulkItemsByItemId(List<int> id)
 		{
@@ -405,7 +415,7 @@ namespace DALayer.RFQ
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "InsertDocument", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return listobj;
 		}
@@ -1497,13 +1507,14 @@ namespace DALayer.RFQ
 					_listobj.Add(eachobj);
 
 				}
-				return _listobj;
+				
 
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "editRfqItemInfo", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return _listobj;
 		}
 
 
@@ -2345,7 +2356,7 @@ namespace DALayer.RFQ
 			try
 			{
 				obj.Database.Connection.Open();
-				var data = obj.CurrencyMasters.Where(x => x.CurrencyId == model.CurrenyId && x.DeleteFlag == false).FirstOrDefault();
+				var data = obj.CurrencyMasters.Where(x => x.CurrencyId == model.CurrencyId && x.DeleteFlag == false).FirstOrDefault();
 				if (model != null)
 				{
 					data.CurrencyName = model.CurrencyName;
@@ -2483,7 +2494,7 @@ namespace DALayer.RFQ
 				{
 					CurrencyCode = x.CurrencyCode,
 					CurrencyName = x.CurrencyName,
-					CurrenyId = x.CurrencyId,
+					CurrencyId = x.CurrencyId,
 					//UpdatedBy = x.UpdatedBy,
 					//updateddate = x.updateddate,
 					// DeletedBy = x.DeletedBy,
@@ -3275,28 +3286,55 @@ namespace DALayer.RFQ
 				throw;
 			}
 		}
-		public async Task<List<V_RFQList>> GetRfqByVendorId(rfqFilterParams obj)
+		public async Task<List<V_RFQList>> GetRfqByVendorId(rfqFilterParams rfqfilterparams)
 		{
 			List<RFQMasterModel> model = new List<RFQMasterModel>();
+			List<V_RFQList> data = null;
 			try
 			{
-				List<V_RFQList> data = null;
-				int vendorid = Convert.ToInt32(obj.VendorId);
-				if ((obj.typeOfFilter == "other"))
-				{
-					data = new List<V_RFQList>();
-					data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == true).ToList();
+				
+				int vendorid = Convert.ToInt32(rfqfilterparams.VendorId);
 
-				}
-				else if (obj.typeOfFilter == "true")
+				var query = default(string);
+				query = "select * from V_RFQList Where VendorId = " + rfqfilterparams.VendorId + " and DeleteFlag = 0 and VendorVisiblity = 1 and ActiveRevision=1";
+				if (rfqfilterparams.typeOfFilter == "true")
 				{
-					data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false && (x.RFQValidDate >= obj.FromDate && x.RFQValidDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
+					if (!string.IsNullOrEmpty(rfqfilterparams.FromDate))
+						query += " and RFQValidDate>='" + rfqfilterparams.FromDate + "'";
+					if (!string.IsNullOrEmpty(rfqfilterparams.ToDate))
+						query += " and RFQValidDate<='" + rfqfilterparams.ToDate + "'";
+					//query += "RFQValidDate <= '" + rfqfilterparams.ToDate + "' and RFQValidDate >= '" + rfqfilterparams.FromDate + "'";
 				}
-				else if (obj.typeOfFilter == "false")
+				if (rfqfilterparams.typeOfFilter == "false")
 				{
-					data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false && (x.CreatedDate >= obj.FromDate && x.CreatedDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
-					//data = vscm.RemoteRFQMasters.Where(x => x.VendorId == vendorid && x.RFQNo == obj.RFQNo && x.DeleteFlag == false && x.VendorVisiblity == true).Include(x => x.RemoteRFQRevisions_N.Select(li => li.CreatedDate >= obj.FromDate && li.CreatedDate <= obj.ToDate)).OrderByDescending(x => x.MPRRevisionId).ToList();
+					if (!string.IsNullOrEmpty(rfqfilterparams.FromDate))
+						query += "and CreatedDate>='" + rfqfilterparams.FromDate + "'";
+					if (!string.IsNullOrEmpty(rfqfilterparams.ToDate))
+						query += " and CreatedDate<='" + rfqfilterparams.ToDate + "'";
+					//query += "CreatedDate <= '" + rfqfilterparams.ToDate + "' and CreatedDate >= '" + rfqfilterparams.FromDate + "'";
 				}
+				if (!string.IsNullOrEmpty(rfqfilterparams.RFQNo))
+					query += " and RFQNo='" + rfqfilterparams.RFQNo + "'";
+				if (rfqfilterparams.StatusId != 0)
+					query += " and StatusId='" + rfqfilterparams.StatusId + "'";
+				query += " order by MPRRevisionId desc";
+				data = vscm.V_RFQList.SqlQuery(query).ToList<V_RFQList>();
+
+				//if ((obj.typeOfFilter == "other"))
+				//{
+				//	data = new List<V_RFQList>();
+				//	data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == true).ToList();
+
+				//}
+				//else if (obj.typeOfFilter == "true")
+				//{
+				//	data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false && (x.RFQValidDate >= obj.FromDate && x.RFQValidDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
+				//}
+				//else if (obj.typeOfFilter == "false")
+				//{
+				//	data = vscm.V_RFQList.Where(x => x.VendorId == vendorid && x.DeleteFlag == false && x.VendorVisiblity == false && (x.CreatedDate >= obj.FromDate && x.CreatedDate <= obj.ToDate) || x.RFQNo == obj.RFQNo).OrderByDescending(x => x.MPRRevisionId).ToList();
+				//	//data = vscm.RemoteRFQMasters.Where(x => x.VendorId == vendorid && x.RFQNo == obj.RFQNo && x.DeleteFlag == false && x.VendorVisiblity == true).Include(x => x.RemoteRFQRevisions_N.Select(li => li.CreatedDate >= obj.FromDate && li.CreatedDate <= obj.ToDate)).OrderByDescending(x => x.MPRRevisionId).ToList();
+				//}
 				//if (data != null)
 				//{
 				//    model = data.Select(x => new RFQMasterModel()
@@ -3331,12 +3369,13 @@ namespace DALayer.RFQ
 				//    //    model.Revision.Add(revisionmodel);
 				//    //}
 				//}
-				return data;
+				
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "GetRfqByVendorId", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return data;
 		}
 
 
@@ -3438,6 +3477,12 @@ namespace DALayer.RFQ
 						Remotedata.EmailIdForAccounts = model.EmailIdForAccounts;
 						Remotedata.AltEmailidForAccounts = model.AltEmailidForAccounts;
 
+						Remotedata.SwiftCode = model.SwiftCode;
+						Remotedata.CurrencyId = model.CurrencyId;
+						Remotedata.CurrencyName = model.CurrencyName;
+						Remotedata.VendorType = model.VendorType;
+						Remotedata.Country = model.Country;
+
 						Remotedata.Phone = model.Phone;
 						Remotedata.GSTNo = model.GSTNo;
 						Remotedata.PANNo = model.PANNo;
@@ -3499,6 +3544,12 @@ namespace DALayer.RFQ
 							Remotedata.EmailIdForAccounts = model.EmailIdForAccounts;
 							Remotedata.AltEmailidForAccounts = model.AltEmailidForAccounts;
 
+							Remotedata.SwiftCode = model.SwiftCode;
+							Remotedata.CurrencyId = model.CurrencyId;
+							Remotedata.CurrencyName = model.CurrencyName;
+							Remotedata.VendorType = model.VendorType;
+							Remotedata.Country = model.Country;
+
 							Remotedata.Phone = model.Phone;
 							Remotedata.GSTNo = model.GSTNo;
 							Remotedata.PANNo = model.PANNo;
@@ -3526,6 +3577,7 @@ namespace DALayer.RFQ
 						{
 							var remotedataforbankdetails = new RemoteBankDetailsForVendor();
 							remotedataforbankdetails.IFSCCode = model.IFSCCode;
+							remotedataforbankdetails.IncoTerms = model.IncoTerms;
 							remotedataforbankdetails.BankDetails = model.BankDetails;
 							remotedataforbankdetails.BankerName = model.BankerName;
 							remotedataforbankdetails.AccNo = model.AccNo;
@@ -3540,6 +3592,7 @@ namespace DALayer.RFQ
 						{
 							//var remotedataforbankdetail = new RemoteBankDetailsForVendor();
 							remotedataforbankdetail.IFSCCode = model.IFSCCode;
+							remotedataforbankdetail.IncoTerms = model.IncoTerms;
 							remotedataforbankdetail.BankDetails = model.BankDetails;
 							remotedataforbankdetail.BankerName = model.BankerName;
 							remotedataforbankdetail.AccNo = model.AccNo;
@@ -3599,6 +3652,12 @@ namespace DALayer.RFQ
 						yscmdata.EmailIdForAccounts = model.EmailIdForAccounts;
 						yscmdata.AltEmailidForAccounts = model.AltEmailidForAccounts;
 
+						yscmdata.SwiftCode = model.SwiftCode;
+						yscmdata.CurrencyId = model.CurrencyId;
+						yscmdata.CurrencyName = model.CurrencyName;
+						yscmdata.VendorType = model.VendorType;
+						yscmdata.Country = model.Country;
+
 						yscmdata.GSTNo = model.GSTNo;
 						yscmdata.PANNo = model.PANNo;
 						yscmdata.CINNo = model.CINNo;
@@ -3656,9 +3715,16 @@ namespace DALayer.RFQ
 						yscmdata.PhoneNumberForAccounts = model.PhoneNumberForAccounts;
 						yscmdata.EmailIdForAccounts = model.EmailIdForAccounts;
 						yscmdata.AltEmailidForAccounts = model.AltEmailidForAccounts;
+
 						yscmdata.GSTNo = model.GSTNo;
 						yscmdata.NatureofBusiness = model.NatureofBusiness;
 						yscmdata.SpecifyNatureOfBusiness = model.SpecifyNatureOfBusiness;
+						yscmdata.SwiftCode = model.SwiftCode;
+						yscmdata.CurrencyId = model.CurrencyId;
+						yscmdata.CurrencyName = model.CurrencyName;
+						yscmdata.VendorType = model.VendorType;
+						yscmdata.Country = model.Country;
+
 						yscmdata.PANNo = model.PANNo;
 						yscmdata.CINNo = model.CINNo;
 						yscmdata.TanNo = model.TanNo;
@@ -3682,6 +3748,7 @@ namespace DALayer.RFQ
 							var dataforbankdetails = new BankDetailsForVendor();
 							dataforbankdetails.Id = bankdetailsid;
 							dataforbankdetails.IFSCCode = model.IFSCCode;
+							dataforbankdetails.IncoTerms = model.IncoTerms;
 							dataforbankdetails.BankDetails = model.BankDetails;
 							dataforbankdetails.BankerName = model.BankerName;
 							dataforbankdetails.AccNo = model.AccNo;
@@ -3695,6 +3762,7 @@ namespace DALayer.RFQ
 						{
 							//var remotedataforbankdetail = new RemoteBankDetailsForVendor();
 							yscmdataforbankdetail.IFSCCode = model.IFSCCode;
+							yscmdataforbankdetail.IncoTerms = model.IncoTerms;
 							yscmdataforbankdetail.BankDetails = model.BankDetails;
 							yscmdataforbankdetail.BankerName = model.BankerName;
 							yscmdataforbankdetail.AccNo = model.AccNo;
@@ -3702,7 +3770,7 @@ namespace DALayer.RFQ
 							yscmdataforbankdetail.VendorId = vendorid;
 							yscmdataforbankdetail.LocationOrBranch = model.LocationOrBranch;
 							// vscm.RemoteBankDetailsForVendors.Add(remotedataforbankdetails);
-							vscm.SaveChanges();
+							obj.SaveChanges();
 						}
 
 						this.InsertVendorDocuments(model.DocDetailsLists);
@@ -3734,12 +3802,13 @@ namespace DALayer.RFQ
 					this.emailTemplateDA.sendMailtoBuyer(model.VendorId);
 
 				}
-				return vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == vendorid).FirstOrDefault();
+				
 			}
 			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "SaveVendorDetails", ex.Message + "; " + ex.StackTrace.ToString());
 			}
+			return vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == vendorid).FirstOrDefault();
 		}
 
 		public void InsertVendorDocuments(List<RemoteVendorRegisterDocumentDetail> model)
@@ -3924,9 +3993,9 @@ namespace DALayer.RFQ
 					}
 				}
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-
+				log.ErrorMessage("RFQDA", "InsertDocuments", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return vscm.RemoteVendorRegisterDocumentDetails.Where(li => li.VendorId == vendorid && li.Deleteflag == false).ToList();
 		}
@@ -3934,26 +4003,33 @@ namespace DALayer.RFQ
 		public bool DeletefileAttached(documentDetails model)
 		{
 			Boolean deletestatus = false;
-			RemoteVendorRegisterDocumentDetail remotedatafordelete = vscm.RemoteVendorRegisterDocumentDetails.Where(li => li.VendorId == model.VendorId && li.Id == model.Id).FirstOrDefault<RemoteVendorRegisterDocumentDetail>();
-			if (remotedatafordelete != null)
+			try
 			{
-				remotedatafordelete.Deleteflag = true;
-				vscm.SaveChanges();
-				deletestatus = true;
-			}
-			else
-			{
-				deletestatus = false;
-			}
-			using (YSCMEntities Context = new YSCMEntities())
-			{
-				VendorRegisterDocumentDetail deptDelete = Context.VendorRegisterDocumentDetails.Where(li => li.VendorId == model.VendorId && li.Id == model.Id).FirstOrDefault();
-				if (deptDelete != null)
+				RemoteVendorRegisterDocumentDetail remotedatafordelete = vscm.RemoteVendorRegisterDocumentDetails.Where(li => li.VendorId == model.VendorId && li.Id == model.Id).FirstOrDefault<RemoteVendorRegisterDocumentDetail>();
+				if (remotedatafordelete != null)
 				{
-					deptDelete.Deleteflag = true;
-					//Context.MPRDocuments.Remove(deptDelete);
-					Context.SaveChanges();
+					remotedatafordelete.Deleteflag = true;
+					vscm.SaveChanges();
+					deletestatus = true;
 				}
+				else
+				{
+					deletestatus = false;
+				}
+				using (YSCMEntities Context = new YSCMEntities())
+				{
+					VendorRegisterDocumentDetail deptDelete = Context.VendorRegisterDocumentDetails.Where(li => li.VendorId == model.VendorId && li.Id == model.Id).FirstOrDefault();
+					if (deptDelete != null)
+					{
+						deptDelete.Deleteflag = true;
+						//Context.MPRDocuments.Remove(deptDelete);
+						Context.SaveChanges();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("RFQDA", "DeletefileAttached", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return true;
 		}
@@ -3961,28 +4037,35 @@ namespace DALayer.RFQ
 		public bool DeletefileAttachedforDocuments(RFQDocument model)
 		{
 			Boolean deletestatus = false;
-			RemoteRFQDocument remotedatafordelete = vscm.RemoteRFQDocuments.Where(li => li.DocumentType == model.DocumentType && li.UploadedBy == model.UploadedBy && li.DocumentName == model.DocumentName && (li.rfqItemsid == model.rfqItemsid || li.rfqRevisionId == model.rfqRevisionId)).FirstOrDefault();
-			if (remotedatafordelete != null)
+			try
 			{
-				remotedatafordelete.DeleteFlag = true;
-				vscm.SaveChanges();
-				deletestatus = true;
-			}
-			else
-			{
-				deletestatus = false;
-			}
+				RemoteRFQDocument remotedatafordelete = vscm.RemoteRFQDocuments.Where(li => li.RfqDocId == model.RfqDocId).FirstOrDefault();
+				if (remotedatafordelete != null)
+				{
+					remotedatafordelete.DeleteFlag = true;
+					vscm.SaveChanges();
+					deletestatus = true;
+				}
+				else
+				{
+					deletestatus = false;
+				}
 
-			RFQDocument remotedatafordeleteYSCM = obj.RFQDocuments.Where(li => li.DocumentName == model.DocumentName && li.DocumentType == model.DocumentType && li.UploadedBy == model.UploadedBy && (li.rfqItemsid == model.rfqItemsid || li.rfqRevisionId == model.rfqRevisionId)).FirstOrDefault();
-			if (remotedatafordeleteYSCM != null)
-			{
-				remotedatafordeleteYSCM.DeleteFlag = true;
-				obj.SaveChanges();
-				deletestatus = true;
+				RFQDocument remotedatafordeleteYSCM = obj.RFQDocuments.Where(li => li.RfqDocId == model.RfqDocId).FirstOrDefault();
+				if (remotedatafordeleteYSCM != null)
+				{
+					remotedatafordeleteYSCM.DeleteFlag = true;
+					obj.SaveChanges();
+					deletestatus = true;
+				}
+				else
+				{
+					deletestatus = false;
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				deletestatus = false;
+				log.ErrorMessage("RFQDA", "DeletefileAttachedforDocuments", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return deletestatus;
 		}
@@ -4123,9 +4206,9 @@ namespace DALayer.RFQ
 
 				}
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				throw;
+				log.ErrorMessage("RFQDA", "UpdateVendorCommunication", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 
 			return msg;
@@ -4208,279 +4291,292 @@ namespace DALayer.RFQ
 		public VendorRegistrationModel GetVendorDetails(int vendorId)
 		{
 			VendorRegistrationModel listobj = new VendorRegistrationModel();
-			RemoteVendorRegisterMaster getdata = vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == vendorId).FirstOrDefault();
-			if (getdata != null)
+			try
 			{
-				listobj.UniqueId = getdata.Id;
-				listobj.VendorId = getdata.Vendorid;
-				listobj.Onetimevendor = Convert.ToBoolean(getdata.Onetimevendor);
-				listobj.MSMERequired = Convert.ToBoolean(getdata.MSMERequired);
-				listobj.PerformanceVerificationRequired = Convert.ToBoolean(getdata.PerformanceVerificationRequired);
-				listobj.EvaluationRequired = Convert.ToBoolean(getdata.EvaluationRequired);
-				listobj.BusinessArea = getdata.BusinessArea;
-				listobj.VendorNoInSAP = getdata.VendorNoInSAP;
-				listobj.VendorName = getdata.VendorName;
-				listobj.Street = getdata.Street;
-				listobj.City = getdata.City;
-				listobj.PostalCode = getdata.PostalCode;
-				listobj.StateId = Convert.ToInt32(getdata.StateId);
-				listobj.State = getdata.State;
-
-				listobj.PhoneAndExtn = getdata.PhoneAndExtn;
-				listobj.LocalBranchOffice = getdata.LocalBranchOffice;
-				listobj.Mobile = getdata.Mobile;
-				listobj.Email = getdata.Email;
-				listobj.AltEmail = getdata.AltEmail;
-				listobj.Fax = getdata.Fax;
-				listobj.ContactPerson = getdata.ContactPerson;
-				listobj.Phone = getdata.Phone;
-				listobj.ContactPersonForSales = getdata.ContactPersonForSales;
-				listobj.PhoneNumberForSales = getdata.PhoneNumberForSales;
-				listobj.EmailIdForSales = getdata.EmailIdForSales;
-				listobj.AltEmailidForSales = getdata.AltEmailidForSales;
-
-				listobj.ContactPersonForOperations = getdata.ContactPersonForOperations;
-				listobj.PhoneNumberForOperations = getdata.PhoneNumberForOperations;
-				listobj.EmailIdForOperations = getdata.EmailIdForOperations;
-				listobj.AltEmailidForOperations = getdata.AltEmailidForOperations;
-
-				listobj.ContactPersonForLogistics = getdata.ContactPersonForLogistics;
-				listobj.PhoneNumberForLogistics = getdata.PhoneNumberForLogistics;
-				listobj.EmailIdForLogistics = getdata.EmailIdForLogistics;
-				listobj.AltEmailidForLogistics = getdata.AltEmailidForLogistics;
-
-				listobj.ContactPersonForAccounts = getdata.ContactPersonForLogistics;
-				listobj.PhoneNumberForAccounts = getdata.PhoneNumberForAccounts;
-				listobj.EmailIdForAccounts = getdata.EmailIdForAccounts;
-				listobj.AltEmailidForAccounts = getdata.AltEmailidForAccounts;
-				listobj.GSTNo = getdata.GSTNo;
-				listobj.NatureofBusiness = getdata.NatureofBusiness;
-				listobj.SpecifyNatureOfBusiness = getdata.SpecifyNatureOfBusiness;
-				listobj.PANNo = getdata.PANNo;
-				listobj.CINNo = getdata.CINNo;
-				listobj.TanNo = getdata.TanNo;
-				listobj.PaymentTerms = getdata.PaymentTerms;
-
-				RemoteBankDetailsForVendor bankData = vscm.RemoteBankDetailsForVendors.Where(li => li.VendorId == vendorId).FirstOrDefault();
-				if (bankData != null)
+				RemoteVendorRegisterMaster getdata = vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == vendorId).FirstOrDefault();
+				if (getdata != null)
 				{
-					listobj.BankDetails = bankData.BankDetails;
-					listobj.BankerName = bankData.BankerName;
-					listobj.IFSCCode = bankData.IFSCCode;
-					listobj.AccountHolderName = bankData.AccountHolderName;
-					listobj.LocationOrBranch = bankData.LocationOrBranch;
-					listobj.AccNo = bankData.AccNo;
+					listobj.UniqueId = getdata.Id;
+					listobj.VendorId = getdata.Vendorid;
+					listobj.Onetimevendor = Convert.ToBoolean(getdata.Onetimevendor);
+					listobj.MSMERequired = Convert.ToBoolean(getdata.MSMERequired);
+					listobj.PerformanceVerificationRequired = Convert.ToBoolean(getdata.PerformanceVerificationRequired);
+					listobj.EvaluationRequired = Convert.ToBoolean(getdata.EvaluationRequired);
+					listobj.BusinessArea = getdata.BusinessArea;
+					listobj.VendorNoInSAP = getdata.VendorNoInSAP;
+					listobj.VendorName = getdata.VendorName;
+					listobj.Street = getdata.Street;
+					listobj.City = getdata.City;
+					listobj.PostalCode = getdata.PostalCode;
+					listobj.StateId = Convert.ToInt32(getdata.StateId);
+					listobj.State = getdata.State;
+
+					listobj.PhoneAndExtn = getdata.PhoneAndExtn;
+					listobj.LocalBranchOffice = getdata.LocalBranchOffice;
+					listobj.Mobile = getdata.Mobile;
+					listobj.Email = getdata.Email;
+					listobj.AltEmail = getdata.AltEmail;
+					listobj.Fax = getdata.Fax;
+					listobj.ContactPerson = getdata.ContactPerson;
+					listobj.Phone = getdata.Phone;
+					listobj.ContactPersonForSales = getdata.ContactPersonForSales;
+					listobj.PhoneNumberForSales = getdata.PhoneNumberForSales;
+					listobj.EmailIdForSales = getdata.EmailIdForSales;
+					listobj.AltEmailidForSales = getdata.AltEmailidForSales;
+
+					listobj.ContactPersonForOperations = getdata.ContactPersonForOperations;
+					listobj.PhoneNumberForOperations = getdata.PhoneNumberForOperations;
+					listobj.EmailIdForOperations = getdata.EmailIdForOperations;
+					listobj.AltEmailidForOperations = getdata.AltEmailidForOperations;
+
+					listobj.ContactPersonForLogistics = getdata.ContactPersonForLogistics;
+					listobj.PhoneNumberForLogistics = getdata.PhoneNumberForLogistics;
+					listobj.EmailIdForLogistics = getdata.EmailIdForLogistics;
+					listobj.AltEmailidForLogistics = getdata.AltEmailidForLogistics;
+
+					listobj.ContactPersonForAccounts = getdata.ContactPersonForLogistics;
+					listobj.PhoneNumberForAccounts = getdata.PhoneNumberForAccounts;
+					listobj.EmailIdForAccounts = getdata.EmailIdForAccounts;
+					listobj.AltEmailidForAccounts = getdata.AltEmailidForAccounts;
+					listobj.GSTNo = getdata.GSTNo;
+					listobj.NatureofBusiness = getdata.NatureofBusiness;
+					listobj.SpecifyNatureOfBusiness = getdata.SpecifyNatureOfBusiness;
+					listobj.PANNo = getdata.PANNo;
+					listobj.CINNo = getdata.CINNo;
+					listobj.TanNo = getdata.TanNo;
+					listobj.PaymentTerms = getdata.PaymentTerms;
+					listobj.SwiftCode = getdata.SwiftCode;
+					listobj.CurrencyId = Convert.ToInt32(getdata.CurrencyId);
+					listobj.CurrencyName = getdata.CurrencyName;
+					listobj.VendorType = getdata.VendorType;
+					listobj.Country = getdata.Country;
+
+					RemoteBankDetailsForVendor bankData = vscm.RemoteBankDetailsForVendors.Where(li => li.VendorId == vendorId).FirstOrDefault();
+					if (bankData != null)
+					{
+						listobj.BankDetails = bankData.BankDetails;
+						listobj.BankerName = bankData.BankerName;
+						listobj.IFSCCode = bankData.IFSCCode;
+						listobj.IncoTerms = bankData.IncoTerms;
+						listobj.AccountHolderName = bankData.AccountHolderName;
+						listobj.LocationOrBranch = bankData.LocationOrBranch;
+						listobj.AccNo = bankData.AccNo;
+					}
+
 				}
-
-
 				listobj.DocDetailsLists = vscm.RemoteVendorRegisterDocumentDetails.Where(li => li.VendorId == vendorId && li.Deleteflag == false).ToList();
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("RFQDA", "GetVendorDetails", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 
 			return listobj;
 			// throw new NotImplementedException();
 		}
 
-		public string changepassword(Changepassword objs)
+	public string changepassword(Changepassword objs)
+	{
+		string msg = string.Empty;
+		if (objs != null)
 		{
-			string msg = string.Empty;
-			if (objs != null)
+			RemoteVendorUserMaster remotechnagepwdobj = vscm.RemoteVendorUserMasters.Where(li => li.VendorId == objs.VendorId && li.pwd == objs.CurrentPassword).FirstOrDefault();
+			if (remotechnagepwdobj.pwd == objs.CurrentPassword)
 			{
-				RemoteVendorUserMaster remotechnagepwdobj = vscm.RemoteVendorUserMasters.Where(li => li.VendorId == objs.VendorId && li.pwd == objs.CurrentPassword).FirstOrDefault();
-				if (remotechnagepwdobj.pwd == objs.CurrentPassword)
-				{
-					remotechnagepwdobj.pwd = objs.NewPassword;
-					vscm.SaveChanges();
-					msg = "OK";
-				}
-				else
-				{
-					msg = "error";
-				}
-
-				VendorUserMaster chnagepwdobj = obj.VendorUserMasters.Where(li => li.VendorId == objs.VendorId && li.pwd == objs.CurrentPassword).FirstOrDefault();
-				if (chnagepwdobj.pwd == objs.CurrentPassword)
-				{
-					chnagepwdobj.pwd = objs.NewPassword;
-					obj.SaveChanges();
-					msg = "OK";
-				}
-			}
-			return msg;
-			//throw new NotImplementedException();
-		}
-
-		public bool sendVendormail(int RFQRevisionId)
-		{
-			try
-			{
-
-				this.emailTemplateDA.sendQuotemailtoRequestor(RFQRevisionId);
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			return true;
-		}
-		public bool sendEmail(EmailSend emlSndngList)
-		{
-			emlSndngList.BCC = ConfigurationManager.AppSettings["BCC"];
-			var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
-			// string smtp= ConfigurationManager.AppSettings["AttachedDocPath"];
-			MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
-			SmtpClient client = new SmtpClient();
-			if (!string.IsNullOrEmpty(emlSndngList.Subject))
-				mailMessage.Subject = emlSndngList.Subject;
-			if (!string.IsNullOrEmpty(emlSndngList.CC))
-				mailMessage.CC.Add(emlSndngList.CC);
-			if (!string.IsNullOrEmpty(emlSndngList.BCC))
-				mailMessage.Bcc.Add(emlSndngList.BCC);
-			mailMessage.Body = emlSndngList.Body;
-			mailMessage.IsBodyHtml = true;
-			mailMessage.BodyEncoding = Encoding.UTF8;
-			//SmtpClient mailClient = new SmtpClient("localhost", 25);
-			SmtpClient mailClient = new SmtpClient(SMTPServer, 25);
-			//mailClient.EnableSsl = false;
-			mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-			mailClient.Send(mailMessage);
-
-			//MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
-			//SmtpClient client = new SmtpClient();
-			//if (!string.IsNullOrEmpty(emlSndngList.Subject))
-			//    mailMessage.Subject = emlSndngList.Subject;
-			//if (!string.IsNullOrEmpty(emlSndngList.CC))
-			//    mailMessage.CC.Add(emlSndngList.CC);
-			//mailMessage.Body = emlSndngList.Body;
-			//mailMessage.IsBodyHtml = true;
-			//mailMessage.BodyEncoding = Encoding.UTF8;
-			//SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
-			//mailClient.EnableSsl = false;
-			////mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-			//mailClient.Send(mailMessage);
-			return true;
-		}
-
-		public async Task<statuscheckmodel> DeleteRfqIteminfoByidformultiple(int id, int BOMid)
-		{
-			statuscheckmodel status = new statuscheckmodel();
-			try
-			{
-				double? totalprice = 0;
-				//vscm.Database.Connection.Open();
-				var Remotedata = vscm.RemoteRFQItemsInfo_N.Where(x => x.RFQSplitItemId == id && x.DeleteFlag == false).FirstOrDefault();
-				var remotebomdata = vscm.RemoteRfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag == false).FirstOrDefault();
-				var bomdata = obj.RfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag == false).FirstOrDefault();
-				//if (Remotedata != null)
-				//{
-
-				//    Remotedata.DeleteFlag = true;
-				//    vscm.SaveChanges();
-				//}
-				if (remotebomdata != null)
-				{
-
-					remotebomdata.DeleteFlag = true;
-					vscm.SaveChanges();
-
-				}
-				if (bomdata != null)
-				{
-
-					bomdata.DeleteFlag = true;
-					obj.SaveChanges();
-
-				}
-				List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == id && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
-
-				foreach (var data1 in itemsforupdate)
-				{
-					double? subtotalprice = 0;
-					subtotalprice = Convert.ToDouble(data1.Qty) * Convert.ToDouble(data1.UnitPrice);
-					if (Convert.ToInt32(data1.Discount) != 0)
-					{
-						double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
-						subtotalprice = Discount;
-					}
-					if (Convert.ToInt32(data1.DiscountPercentage) != 0)
-					{
-						double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage) / 100);
-						subtotalprice = DiscountPercentage;
-					}
-					if (Convert.ToInt32(data1.FreightAmount) != 0)
-					{
-						double? FreightAmount = subtotalprice - Convert.ToDouble(data1.FreightAmount);
-						subtotalprice = FreightAmount;
-					}
-					if (Convert.ToInt32(data1.FreightPercentage) != 0)
-					{
-						double? FreightPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
-						subtotalprice = FreightPercentage;
-					}
-					if (Convert.ToInt32(data1.PFAmount) != 0)
-					{
-						double? PFAmount = subtotalprice - Convert.ToDouble(data1.PFAmount);
-						subtotalprice = PFAmount;
-					}
-					if (Convert.ToInt32(data1.PFPercentage) != 0)
-					{
-
-						double? PFPercentage = (subtotalprice * Convert.ToDouble(data1.PFPercentage) / 100);
-						subtotalprice += PFPercentage;
-					}
-					totalprice += subtotalprice;
-				}
-				RemoteRFQItemsInfo_N itemsinfo = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == id).FirstOrDefault();
-				if (itemsinfo != null)
-				{
-					itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
-					vscm.SaveChanges();
-				}
-
-				// vscm.Database.Connection.Close();
-
-				//obj.Database.Connection.Open();
-				var Localdata = obj.RFQItemsInfo_N.Where(x => x.RFQSplitItemId == id && x.DeleteFlag == false).FirstOrDefault();
-				if (Localdata != null)
-				{
-					Localdata.DeleteFlag = true;
-					Localdata.UnitPrice = Convert.ToDecimal(totalprice);
-					obj.SaveChanges();
-				}
-				else
-				{
-
-				}
-				//if (Remotedata == null || Localdata==null)
-				//{
-				//    status.Sid = 0;
-				//}
-				//status.Sid = Localdata.RFQItemsId;
-				return status;
-			}
-			catch (Exception ex)
-			{
-				throw;
-			}
-		}
-
-		public bool checkemail(Changepassword emailId)
-		{
-			bool exists = false;
-			RemoteVendorUserMaster emailidexists = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == emailId.emailid && li.Active == true).FirstOrDefault();
-			if (emailidexists != null)
-			{
-				exists = true;
+				remotechnagepwdobj.pwd = objs.NewPassword;
+				vscm.SaveChanges();
+				msg = "OK";
 			}
 			else
 			{
-				exists = false;
+				msg = "error";
 			}
-			return exists;
-		}
 
-		public bool sendLinkForForgetPassword(forgetpassword model)
+			VendorUserMaster chnagepwdobj = obj.VendorUserMasters.Where(li => li.VendorId == objs.VendorId && li.pwd == objs.CurrentPassword).FirstOrDefault();
+			if (chnagepwdobj.pwd == objs.CurrentPassword)
+			{
+				chnagepwdobj.pwd = objs.NewPassword;
+				obj.SaveChanges();
+				msg = "OK";
+			}
+		}
+		return msg;
+		//throw new NotImplementedException();
+	}
+
+	public bool sendVendormail(int RFQRevisionId)
+	{
+		try
 		{
 
+			this.emailTemplateDA.sendQuotemailtoRequestor(RFQRevisionId);
+		}
+		catch (Exception ex)
+		{
+			throw ex;
+		}
+		return true;
+	}
+	public bool sendEmail(EmailSend emlSndngList)
+	{
+		emlSndngList.BCC = ConfigurationManager.AppSettings["BCC"];
+		var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
+		// string smtp= ConfigurationManager.AppSettings["AttachedDocPath"];
+		MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
+		SmtpClient client = new SmtpClient();
+		if (!string.IsNullOrEmpty(emlSndngList.Subject))
+			mailMessage.Subject = emlSndngList.Subject;
+		if (!string.IsNullOrEmpty(emlSndngList.CC))
+			mailMessage.CC.Add(emlSndngList.CC);
+		if (!string.IsNullOrEmpty(emlSndngList.BCC))
+			mailMessage.Bcc.Add(emlSndngList.BCC);
+		mailMessage.Body = emlSndngList.Body;
+		mailMessage.IsBodyHtml = true;
+		mailMessage.BodyEncoding = Encoding.UTF8;
+		//SmtpClient mailClient = new SmtpClient("localhost", 25);
+		SmtpClient mailClient = new SmtpClient(SMTPServer, 25);
+		//mailClient.EnableSsl = false;
+		mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+		mailClient.Send(mailMessage);
+
+		//MailMessage mailMessage = new MailMessage(emlSndngList.FrmEmailId, emlSndngList.ToEmailId);
+		//SmtpClient client = new SmtpClient();
+		//if (!string.IsNullOrEmpty(emlSndngList.Subject))
+		//    mailMessage.Subject = emlSndngList.Subject;
+		//if (!string.IsNullOrEmpty(emlSndngList.CC))
+		//    mailMessage.CC.Add(emlSndngList.CC);
+		//mailMessage.Body = emlSndngList.Body;
+		//mailMessage.IsBodyHtml = true;
+		//mailMessage.BodyEncoding = Encoding.UTF8;
+		//SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
+		//mailClient.EnableSsl = false;
+		////mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+		//mailClient.Send(mailMessage);
+		return true;
+	}
+
+	public async Task<statuscheckmodel> DeleteRfqIteminfoByidformultiple(int id, int BOMid)
+	{
+		statuscheckmodel status = new statuscheckmodel();
+		try
+		{
+			double? totalprice = 0;
+			//vscm.Database.Connection.Open();
+			var Remotedata = vscm.RemoteRFQItemsInfo_N.Where(x => x.RFQSplitItemId == id && x.DeleteFlag == false).FirstOrDefault();
+			var remotebomdata = vscm.RemoteRfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag == false).FirstOrDefault();
+			var bomdata = obj.RfqVendorBOMs.Where(x => x.RFQVendorbomItemId == BOMid && x.DeleteFlag == false).FirstOrDefault();
+			//if (Remotedata != null)
+			//{
+
+			//    Remotedata.DeleteFlag = true;
+			//    vscm.SaveChanges();
+			//}
+			if (remotebomdata != null)
+			{
+
+				remotebomdata.DeleteFlag = true;
+				vscm.SaveChanges();
+
+			}
+			if (bomdata != null)
+			{
+
+				bomdata.DeleteFlag = true;
+				obj.SaveChanges();
+
+			}
+			List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == id && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
+
+			foreach (var data1 in itemsforupdate)
+			{
+				double? subtotalprice = 0;
+				subtotalprice = Convert.ToDouble(data1.Qty) * Convert.ToDouble(data1.UnitPrice);
+				if (Convert.ToInt32(data1.Discount) != 0)
+				{
+					double? Discount = subtotalprice - Convert.ToDouble(data1.Discount);
+					subtotalprice = Discount;
+				}
+				if (Convert.ToInt32(data1.DiscountPercentage) != 0)
+				{
+					double? DiscountPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.DiscountPercentage) / 100);
+					subtotalprice = DiscountPercentage;
+				}
+				if (Convert.ToInt32(data1.FreightAmount) != 0)
+				{
+					double? FreightAmount = subtotalprice - Convert.ToDouble(data1.FreightAmount);
+					subtotalprice = FreightAmount;
+				}
+				if (Convert.ToInt32(data1.FreightPercentage) != 0)
+				{
+					double? FreightPercentage = (subtotalprice - subtotalprice * Convert.ToDouble(data1.FreightPercentage) / 100);
+					subtotalprice = FreightPercentage;
+				}
+				if (Convert.ToInt32(data1.PFAmount) != 0)
+				{
+					double? PFAmount = subtotalprice - Convert.ToDouble(data1.PFAmount);
+					subtotalprice = PFAmount;
+				}
+				if (Convert.ToInt32(data1.PFPercentage) != 0)
+				{
+
+					double? PFPercentage = (subtotalprice * Convert.ToDouble(data1.PFPercentage) / 100);
+					subtotalprice += PFPercentage;
+				}
+				totalprice += subtotalprice;
+			}
+			RemoteRFQItemsInfo_N itemsinfo = vscm.RemoteRFQItemsInfo_N.Where(li => li.RFQItemsId == id).FirstOrDefault();
+			if (itemsinfo != null)
+			{
+				itemsinfo.UnitPrice = Convert.ToDecimal(totalprice);
+				vscm.SaveChanges();
+			}
+
+			// vscm.Database.Connection.Close();
+
+			//obj.Database.Connection.Open();
+			var Localdata = obj.RFQItemsInfo_N.Where(x => x.RFQSplitItemId == id && x.DeleteFlag == false).FirstOrDefault();
+			if (Localdata != null)
+			{
+				Localdata.DeleteFlag = true;
+				Localdata.UnitPrice = Convert.ToDecimal(totalprice);
+				obj.SaveChanges();
+			}
+			else
+			{
+
+			}
+			//if (Remotedata == null || Localdata==null)
+			//{
+			//    status.Sid = 0;
+			//}
+			//status.Sid = Localdata.RFQItemsId;
+			return status;
+		}
+		catch (Exception ex)
+		{
+			throw;
+		}
+	}
+
+	public bool checkemail(Changepassword emailId)
+	{
+		bool exists = false;
+		RemoteVendorUserMaster emailidexists = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == emailId.emailid && li.Active == true).FirstOrDefault();
+		if (emailidexists != null)
+		{
+			exists = true;
+		}
+		else
+		{
+			exists = false;
+		}
+		return exists;
+	}
+
+	public bool sendLinkForForgetPassword(forgetpassword model)
+	{
+		try
+		{
 			string token = Guid.NewGuid().ToString();
 			// DateTime expirydateandtime = System.DateTime.Now.AddHours(24);
 			forgetpassword passwordobj = new forgetpassword();
@@ -4505,77 +4601,85 @@ namespace DALayer.RFQ
 			emailobj.FrmEmailId = model.fromemail;
 
 			sendEmail(emailobj);
-			return true;
 		}
-
-		public bool sendMailForgetPassword(forgetpassword model)
+		catch (Exception ex)
 		{
+			log.ErrorMessage("RFQDA", "sendLinkForForgetPassword", ex.Message + "; " + ex.StackTrace.ToString());
 
-			EmailSend emailobj = new EmailSend();
-			emailobj.Subject = "Password Reset Status";
-			//emailobj.Body = "Reset password updated Successfully";
-			emailobj.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear User,</p><p>Your Yokogawa Vendor Portal password has been changed successfully.</p><p>Thank you for partnering with YOKOGAWA INDIA LIMITED.</p><p style='margin-bottom:0px;'>Regards,</p><p>YIL CMM Team.</p></div></body></html>";
-			emailobj.ToEmailId = model.emailid;
-			emailobj.FrmEmailId = model.fromemail;
-			sendEmail(emailobj);
-			return true;
 		}
+		return true;
+	}
 
-		public string Resetpassword(forgetpassword model)
+	public bool sendMailForgetPassword(forgetpassword model)
+	{
+
+		EmailSend emailobj = new EmailSend();
+		emailobj.Subject = "Password Reset Status";
+		//emailobj.Body = "Reset password updated Successfully";
+		emailobj.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear User,</p><p>Your Yokogawa Vendor Portal password has been changed successfully.</p><p>Thank you for partnering with YOKOGAWA INDIA LIMITED.</p><p style='margin-bottom:0px;'>Regards,</p><p>YIL CMM Team.</p></div></body></html>";
+		emailobj.ToEmailId = model.emailid;
+		emailobj.FrmEmailId = model.fromemail;
+		sendEmail(emailobj);
+		return true;
+	}
+
+	public string Resetpassword(forgetpassword model)
+	{
+		string status = "";
+		if (model != null)
 		{
-			string status = "";
-			if (model != null)
+			RemoteForgetPassword tokenvalid = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid && li.TokenUsed == false).FirstOrDefault();
+			if (tokenvalid != null)
 			{
-				RemoteForgetPassword tokenvalid = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid && li.TokenUsed == false).FirstOrDefault();
-				if (tokenvalid != null)
+				if (tokenvalid.ExpirtyDateAndTime >= System.DateTime.Now && tokenvalid.TokenUsed == false)
 				{
-					if (tokenvalid.ExpirtyDateAndTime >= System.DateTime.Now && tokenvalid.TokenUsed == false)
-					{
-						RemoteVendorUserMaster remoteresetpwd = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == model.emailid).FirstOrDefault();
-						remoteresetpwd.pwd = model.ConfirmPassword;
-						vscm.SaveChanges();
-						VendorUserMaster resetpwd = obj.VendorUserMasters.Where(li => li.Vuserid == model.emailid).FirstOrDefault();
-						resetpwd.pwd = model.ConfirmPassword;
-						obj.SaveChanges();
-						tokenvalid.TokenUsed = true;
-						vscm.SaveChanges();
-						status = "Updated Successfully";
-						sendMailForgetPassword(model);
-					}
-
-				}
-			}
-			return status;
-		}
-		public bool CheckLinkExpiryOrNot(forgetpassword model)
-		{
-			bool status = false;
-
-			RemoteForgetPassword tokenvalidcheck = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid).FirstOrDefault();
-			if (tokenvalidcheck != null)
-			{
-				if (tokenvalidcheck.ExpirtyDateAndTime < System.DateTime.Now)
-				{
-					status = true;
-				}
-				else
-				{
-					status = false;
-
+					RemoteVendorUserMaster remoteresetpwd = vscm.RemoteVendorUserMasters.Where(li => li.Vuserid == model.emailid).FirstOrDefault();
+					remoteresetpwd.pwd = model.ConfirmPassword;
+					vscm.SaveChanges();
+					VendorUserMaster resetpwd = obj.VendorUserMasters.Where(li => li.Vuserid == model.emailid).FirstOrDefault();
+					resetpwd.pwd = model.ConfirmPassword;
+					obj.SaveChanges();
+					tokenvalid.TokenUsed = true;
+					vscm.SaveChanges();
+					status = "Updated Successfully";
+					sendMailForgetPassword(model);
 				}
 
 			}
+		}
+		return status;
+	}
+	public bool CheckLinkExpiryOrNot(forgetpassword model)
+	{
+		bool status = false;
 
-			return status;
+		RemoteForgetPassword tokenvalidcheck = vscm.RemoteForgetPasswords.Where(li => li.Token == model.token && li.emailId == model.emailid).FirstOrDefault();
+		if (tokenvalidcheck != null)
+		{
+			if (tokenvalidcheck.ExpirtyDateAndTime < System.DateTime.Now)
+			{
+				status = true;
+			}
+			else
+			{
+				status = false;
+
+			}
+
 		}
 
+		return status;
+	}
 
 
-		public int insertdata(RfqItemModel model)
+
+	public int insertdata(RfqItemModel model)
+	{
+		int spiltitemid = 0;
+		double? totalprice = 0;
+		int RFQItemsId = 0;
+		try
 		{
-			int spiltitemid = 0;
-			double? totalprice = 0;
-			int RFQItemsId = 0;
 			var rfqremoteitem = vscm.RemoteRFQItems_N.Where(x => x.RFQItemsId == model.RFQItemID).FirstOrDefault();
 			rfqremoteitem.HSNCode = model.HSNCode;
 			rfqremoteitem.QuotationQty = model.QuotationQty;
@@ -4848,31 +4952,37 @@ namespace DALayer.RFQ
 
 				}
 			}
-			return 1;
-
 		}
-
-		public bool checkrfqitemexists(int rfqitemsid)
+		catch (Exception ex)
 		{
-			Boolean returndata = false;
-			RemoteRfqVendorBOM obj = vscm.RemoteRfqVendorBOMs.Where(x => x.RfqItemsId == rfqitemsid && x.DeleteFlag == false).FirstOrDefault();
-			if (obj != null)
-			{
-				returndata = true;
-			}
-			return returndata;
+			log.ErrorMessage("RFQDA", "insertdata", ex.Message + "; " + ex.StackTrace.ToString());
 		}
 
-		public class EmailSend
-		{
-			public string FrmEmailId { get; set; }
-			public string ToEmailId { get; set; }
-			public string CC { get; set; }
-			public string Subject { get; set; }
-			public string Body { get; set; }
-			public string BCC { get; set; }
-		}
+		return 1;
+
 	}
+
+	public bool checkrfqitemexists(int rfqitemsid)
+	{
+		Boolean returndata = false;
+		RemoteRfqVendorBOM obj = vscm.RemoteRfqVendorBOMs.Where(x => x.RfqItemsId == rfqitemsid && x.DeleteFlag == false).FirstOrDefault();
+		if (obj != null)
+		{
+			returndata = true;
+		}
+		return returndata;
+	}
+
+	public class EmailSend
+	{
+		public string FrmEmailId { get; set; }
+		public string ToEmailId { get; set; }
+		public string CC { get; set; }
+		public string Subject { get; set; }
+		public string Body { get; set; }
+		public string BCC { get; set; }
+	}
+}
 
 }
 

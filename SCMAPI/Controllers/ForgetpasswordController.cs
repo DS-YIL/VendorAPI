@@ -71,7 +71,8 @@ namespace SCMAPI.Controllers
         public IHttpActionResult UploadFile()
         {
             var httpRequest = HttpContext.Current.Request;
-			var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+			//var serverPath = HttpContext.Current.Server.MapPath("~/VSCMDocs");
+			var serverPath = ConfigurationManager.AppSettings["AttachedDocPath"];
 			string parsedFileName = "";
             var revisionId = httpRequest.Files.AllKeys[0];
             if (httpRequest.Files.Count > 0)

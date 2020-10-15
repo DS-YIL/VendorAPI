@@ -49,11 +49,12 @@ namespace SCMModels
     public class rfqFilterParams
     {
         public string typeOfFilter { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
         public string RFQNo { get; set; }
         public string VendorId { get; set; }
         public string DocumentNo { get; set; }
+		public int StatusId { get; set; }
     }
     //public class DataModel
     //{

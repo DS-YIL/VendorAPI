@@ -11,5 +11,6 @@ namespace DALayer.Emails
 		bool sendQuotemailtoRequestor(int RFQRevisionId);
 		bool sendCommunicationmailtoRequestor(int RFQRevisionId, string Remarks);
 		bool sendMailtoBuyer(int VendorId);
+		bool sendTechNotificationMail(int RFQRevisionId);
 	}
 }

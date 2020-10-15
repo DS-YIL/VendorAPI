@@ -1,5 +1,6 @@
 ﻿using BALayer.RFQ;
 using DALayer.Common;
+using DALayer.Emails;
 using Newtonsoft.Json;
 using SCMModels;
 using SCMModels.MPRMasterModels;
@@ -31,10 +32,12 @@ namespace SCMAPI.Controllers
 	public class RFQController : ApiController
 	{
 		private readonly IRFQBA _rfqBusenessAcess;
+		private readonly IEmailTemplateDA _EmailTemplateDA;
 		private ErrorLog log = new ErrorLog();
-		public RFQController(IRFQBA rfqBA)
+		public RFQController(IRFQBA rfqBA, IEmailTemplateDA IEmailTemplateDA)
 		{
 			this._rfqBusenessAcess = rfqBA;
+			this._EmailTemplateDA = IEmailTemplateDA;
 		}
 
 		[Route("GetItemsByRevisionId/{id}")]
@@ -520,7 +523,7 @@ namespace SCMAPI.Controllers
 			}
 			catch (Exception e)
 			{
-				log.ErrorMessage("VendorRFQController", "UploadFile", e.Message.ToString());
+				log.ErrorMessage("RFQController", "UploadFile", e.Message.ToString());
 			}
 			return Ok(dbfilePath);
 		}
@@ -574,33 +577,33 @@ namespace SCMAPI.Controllers
 		[Route("deleteAttachedDocuments")]
 		public IHttpActionResult deleteattacheddocument(documentDetails model)
 		{
-			var path1 = model.PhysicalPath.Replace("\",\"", "\\");
+			//var path1 = model.PhysicalPath.Replace("\",\"", "\\");
 			var eachobj = new RFQDocument();
-			string[] listofdata = { };
-			string filename = model.PhysicalPath;
+			//string[] listofdata = { };
+			//string filename = model.PhysicalPath;
 
 			//string lastWord = parts[0];
-			string[] path = model.PhysicalPath.Split('\\');
-			string[] parts = path[2].Split('_');
+			//string[] path = model.PhysicalPath.Split('\\');
+			//string[] parts = path[2].Split('_');
 			//listofdata = lastWord.Split(',');
 			//eachobj.Path = ConfigurationManager.AppSettings["AttachedDocPath"] + "\\" + parts[0] + "_" + parts[1] + "\\" + model.PhysicalPath;
-			eachobj.Path = model.PhysicalPath;
-			if (parts[0].Contains("Technical"))
-			{
-				parts[0] = parts[0].Replace("Technical", "");
-				eachobj.DocumentType = 1;
-				eachobj.rfqItemsid = Convert.ToInt32(parts[0]);
-			}
-			else
-			{
-				eachobj.DocumentType = Convert.ToInt32(parts[1]);
-			}
+			//eachobj.Path = model.PhysicalPath;
+			//if (parts[0].Contains("Technical"))
+			//{
+			//	parts[0] = parts[0].Replace("Technical", "");
+			//	eachobj.DocumentType = 1;
+			//	eachobj.rfqItemsid = Convert.ToInt32(parts[0]);
+			//}
+			//else
+			//{
+			//	eachobj.DocumentType = Convert.ToInt32(parts[1]);
+			//}
 
-			eachobj.rfqRevisionId = Convert.ToInt32(parts[0]);
+			//eachobj.rfqRevisionId = Convert.ToInt32(parts[0]);
 			//string uploadedby = parts[2];
-			eachobj.UploadedBy = parts[2];
-			eachobj.DocumentName = path[3];//model.PhysicalPath;
-
+			//eachobj.UploadedBy = parts[2];
+			//eachobj.DocumentName = path[3];//model.PhysicalPath;
+			eachobj.RfqDocId = model.Id;
 			return Ok(this._rfqBusenessAcess.DeletefileAttachedforDocuments(eachobj));
 		}
 		[HttpPost]
@@ -817,8 +820,8 @@ namespace SCMAPI.Controllers
 			return Ok(this._rfqBusenessAcess.changepassword(model));
 		}
 		[HttpGet]
-		[Route("finalsubmitfromVendor/{RFQRevisionId}")]
-		public IHttpActionResult finalsubmitfromVendor(int RFQRevisionId)
+		[Route("finalsubmitfromVendor/{RFQRevisionId}/{updatedby}")]
+		public IHttpActionResult finalsubmitfromVendor(int RFQRevisionId,string updatedby)
 		{
 			VSCMEntities vscm = new VSCMEntities();
 			YSCMEntities obj = new YSCMEntities();
@@ -826,25 +829,50 @@ namespace SCMAPI.Controllers
 
 			//if (check == true)
 			//{
+			try
+			{
+				RemoteRFQStatu statusobj = new RemoteRFQStatu();
+				statusobj.RfqRevisionId = RFQRevisionId;
+				statusobj.StatusId = 8;
+				statusobj.DeleteFlag = false;
+				statusobj.updatedby = updatedby;
+				statusobj.updatedDate = System.DateTime.Now;
+				vscm.RemoteRFQStatus.Add(statusobj);
+				RemoteRFQRevisions_N remoteRfqRevision = vscm.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault();
+				if (remoteRfqRevision != null)
+				{
+					remoteRfqRevision.StatusId = 8;
+				}
+				vscm.SaveChanges();
+				int rfqstatusid = statusobj.RfqStatusId;
+				RFQStatu statusobjs = new RFQStatu();
+				statusobjs.RfqStatusId = rfqstatusid;
+				statusobjs.RfqRevisionId = RFQRevisionId;
+				statusobjs.StatusId = 8;
+				statusobjs.DeleteFlag = false;
+				statusobj.updatedby = updatedby;
+				statusobjs.updatedDate = System.DateTime.Now;
+				obj.RFQStatus.Add(statusobjs);
+				RFQRevisions_N localRfqRevision = obj.RFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault();
+				if (localRfqRevision != null)
+				{
+					localRfqRevision.StatusId = 8;
+				}
+				obj.SaveChanges();
+				check = this._EmailTemplateDA.sendQuotemailtoRequestor(RFQRevisionId);
+				//this._rfqBusenessAcess.sendemailfromvendor(RFQRevisionId);
+				if (vscm.RemoteRFQDocuments.Where(li => li.rfqRevisionId == RFQRevisionId && li.DocumentType == 6).ToList().Count > 0)
+				{
 
-			RemoteRFQStatu statusobj = new RemoteRFQStatu();
-			statusobj.RfqRevisionId = RFQRevisionId;
-			statusobj.StatusId = 8;
-			statusobj.DeleteFlag = false;
-			statusobj.updatedDate = System.DateTime.Now;
-			vscm.RemoteRFQStatus.Add(statusobj);
-			vscm.SaveChanges();
-			int rfqstatusid = statusobj.RfqStatusId;
-			RFQStatu statusobjs = new RFQStatu();
-			statusobjs.RfqStatusId = rfqstatusid;
-			statusobjs.RfqRevisionId = RFQRevisionId;
-			statusobjs.StatusId = 8;
-			statusobjs.DeleteFlag = false;
-			statusobjs.updatedDate = System.DateTime.Now;
-			obj.RFQStatus.Add(statusobjs);
-
-			obj.SaveChanges();
-			check = this._rfqBusenessAcess.sendemailfromvendor(RFQRevisionId);
+					//send notification to mpr Checker,MPR Approver,RFQRequester, Buyer Manager, mpr incharges
+					this._EmailTemplateDA.sendTechNotificationMail(RFQRevisionId);
+				}
+			}
+			catch (Exception e)
+			{
+				log.ErrorMessage("RFQController", "finalsubmitfromVendor", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+				//Log the exception
+			}
 			//  }
 			return Json(check);
 		}
@@ -893,7 +921,7 @@ namespace SCMAPI.Controllers
 			}
 			catch (Exception e)
 			{
-				log.ErrorMessage("VendorRFQController", "uploadfileToScm", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+				log.ErrorMessage("RFQController", "uploadfileToScm", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
 				//Log the exception
 			}
 			return status;
