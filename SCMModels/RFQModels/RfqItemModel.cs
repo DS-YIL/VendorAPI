@@ -39,7 +39,8 @@ namespace SCMModels.RFQModels
         public Nullable<decimal> CGSTAmount { get; set; }
         public Nullable<decimal> SGSTAmount { get; set; }
         public Nullable<bool> taxInclusiveOfDiscount { get; set; }
-        public Nullable<decimal> DiscountAmount { get; set; }
+		public string UpdatedBy { get; set; }
+		public Nullable<decimal> DiscountAmount { get; set; }
         public Nullable<decimal> Discountpercentage { get; set; }
         public Nullable<decimal> NetAmount { get; set; }
         public Nullable<decimal> TotalAmount { get; set; }

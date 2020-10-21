@@ -30,7 +30,7 @@ namespace BALayer.RFQ
 		Task<RfqItemModel> GetItemsByItemId(int id);
 		List<VendormasterModel> GetAllvendorList();	
 		
-		List<RfqItemModel> InsertRfqItemInfo(RfqItemModel model);
+		List<RfqItemModel> InsertOrEditRfqItemInfo(RfqItemModel model);
 		Task<statuscheckmodel> DeleteRfqIteminfoByid(int id, int DeleteRfqIteminfoByid);
 		Task<statuscheckmodel> DeleteRfqitemandinfosById(int id);
 		Task<statuscheckmodel> UpdateRfqItemInfoById(RfqItemInfoModel model);

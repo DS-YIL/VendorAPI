@@ -79,6 +79,18 @@ namespace SCMModels
         public string columnValues { get; set; }
         public string VUniqueId { get; set; }
         public string UserName { get; set; }
-    }
+		public bool isRegister { get; set; }
+
+	}
+
+	public class EmailSend
+	{
+		public string FrmEmailId { get; set; }
+		public string ToEmailId { get; set; }
+		public string CC { get; set; }
+		public string BCC { get; set; }
+		public string Subject { get; set; }
+		public string Body { get; set; }
+	}
 
 }

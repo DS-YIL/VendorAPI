@@ -10,7 +10,7 @@ namespace DALayer.Common
 		public void ErrorMessage(string controllername, string methodname, string exception)
 		{
 			VSCMEntities DB = new VSCMEntities();
-			string query = "insert into dbo.ApiErrorLog(ControllerName,MethodName,ExceptionMsg,OccuredDate,URL)values('" + controllername+"', '"+methodname+"', '"+exception+ "','"+ DateTime.Now + "','" + HttpContext.Current.Request.Url + "')";
+			string query = "insert into dbo.RemoteApiErrorLog(ControllerName,MethodName,ExceptionMsg,OccuredDate,URL)values('" + controllername+"', '"+methodname+"', '"+exception+ "','"+ DateTime.Now + "','" + HttpContext.Current.Request.Url + "')";
 			SqlConnection con = new SqlConnection(DB.Database.Connection.ConnectionString);
 			SqlCommand cmd = new SqlCommand(query, con);
 			con.Open();

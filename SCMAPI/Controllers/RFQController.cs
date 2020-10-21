@@ -209,13 +209,13 @@ namespace SCMAPI.Controllers
 			return Ok(await _rfqBusenessAcess.GetRfqDetailsById(RevisionId));
 		}
 
-		[Route("InsertRfqItemInfo")]
+		[Route("InsertOrEditRfqItemInfo")]
 		[ResponseType(typeof(statuscheckmodel))]
-		public IHttpActionResult InsertRfqItemInfo(RfqItemModel model)
+		public IHttpActionResult InsertOrEditRfqItemInfo(RfqItemModel model)
 		{
 			statuscheckmodel status = new statuscheckmodel();
 
-			return Json(this._rfqBusenessAcess.InsertRfqItemInfo(model));
+			return Json(this._rfqBusenessAcess.InsertOrEditRfqItemInfo(model));
 		}
 		[Route("editRfqItemInfo")]
 		[ResponseType(typeof(statuscheckmodel))]
@@ -747,6 +747,7 @@ namespace SCMAPI.Controllers
 		[Route("Vendordetails")]
 		public IHttpActionResult GetResource1()
 		{
+			VSCMEntities vscm = new VSCMEntities();
 			var identity = (ClaimsIdentity)User.Identity;
 			var VendorId = identity.Claims
 					  .FirstOrDefault(c => c.Type == "VendorId").Value;
@@ -761,6 +762,10 @@ namespace SCMAPI.Controllers
 			eachobj.vendorId = Convert.ToInt32(VendorId);
 			eachobj.VUniqueId = Vuniqueid;
 			eachobj.VendorCode = VendorCode;
+			if (vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == eachobj.vendorId).FirstOrDefault() != null)
+				eachobj.isRegister = true;
+			else
+				eachobj.isRegister = false;
 			listobj.Add(eachobj);
 			return Ok(eachobj);
 		}
@@ -821,7 +826,7 @@ namespace SCMAPI.Controllers
 		}
 		[HttpGet]
 		[Route("finalsubmitfromVendor/{RFQRevisionId}/{updatedby}")]
-		public IHttpActionResult finalsubmitfromVendor(int RFQRevisionId,string updatedby)
+		public IHttpActionResult finalsubmitfromVendor(int RFQRevisionId, string updatedby)
 		{
 			VSCMEntities vscm = new VSCMEntities();
 			YSCMEntities obj = new YSCMEntities();

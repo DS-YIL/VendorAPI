@@ -96,9 +96,9 @@ namespace BALayer.RFQ
         {
             return await _rfqDataAcess.GetRfqDetailsById(revisionId);
         }
-        public List<RfqItemModel> InsertRfqItemInfo(RfqItemModel model)
+        public List<RfqItemModel> InsertOrEditRfqItemInfo(RfqItemModel model)
         {
-            return  _rfqDataAcess.InsertRfqItemInfo(model);
+            return  _rfqDataAcess.InsertOrEditRfqItemInfo(model);
         }
 
         public async Task<statuscheckmodel> DeleteRfqIteminfoByid(int id,int rfqitemid)

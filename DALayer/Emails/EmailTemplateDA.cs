@@ -8,6 +8,7 @@ using System.Text;
 using SCMModels.RemoteModel;
 using DALayer.Common;
 using System.Collections.Generic;
+using SCMModels;
 
 namespace DALayer.Emails
 {
@@ -243,13 +244,5 @@ namespace DALayer.Emails
 		}
 	}
 
-	public class EmailSend
-	{
-		public string FrmEmailId { get; set; }
-		public string ToEmailId { get; set; }
-		public string CC { get; set; }
-		public string BCC { get; set; }
-		public string Subject { get; set; }
-		public string Body { get; set; }
-	}
+
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SCMModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace DALayer.Emails
 		bool sendCommunicationmailtoRequestor(int RFQRevisionId, string Remarks);
 		bool sendMailtoBuyer(int VendorId);
 		bool sendTechNotificationMail(int RFQRevisionId);
+		bool sendEmail(EmailSend emailobj);
 	}
 }

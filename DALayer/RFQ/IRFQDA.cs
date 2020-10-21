@@ -33,7 +33,7 @@ namespace DALayer.RFQ
 		Task<RfqItemModel> GetItemsByItemId(int id);
 		List<VendormasterModel> GetAllvendorList();
 
-		List<RfqItemModel> InsertRfqItemInfo(RfqItemModel model);
+		List<RfqItemModel> InsertOrEditRfqItemInfo(RfqItemModel model);
 		List<RfqItemModel> editRfqItemInfo(RfqItemModel model);
 		Task<statuscheckmodel> DeleteRfqIteminfoByid(int id, int rfqitemid);
 		Task<statuscheckmodel> DeleteRfqIteminfoByidformultiple(int id, int BOMid);
