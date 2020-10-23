@@ -86,10 +86,10 @@ namespace DALayer.RFQ
 		List<DocumentType> DocumentMasterList();
 		List<RemoteVendorRegisterDocumentDetail> InsertDocuments(List<documentDetails> obj);
 		bool DeletefileAttached(documentDetails model);
-		List<RFQTerms> GetTermMaster(int rfqrevisionId);
-		List<RFQTerms> UpdateVendorTerms(List<RFQTerms> obj);
-		List<DocumentTypeMaster> GetMasterDocumentTypeList();
-		string UpdateVendorCommunication(VendorCommunicaton model);
+		List<RemoteRfqTerm> GetTermMaster(int rfqrevisionId);
+		List<RemoteRfqTerm> UpdateVendorTerms(List<RemoteRfqTerm> obj);
+		List<RemoteDocumentTypeMaster> GetMasterDocumentTypeList();
+		List<RemoteRFQCommunication> UpdateVendorCommunication(VendorCommunicaton model);
 		bool DeletefileAttachedforDocuments(RFQDocument obj);
 		List<VendorCommunicaton> GetVendorCommunicationForRFQRevId(int RFQRevisionId);
 		List<RFQTerms> GetTermsByRfqRevisionId(int RfqRevisionId);
@@ -104,5 +104,7 @@ namespace DALayer.RFQ
 		string Resetpassword(forgetpassword model);
 		bool CheckLinkExpiryOrNot(forgetpassword model);
 		bool checkrfqitemexists(int rfqitemsid);
+
+		DataTable getDBMastersList(DynamicSearchResult Result);
 	}
 }

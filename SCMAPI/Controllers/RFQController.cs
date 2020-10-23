@@ -629,7 +629,7 @@ namespace SCMAPI.Controllers
 		}
 		[HttpPost]
 		[Route("RFQTermUpdate")]
-		public IHttpActionResult UpdateVendorTerms(List<RFQTerms> obj)
+		public IHttpActionResult UpdateVendorTerms(List<RemoteRfqTerm> obj)
 		{
 
 			return Json(this._rfqBusenessAcess.UpdateVendorTerms(obj));
@@ -886,6 +886,13 @@ namespace SCMAPI.Controllers
 		public IHttpActionResult checkrfqitemsid(int rfqitemsid)
 		{
 			return Ok(this._rfqBusenessAcess.checkrfqitemexists(rfqitemsid));
+		}
+
+		[HttpPost]
+		[Route("getDBMastersList")]
+		public IHttpActionResult getDBMastersList([FromBody] DynamicSearchResult Result)
+		{
+			return Ok(this._rfqBusenessAcess.getDBMastersList(Result));
 		}
 
 		public bool uploadfileToScm(HttpRequest request, string method)

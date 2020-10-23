@@ -345,25 +345,25 @@ namespace BALayer.RFQ
            // throw new NotImplementedException();
         }
 
-        public List<RFQTerms> GetTermMaster(int rfqrevisionId)
+        public List<RemoteRfqTerm> GetTermMaster(int rfqrevisionId)
         {
             return _rfqDataAcess.GetTermMaster(rfqrevisionId);
             //throw new NotImplementedException();
         }
 
-        public List<RFQTerms> UpdateVendorTerms(List<RFQTerms> obj)
+        public List<RemoteRfqTerm> UpdateVendorTerms(List<RemoteRfqTerm> obj)
         {
             return _rfqDataAcess.UpdateVendorTerms(obj);
            // throw new NotImplementedException();
         }
 
-        public List<DocumentTypeMaster> GetMasterDocumentTypeList()
+        public List<RemoteDocumentTypeMaster> GetMasterDocumentTypeList()
         {
             return _rfqDataAcess.GetMasterDocumentTypeList();
             //throw new NotImplementedException();
         }
 
-        public string UpdateVendorCommunication(VendorCommunicaton model)
+        public List<RemoteRFQCommunication> UpdateVendorCommunication(VendorCommunicaton model)
         {
             return _rfqDataAcess.UpdateVendorCommunication(model);
            // throw new NotImplementedException();
@@ -445,10 +445,15 @@ namespace BALayer.RFQ
             return this._rfqDataAcess.checkrfqitemexists(rfqitemsid);
         }
 
+		public DataTable getDBMastersList(DynamicSearchResult Result)
+		{
+			return this._rfqDataAcess.getDBMastersList(Result);
 
-        //public List<RfqDocumentsModel> InsertDocumentTOYSCM(RfqDocumentsModel model)
-        //{
-        //    throw new NotImplementedException();
-        //}
-    }
+		}
+
+		//public List<RfqDocumentsModel> InsertDocumentTOYSCM(RfqDocumentsModel model)
+		//{
+		//    throw new NotImplementedException();
+		//}
+	}
 }

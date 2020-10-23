@@ -1577,15 +1577,32 @@ namespace DALayer.RFQ
 		public async Task<RemoteRFQRevisions_N> GetRfqDetailsById(int revisionId)
 		{
 			//obj.Configuration.ProxyCreationEnabled = false;
-			RemoteRFQRevisions_N rev = vscm.RemoteRFQRevisions_N.Include(x => x.RemoteRFQItems_N).Where(li => li.rfqRevisionId == revisionId && li.DeleteFlag == false).FirstOrDefault();
-			rev.RemoteRFQItems_N = rev.RemoteRFQItems_N.Where(li => li.DeleteFlag != true).ToList();
-			foreach (RemoteRFQItems_N item in rev.RemoteRFQItems_N)
+			RemoteRFQRevisions_N rev = new RemoteRFQRevisions_N();
+			try
 			{
-				item.RemoteRFQItemsInfo_N = item.RemoteRFQItemsInfo_N.Where(li => li.DeleteFlag != true).ToList();
-				item.RemoteRFQDocuments = vscm.RemoteRFQDocuments.Where(li => li.rfqItemsid == item.RFQItemsId && li.rfqRevisionId == rev.RevisionNo && li.DocumentType == 1).ToList();
-				item.RemoteRFQDocuments = item.RemoteRFQDocuments.Where(li => li.DeleteFlag == false).ToList();
-				item.RemoteRfqVendorBOMs = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == item.RFQItemsId).ToList();
-				item.RemoteRfqVendorBOMs = item.RemoteRfqVendorBOMs.Where(li => li.DeleteFlag != true).ToList();
+				rev = vscm.RemoteRFQRevisions_N.Include(x => x.RemoteRFQItems_N).Include(x => x.RemoteRFQDocuments).Where(li => li.rfqRevisionId == revisionId && li.DeleteFlag == false).FirstOrDefault();
+				rev.RemoteRFQItems_N = rev.RemoteRFQItems_N.Where(li => li.DeleteFlag != true).ToList();
+				rev.RemoteRFQDocuments = rev.RemoteRFQDocuments.Where(li => li.DocumentType != 1 && li.DeleteFlag == false && li.rfqItemsid == null).ToList();
+				rev.RemoteRFQMaster.RemoteRFQCommunications = rev.RemoteRFQMaster.RemoteRFQCommunications.OrderByDescending(li => li.RemarksDate).ToList();
+				foreach (RemoteRFQCommunication item in rev.RemoteRFQMaster.RemoteRFQCommunications)
+				{
+					item.Employee = obj.VendorEmployeeViews.Where(li => li.EmployeeNo == item.RemarksFrom).FirstOrDefault();
+				}
+
+				foreach (RemoteRFQItems_N item in rev.RemoteRFQItems_N)
+				{
+					item.RemoteRFQItemsInfo_N = item.RemoteRFQItemsInfo_N.Where(li => li.DeleteFlag != true).ToList();
+					item.RemoteRFQDocuments = item.RemoteRFQDocuments.Where(li => li.DeleteFlag == false).ToList();
+					item.RemoteRfqVendorBOMs = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == item.RFQItemsId).ToList();
+					item.RemoteRfqVendorBOMs = item.RemoteRfqVendorBOMs.Where(li => li.DeleteFlag != true).ToList();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("RFQDA", "GetRfqDetailsById", ex.Message + "; " + ex.StackTrace.ToString());
+
+
 			}
 
 			//foreach (RemoteRFQItems_N item in rev.RemoteRFQItems_N)
@@ -3883,110 +3900,43 @@ namespace DALayer.RFQ
 			return deletestatus;
 		}
 
-		public List<RFQTerms> GetTermMaster(int rfqrevisionId)
+		public List<RemoteRfqTerm> GetTermMaster(int rfqrevisionId)
 		{
-			RFQTerms _stateEachItem = null;
-			List<RFQTerms> _listItem = new List<RFQTerms>();
-			var data = vscm.RemoteRfqTerms.Where(o => o.DeleteFlag != true && o.RfqRevisionId == rfqrevisionId).ToList();
-			foreach (var info in data)
-			{
-				_stateEachItem = new RFQTerms();
-				_stateEachItem.VRfqTermsid = info.VRfqTermsid;
-				_stateEachItem.Terms = info.Terms.Trim();
-				_listItem.Add(_stateEachItem);
+			return vscm.RemoteRfqTerms.Where(o => o.DeleteFlag != true && o.RfqRevisionId == rfqrevisionId).ToList();
 
-			}
-			return _listItem;
-			//throw new NotImplementedException();
 		}
 
-		public List<RFQTerms> UpdateVendorTerms(List<RFQTerms> model)
+		public List<RemoteRfqTerm> UpdateVendorTerms(List<RemoteRfqTerm> model)
 		{
-
-			List<RFQTerms> listobj = new List<RFQTerms>();
-			RFQTerms eachobj = new RFQTerms();
+			int rfqrevisionId = model[0].RfqRevisionId;
 			foreach (var item in model)
 			{
 				RemoteRfqTerm remotedataforupdateterm = vscm.RemoteRfqTerms.Where(li => li.VRfqTermsid == item.VRfqTermsid).FirstOrDefault();
 				if (remotedataforupdateterm != null)
 				{
 					remotedataforupdateterm.VendorResponse = item.VendorResponse;
-					remotedataforupdateterm.Remarks = item.remarks;
-					//vscm.RemoteRfqTerms.Add(remotedataforupdateterm);
+					remotedataforupdateterm.Remarks = item.Remarks;
 					vscm.SaveChanges();
-
 				}
-
-
-				//RemoteRFQStatus rfqstatus = vscm.RemoteRFQStatus();
-
-				//else
-				//{
-				//    RemoteRfqTerm rfqtermsadd = new RemoteRfqTerm();
-				//    rfqtermsadd.VendorResponse = item.VendorResponse;
-				//    rfqtermsadd.Remarks = item.remarks;
-				//    vscm.RemoteRfqTerms.Add(rfqtermsadd);
-				//    vscm.SaveChanges();
-				//}
 			}
-
-
-			foreach (var items in model)
-			{
-				RFQTerm remotedataforupdatetermYSCM = obj.RFQTerms.Where(li => li.RfqTermsid == items.VRfqTermsid).FirstOrDefault();
-				if (remotedataforupdatetermYSCM != null)
-				{
-					remotedataforupdatetermYSCM.VendorResponse = items.VendorResponse;
-					remotedataforupdatetermYSCM.Remarks = items.remarks;
-					//vscm.RemoteRfqTerms.Add(remotedataforupdateterm);
-					obj.SaveChanges();
-					eachobj.errmsg = "OK";
-					listobj.Add(eachobj);
-				}
-				//    else
-				//    {
-				//        RFQTerm rfqtermsaddyscm = new RFQTerm();
-				//        rfqtermsaddyscm.VendorResponse = items.VendorResponse;
-				//        rfqtermsaddyscm.Remarks = items.remarks;
-				//    //rfqtermsaddyscm.RFQrevisionId=
-				//        obj.RFQTerms.Add(rfqtermsaddyscm);
-				//        obj.SaveChanges();
-				//    eachobj.errmsg = "OK";
-				//    listobj.Add(eachobj);
-				//}
-
-			}
-			//if (model != null)
-			//{
-
-			//}
-
-			return listobj;
-			// throw new NotImplementedException();
+			return vscm.RemoteRfqTerms.Where(o => o.DeleteFlag != true && o.RfqRevisionId == rfqrevisionId).ToList();
 		}
 
 
-		public List<DocumentTypeMaster> GetMasterDocumentTypeList()
+		public List<RemoteDocumentTypeMaster> GetMasterDocumentTypeList()
 		{
 
 			DocumentTypeMaster _Documenteachitem = null;
 			List<DocumentTypeMaster> _listItem = new List<DocumentTypeMaster>();
-			var data = vscm.RemoteDocumentTypeMasters.Where(o => o.IsActive == true && o.UsedBYVendor == true).ToList();
-			foreach (var info in data)
-			{
-				_Documenteachitem = new DocumentTypeMaster();
-				_Documenteachitem.DocumenTypeId = info.DocumenTypeId;
-				_Documenteachitem.DocumentTypeName = info.DocumentTypeName;
-				_listItem.Add(_Documenteachitem);
+			return vscm.RemoteDocumentTypeMasters.Where(o => o.IsActive == true).ToList();
 
-			}
-			return _listItem;
-			// throw new NotImplementedException();
 		}
 
-		public string UpdateVendorCommunication(VendorCommunicaton model)
+		public List<RemoteRFQCommunication> UpdateVendorCommunication(VendorCommunicaton model)
 		{
 			string msg = "";
+			int RfqMasterId = vscm.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == model.RfqRevisionId).FirstOrDefault().rfqMasterId;
+
 			try
 			{
 				if (model != null)
@@ -3999,6 +3949,7 @@ namespace DALayer.RFQ
 					remotedataforvendorcomm.RemarksDate = System.DateTime.Now;
 					remotedataforvendorcomm.RfqItemsId = model.RfqItemsId;
 					remotedataforvendorcomm.RfqRevisionId = model.RfqRevisionId;
+					remotedataforvendorcomm.RfqMasterId = RfqMasterId;
 					remotedataforvendorcomm.RemarksFrom = model.RemarksFrom;
 					vscm.RemoteRFQCommunications.Add(remotedataforvendorcomm);
 					vscm.SaveChanges();
@@ -4009,12 +3960,14 @@ namespace DALayer.RFQ
 					remotedataforvendorcommyscm.RemarksDate = System.DateTime.Now;
 					remotedataforvendorcommyscm.RfqItemsId = model.RfqItemsId;
 					remotedataforvendorcommyscm.RfqRevisionId = model.RfqRevisionId;
+					remotedataforvendorcommyscm.RfqMasterId = RfqMasterId;
 					remotedataforvendorcommyscm.RemarksFrom = model.RemarksFrom;
 					remotedataforvendorcommyscm.RfqCCid = rfqccid;
 					obj.RFQCommunications.Add(remotedataforvendorcommyscm);
 					obj.SaveChanges();
-					emailTemplateDA.sendCommunicationmailtoRequestor(model.RfqRevisionId, model.Remarks);
 					msg = "OK";
+					emailTemplateDA.sendCommunicationmailtoRequestor(model.RfqRevisionId, model.Remarks);
+
 
 
 				}
@@ -4024,7 +3977,12 @@ namespace DALayer.RFQ
 				log.ErrorMessage("RFQDA", "UpdateVendorCommunication", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 
-			return msg;
+			List<RemoteRFQCommunication> RemoteRFQCommunications = vscm.RemoteRFQCommunications.Where(li => li.RfqMasterId == RfqMasterId).ToList();
+			foreach (RemoteRFQCommunication item in RemoteRFQCommunications)
+			{
+				item.Employee = obj.VendorEmployeeViews.Where(li => li.EmployeeNo == item.RemarksFrom).FirstOrDefault();
+			}
+			return RemoteRFQCommunications;
 
 			// throw new NotImplementedException();
 		}
@@ -4784,6 +4742,39 @@ namespace DALayer.RFQ
 				returndata = true;
 			}
 			return returndata;
+		}
+
+		/*Name of Function : <<getDBMastersList>>  Author :<<Prasanna>>  
+	    Date of Creation <<22-10-2020>>
+	    Purpose : <<get table data dynamically by passing query as parameter>>
+	    Review Date :<<>>   Reviewed By :<<>>*/
+		public DataTable getDBMastersList(DynamicSearchResult Result)
+		{
+			Result.connectionString = obj.Database.Connection.ConnectionString;
+			DataTable dtDBMastersList = new DataTable();
+			string query = "";
+			if (!string.IsNullOrEmpty(Result.tableName))
+			{
+				query = "select * from " + Result.tableName;
+				if (Result.sortBy != null)
+				{
+					query += " order by " + Result.sortBy;
+				}
+			}
+			else if (Result.query != "")
+			{
+				query = Result.query;
+			}
+
+			SqlConnection con = new SqlConnection(obj.Database.Connection.ConnectionString);
+			SqlCommand cmd = new SqlCommand(query, con);
+			con.Open();
+			SqlDataAdapter da = new SqlDataAdapter(cmd);
+			da.Fill(dtDBMastersList);
+			con.Close();
+			da.Dispose();
+
+			return dtDBMastersList;
 		}
 
 
