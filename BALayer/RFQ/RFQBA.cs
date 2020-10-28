@@ -445,6 +445,11 @@ namespace BALayer.RFQ
             return this._rfqDataAcess.checkrfqitemexists(rfqitemsid);
         }
 
+		public bool rfqStatusUpdate(RFQStatu rfqStatus)
+		{
+			return this._rfqDataAcess.rfqStatusUpdate(rfqStatus);
+		}
+
 		public DataTable getDBMastersList(DynamicSearchResult Result)
 		{
 			return this._rfqDataAcess.getDBMastersList(Result);

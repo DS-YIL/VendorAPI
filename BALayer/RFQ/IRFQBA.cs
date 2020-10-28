@@ -101,6 +101,7 @@ namespace BALayer.RFQ
 		bool CheckLinkExpiryOrNot(forgetpassword model);
 		bool checkrfqitemexists(int rfqitemsid);
 		DataTable getDBMastersList(DynamicSearchResult Result);
+		bool rfqStatusUpdate(RFQStatu rfqstatus);
 	}
 
 }

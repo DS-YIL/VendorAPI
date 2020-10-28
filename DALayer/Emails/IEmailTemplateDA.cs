@@ -10,6 +10,7 @@ namespace DALayer.Emails
 	public interface IEmailTemplateDA
 	{
 		bool sendQuotemailtoRequestor(int RFQRevisionId);
+		bool sendSatustoRequestor(int RFQRevisionId, string StatusTxt, string Remarks);
 		bool sendCommunicationmailtoRequestor(int RFQRevisionId, string Remarks);
 		bool sendMailtoBuyer(int VendorId);
 		bool sendTechNotificationMail(int RFQRevisionId);

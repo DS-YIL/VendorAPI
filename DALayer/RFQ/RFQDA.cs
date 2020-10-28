@@ -1584,6 +1584,7 @@ namespace DALayer.RFQ
 				rev.RemoteRFQItems_N = rev.RemoteRFQItems_N.Where(li => li.DeleteFlag != true).ToList();
 				rev.RemoteRFQDocuments = rev.RemoteRFQDocuments.Where(li => li.DocumentType != 1 && li.DeleteFlag == false && li.rfqItemsid == null).ToList();
 				rev.RemoteRFQMaster.RemoteRFQCommunications = rev.RemoteRFQMaster.RemoteRFQCommunications.OrderByDescending(li => li.RemarksDate).ToList();
+				rev.RFQStatusTrackDetails = obj.RFQStatusTrackDetails.Where(li => li.RfqMasterId == rev.rfqMasterId).ToList();
 				foreach (RemoteRFQCommunication item in rev.RemoteRFQMaster.RemoteRFQCommunications)
 				{
 					item.Employee = obj.VendorEmployeeViews.Where(li => li.EmployeeNo == item.RemarksFrom).FirstOrDefault();
@@ -3918,6 +3919,13 @@ namespace DALayer.RFQ
 					remotedataforupdateterm.Remarks = item.Remarks;
 					vscm.SaveChanges();
 				}
+				RFQTerm terms = obj.RFQTerms.Where(li => li.RfqTermsid == item.VRfqTermsid).FirstOrDefault();
+				if (terms != null)
+				{
+					terms.VendorResponse = item.VendorResponse;
+					terms.Remarks = item.Remarks;
+					obj.SaveChanges();
+				}
 			}
 			return vscm.RemoteRfqTerms.Where(o => o.DeleteFlag != true && o.RfqRevisionId == rfqrevisionId).ToList();
 		}
@@ -4731,6 +4739,67 @@ namespace DALayer.RFQ
 
 			return 1;
 
+		}
+
+
+		/*Name of Function : <<rfqStatusUpdate>>  Author :<<Prasanna>>  
+		Date of Creation <<28-10-2020>>
+		Purpose : <<Update Rfq status in both vscm and yscm rfq status tables>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		public bool rfqStatusUpdate(RFQStatu rfqStatus)
+		{
+			try
+			{
+				int RfqMasterId = vscm.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == rfqStatus.RfqRevisionId).FirstOrDefault().rfqMasterId;
+
+				RemoteRFQStatu statusobj = new RemoteRFQStatu();
+				statusobj.RfqRevisionId = rfqStatus.RfqRevisionId;
+				statusobj.RfqMasterId = RfqMasterId;
+				statusobj.StatusId = rfqStatus.StatusId;
+				statusobj.Remarks = rfqStatus.Remarks;
+				statusobj.DeleteFlag = false;
+				statusobj.updatedby = rfqStatus.updatedby;
+				statusobj.updatedDate = System.DateTime.Now;
+				vscm.RemoteRFQStatus.Add(statusobj);
+				RemoteRFQRevisions_N remoteRfqRevision = vscm.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == rfqStatus.RfqRevisionId).FirstOrDefault();
+				if (remoteRfqRevision != null)
+				{
+					remoteRfqRevision.StatusId = Convert.ToByte(rfqStatus.StatusId);
+				}
+
+				vscm.SaveChanges();
+
+				int rfqstatusid = statusobj.RfqStatusId;
+				RFQStatu statusobjs = new RFQStatu();
+				statusobjs.RfqStatusId = rfqstatusid;
+				statusobjs.RfqRevisionId = rfqStatus.RfqRevisionId;
+				statusobjs.RfqMasterId = RfqMasterId;
+				statusobjs.StatusId = rfqStatus.StatusId;
+				statusobjs.Remarks = rfqStatus.Remarks;
+				statusobjs.DeleteFlag = false;
+				statusobjs.updatedby = rfqStatus.updatedby;
+				statusobjs.updatedDate = System.DateTime.Now;
+				obj.RFQStatus.Add(statusobjs);
+				RFQRevisions_N localRfqRevision = obj.RFQRevisions_N.Where(li => li.rfqRevisionId == rfqStatus.RfqRevisionId).FirstOrDefault();
+				if (localRfqRevision != null)
+				{
+					localRfqRevision.StatusId = Convert.ToByte(rfqStatus.StatusId);
+				}
+				obj.SaveChanges();
+				string StatusTxt = "";
+				if (rfqStatus.StatusId == 26)
+					StatusTxt = "Acknowledged";
+				else
+					StatusTxt = "Regretted";
+				this.emailTemplateDA.sendSatustoRequestor(rfqStatus.RfqRevisionId, StatusTxt, rfqStatus.Remarks);
+			}
+			catch (Exception e)
+			{
+
+				log.ErrorMessage("RFQDA", "rfqStatusUpdate", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+
+			}
+			return true;
 		}
 
 		public bool checkrfqitemexists(int rfqitemsid)

@@ -24,6 +24,8 @@ namespace DALayer.Emails
 				var db = new YSCMEntities();
 				RemoteRFQRevisions_N rfqrevisiondetails = yscmobj.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RemoteRFQRevisions_N>();
 				RemoteRFQMaster rfqmasterDetails = yscmobj.RemoteRFQMasters.Where(li => li.RfqMasterId == rfqrevisiondetails.rfqMasterId).FirstOrDefault<RemoteRFQMaster>();
+				RemoteVendorMaster vendor = yscmobj.RemoteVendorMasters.Where(li => li.Vendorid == rfqmasterDetails.VendorId).FirstOrDefault();
+
 				var fromMail = ConfigurationManager.AppSettings["fromemail"];
 				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
 				mpripaddress = mpripaddress + "SCM/MPRForm/" + rfqmasterDetails.MPRRevisionId + "";
@@ -35,7 +37,7 @@ namespace DALayer.Emails
 				EmailSend emlSndngList = new EmailSend();
 				emlSndngList.Subject = "Vendor Responded to RFQNumber: " + rfqmasterDetails.RFQNo + " for " + mprDocNo;// + mprrevisionDetail.RemoteRFQMaster.RFQNo;
 
-				emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear Sir,</p><p>Quote has been submitted for:" + rfqmasterDetails.RFQNo + "</p><br/><div><b  style='color:#40bfbf;'>TO View MPR: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'>TO View RFQ: <a href='" + rfqipaddress + "'>" + rfqipaddress + "</a></b><p style = 'margin-bottom:0px;' ><br/> Regards,</p><p> Vendor Team.</p></div></body></html>";
+				emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear Sir,</p><p>Quote has been submitted for: " + rfqmasterDetails.RFQNo + "</p><br/><div><b  style='color:#40bfbf;'>TO View MPR: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'>TO View RFQ: <a href='" + rfqipaddress + "'>" + rfqipaddress + "</a></b><p style = 'margin-bottom:0px;' ><br/> Regards,</p><p> <b>" + vendor.VendorName + " - " + vendor.VendorCode + "</b></p></div></body></html>";
 				Employee Email = db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>();
 				emlSndngList.FrmEmailId = fromMail;
 				var toEMail = Convert.ToString(rfqrevisiondetails.CreatedBy);
@@ -54,6 +56,49 @@ namespace DALayer.Emails
 			return true;
 		}
 
+		/*Name of Function : <<Technical clearance mail to CMM>>  Author :<<Prasanna>>  
+		  Date of Creation <<09-10-2020>>
+		  Purpose : <<Sending mail method>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		public bool sendSatustoRequestor(int RFQRevisionId, string StatusTxt, string Remarks)
+		{
+			try
+			{
+				VSCMEntities yscmobj = new VSCMEntities();
+				var db = new YSCMEntities();
+				RemoteRFQRevisions_N rfqrevisiondetails = yscmobj.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault<RemoteRFQRevisions_N>();
+				RemoteRFQMaster rfqmasterDetails = yscmobj.RemoteRFQMasters.Where(li => li.RfqMasterId == rfqrevisiondetails.rfqMasterId).FirstOrDefault<RemoteRFQMaster>();
+				RemoteVendorMaster vendor = yscmobj.RemoteVendorMasters.Where(li => li.Vendorid == rfqmasterDetails.VendorId).FirstOrDefault();
+
+				var fromMail = ConfigurationManager.AppSettings["fromemail"];
+				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+				mpripaddress = mpripaddress + "SCM/MPRForm/" + rfqmasterDetails.MPRRevisionId + "";
+				var rfqipaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+				rfqipaddress = rfqipaddress + "SCM/VendorQuoteView/" + rfqrevisiondetails.rfqRevisionId + "";
+				var requestionId = db.MPRRevisions.Where(li => li.RevisionId == rfqmasterDetails.MPRRevisionId).FirstOrDefault().RequisitionId;
+				var mprDocNo = db.MPRDetails.Where(li => li.RequisitionId == requestionId).FirstOrDefault().DocumentNo;
+
+				EmailSend emlSndngList = new EmailSend();
+				emlSndngList.Subject = "Vendor " + StatusTxt + " to RFQNumber: " + rfqmasterDetails.RFQNo + " for " + mprDocNo;// + mprrevisionDetail.RemoteRFQMaster.RFQNo;
+
+				emlSndngList.Body = "<html><meta charset=\"ISO-8859-1\"><head><link rel ='stylesheet' href ='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'></head><body><div class='container'><p>Dear Sir,</p><p>" + Remarks + "</p><br/><div><b  style='color:#40bfbf;'>TO View MPR: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'>TO View RFQ: <a href='" + rfqipaddress + "'>" + rfqipaddress + "</a></b><p style = 'margin-bottom:0px;' ><br/> Regards,</p><p> <b>" + vendor.VendorName + " - " + vendor.VendorCode + "</b></p></div></body></html>";
+				Employee Email = db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>();
+				emlSndngList.FrmEmailId = fromMail;
+				var toEMail = Convert.ToString(rfqrevisiondetails.CreatedBy);
+				emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == toEMail).FirstOrDefault<Employee>()).EMail;
+				emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
+
+				this.sendEmail(emlSndngList);
+
+
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("EmailTemplate", "sendSatustoRequestor", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
+		}
 		/*Name of Function : <<Technical clearance mail to CMM>>  Author :<<Prasanna>>  
 		  Date of Creation <<09-10-2020>>
 		  Purpose : <<Sending mail method>>
@@ -94,7 +139,7 @@ namespace DALayer.Emails
 				{
 					foreach (var item in mprincharges)
 					{
-						ToEmails += ","+(db.Employees.Where(li => li.EmployeeNo == item.Incharge).FirstOrDefault<Employee>()).EMail;
+						ToEmails += "," + (db.Employees.Where(li => li.EmployeeNo == item.Incharge).FirstOrDefault<Employee>()).EMail;
 					}
 				}
 				emlSndngList.ToEmailId = ToEmails;

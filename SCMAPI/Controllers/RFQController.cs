@@ -831,6 +831,7 @@ namespace SCMAPI.Controllers
 			VSCMEntities vscm = new VSCMEntities();
 			YSCMEntities obj = new YSCMEntities();
 			Boolean check = false;
+			int RfqMasterId = vscm.RemoteRFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault().rfqMasterId;
 
 			//if (check == true)
 			//{
@@ -838,6 +839,7 @@ namespace SCMAPI.Controllers
 			{
 				RemoteRFQStatu statusobj = new RemoteRFQStatu();
 				statusobj.RfqRevisionId = RFQRevisionId;
+				statusobj.RfqMasterId = RfqMasterId;			
 				statusobj.StatusId = 8;
 				statusobj.DeleteFlag = false;
 				statusobj.updatedby = updatedby;
@@ -848,14 +850,16 @@ namespace SCMAPI.Controllers
 				{
 					remoteRfqRevision.StatusId = 8;
 				}
+
 				vscm.SaveChanges();
 				int rfqstatusid = statusobj.RfqStatusId;
 				RFQStatu statusobjs = new RFQStatu();
 				statusobjs.RfqStatusId = rfqstatusid;
 				statusobjs.RfqRevisionId = RFQRevisionId;
+				statusobjs.RfqMasterId = RfqMasterId;
 				statusobjs.StatusId = 8;
 				statusobjs.DeleteFlag = false;
-				statusobj.updatedby = updatedby;
+				statusobjs.updatedby = updatedby;
 				statusobjs.updatedDate = System.DateTime.Now;
 				obj.RFQStatus.Add(statusobjs);
 				RFQRevisions_N localRfqRevision = obj.RFQRevisions_N.Where(li => li.rfqRevisionId == RFQRevisionId).FirstOrDefault();
@@ -881,6 +885,15 @@ namespace SCMAPI.Controllers
 			//  }
 			return Json(check);
 		}
+
+		
+		[HttpPost]
+		[Route("rfqStatusUpdate")]
+		public IHttpActionResult rfqStatusUpdate([FromBody] RFQStatu Result)
+		{
+			return Ok(this._rfqBusenessAcess.rfqStatusUpdate(Result));
+		}
+		
 		[HttpGet]
 		[Route("checkrfqitemsid")]
 		public IHttpActionResult checkrfqitemsid(int rfqitemsid)

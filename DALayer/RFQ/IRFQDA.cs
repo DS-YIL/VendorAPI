@@ -106,5 +106,6 @@ namespace DALayer.RFQ
 		bool checkrfqitemexists(int rfqitemsid);
 
 		DataTable getDBMastersList(DynamicSearchResult Result);
+		bool rfqStatusUpdate(RFQStatu rfqstatus);
 	}
 }
