@@ -755,10 +755,13 @@ namespace SCMAPI.Controllers
 					  .FirstOrDefault(c => c.Type == "VuniqueId").Value;
 			var VendorCode = identity.Claims
 					  .FirstOrDefault(c => c.Type == "VendorCode").Value;
+			var Vuserid = identity.Claims
+					  .FirstOrDefault(c => c.Type == "Vuserid").Value;
 
 			List<VendorModel> listobj = new List<VendorModel>();
 			VendorModel eachobj = new VendorModel();
 			eachobj.UserName = identity.Name;
+			eachobj.Vuserid = Vuserid;
 			eachobj.vendorId = Convert.ToInt32(VendorId);
 			eachobj.VUniqueId = Vuniqueid;
 			eachobj.VendorCode = VendorCode;

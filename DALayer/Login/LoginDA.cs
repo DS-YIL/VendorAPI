@@ -113,7 +113,7 @@ namespace DALayer.Login
                 var person = (from p in vscm.RemoteVendorMasters
                               join e in vscm.RemoteVendorUserMasters
                               on p.Vendorid equals e.VendorId
-                              where e.Vuserid == Id  && e.pwd== password
+                              where e.VuniqueId == Id  && e.pwd== password
                               select new
                               {
                                   e.Vuserid,
