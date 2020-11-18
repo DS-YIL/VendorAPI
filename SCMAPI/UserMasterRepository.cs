@@ -20,7 +20,7 @@ namespace SCMAPI
                           on p.Vendorid equals e.VendorId
                           join f in db.RemoteVendorMasters
                           on  p.Vendorid equals f.Vendorid
-                          where e.Vuserid == username && e.pwd == password
+                          where e.VuniqueId == username && e.pwd == password
                           select new
                           {
                               e.Vuserid,
@@ -40,7 +40,7 @@ namespace SCMAPI
                     vendor.VUniqueId = p.VuniqueId != null ? p.VuniqueId : string.Empty;
                     vendor.vendorId = p.VendorId;
                     
-                        vendor.VendorCode =p.VendorCode!= null ? p.VuniqueId : string.Empty;
+                        vendor.VendorCode =p.VendorCode!= null ? p.VendorCode : string.Empty;
 
 
                     // vendor.VendorCode = string.IsNullOrEmpty(p.VendorCode) ? DBNull.Value : p.VendorCode;//if(p.VendorCode==DBNull) ;

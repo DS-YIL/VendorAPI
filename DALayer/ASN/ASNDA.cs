@@ -1,10 +1,14 @@
-﻿using Npgsql;
+﻿using DALayer.Common;
+using Npgsql;
 using SCMModels;
 using SCMModels.ASNModels;
 using SCMModels.RemoteModel;
 using SCMModels.RFQModels;
+using SCMModels.SCMModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +18,9 @@ namespace DALayer.ASN
 	public class ASNDA : IASNDA
 	{
 		VSCMEntities vscm = new VSCMEntities();
-		public async Task<statuscheckmodel> CreateAsn(ASNShipmentHeaderModel model)
+		private ErrorLog log = new ErrorLog();
+		public bool CreateAsn(ASNShipmentHeaderModel model)
 		{
-			statuscheckmodel status = new statuscheckmodel();
 			try
 			{
 				var asnShipmentHeaderModels = new ASNShipmentHeader();
@@ -28,9 +32,19 @@ namespace DALayer.ASN
 					vscm.Database.Connection.Open();
 					if (model.ASNId == 0)
 					{
+						Int64 sequenceNo = Convert.ToInt64(vscm.ASNShipmentHeaders.Max(li => li.SequenceNo));
+						if (sequenceNo == null || sequenceNo == 0)
+							sequenceNo = 1;
+						else
+						{
+							sequenceNo = sequenceNo + 1;
+						}
+						var value = vscm.RemoteSP_sequenceNumber(sequenceNo).FirstOrDefault();
 						asnShipmentHeaderModels.PO_ReferenceNo = model.PO_ReferenceNo;
 						asnShipmentHeaderModels.InvoiceNo = model.InvoiceNo;
-						asnShipmentHeaderModels.ASNNo = model.ASNNo;
+						asnShipmentHeaderModels.ASNNo = "ASN/" + DateTime.Now.ToString("MMyy") + "/" + value;
+
+						asnShipmentHeaderModels.SequenceNo = sequenceNo;
 						asnShipmentHeaderModels.InboundDeliveryNo = model.InboundDeliveryNo;
 						asnShipmentHeaderModels.ShippingDate = model.ShippingDate;
 						asnShipmentHeaderModels.DeliveryDate = model.DeliveryDate;
@@ -88,112 +102,90 @@ namespace DALayer.ASN
 						asnStatus.Split = model.Split;
 						vscm.ASNStatus.Add(asnStatus);
 						vscm.SaveChanges();
+					}
+					//update
+					else
+					{
+						asnShipmentHeaderModels = vscm.ASNShipmentHeaders.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
+						if (asnShipmentHeaderModels != null)
+						{
+							asnShipmentHeaderModels.PO_ReferenceNo = model.PO_ReferenceNo;
+							asnShipmentHeaderModels.InvoiceNo = model.InvoiceNo;
+							asnShipmentHeaderModels.ASNNo = model.ASNNo;
+							asnShipmentHeaderModels.HSNCode = model.HSNCode;
+							asnShipmentHeaderModels.InboundDeliveryNo = model.InboundDeliveryNo;
+							asnShipmentHeaderModels.ShippingDate = model.ShippingDate;
+							asnShipmentHeaderModels.DeliveryDate = model.DeliveryDate;
+							asnShipmentHeaderModels.DocumentDate = model.DocumentDate;
+							asnShipmentHeaderModels.Qty = model.Qty;
+							asnShipmentHeaderModels.FreightInvNo = model.FreightInvNo;
+							asnShipmentHeaderModels.GroupingId = model.GroupingId;
+							asnShipmentHeaderModels.CarrierParty = model.CarrierParty;
+							asnShipmentHeaderModels.Carrier_SCAC_Id = model.Carrier_SCAC_Id;
+							asnShipmentHeaderModels.IncotermLoc = model.IncotermLoc;
+							asnShipmentHeaderModels.Incoterm = model.Incoterm;
+							asnShipmentHeaderModels.MeansOfTransport = model.MeansOfTransport;
+							asnShipmentHeaderModels.TotalGrossWeight_Kgs = model.TotalGrossWeight_Kgs;
+							asnShipmentHeaderModels.TotalNetWeight_Kgs = model.TotalNetWeight_Kgs;
+							asnShipmentHeaderModels.TotalVolume = model.TotalVolume;
+							asnShipmentHeaderModels.ShipmentAssignment = model.ShipmentAssignment;
+							vscm.SaveChanges();
 
-						status.Sid = id;
+						}
+
+						asnShipmentLines = vscm.ASNShipmentLines.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
+
+						if (asnShipmentLines != null)
+						{
+							asnShipmentLines.ShipFrom = model.ShipFrom;
+							asnShipmentLines.ShipTo = model.ShipTo;
+							asnShipmentLines.CustomerLocation = model.CustomerLocation;
+							asnShipmentLines.ContainerNumber = model.ContainerNumber;
+							asnShipmentLines.CountryOfOrigin = model.CountryOfOrigin;
+							asnShipmentLines.TruckNo = model.TruckNo;
+							asnShipmentLines.Comment = model.Comment;
+							asnShipmentLines.PackingShip = model.PackingShip;
+							vscm.SaveChanges();
+						}
+
+						asnItemDetails = vscm.ASNItemDetails.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
+						if (asnItemDetails != null)
+						{
+							asnItemDetails.SupplierCumulativeQuantity = model.SupplierCumulativeQuantity;
+							asnItemDetails.CustomerCumulativeQuantity = model.CustomerCumulativeQuantity;
+							asnItemDetails.PurchasingDocumentNo = model.PurchasingDocumentNo;
+							asnItemDetails.OriginalPONumber = model.OriginalPONumber;
+							asnItemDetails.OriginalPOItem = model.OriginalPOItem;
+							asnItemDetails.TotalGrossWt_Kgs = model.TotalGrossWt;
+							asnItemDetails.TotalNetWt_Kgs = model.TotalNetWt;
+							asnItemDetails.CustomerBatchNo = model.CustomerBatchNo;
+							asnItemDetails.SupplierBatchNo = model.SupplierBatchNo;
+							vscm.SaveChanges();
+						}
+
+						asnStatus = vscm.ASNStatus.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
+
+						if (asnStatus != null)
+						{
+							asnStatus.ASNStatus = Convert.ToString(model.ASNStatus);
+							asnStatus.ValidationStatus = model.ValidationStatus;
+							asnStatus.AcceptanceStatus = model.AcceptanceStatus;
+							asnStatus.TPOPIndicator = model.TPOPIndicator;
+							asnStatus.InboundDeliveryStatus = model.InboundDeliveryStatus;
+							asnStatus.OriginalSystem = model.OriginalSystem;
+							asnStatus.Split = model.Split;
+							vscm.SaveChanges();
+						}
+
 					}
 				}
-
-				return status;
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				throw;
+				log.ErrorMessage("ASNDA", "CreateAsn", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+
 			}
-		}
-
-		public async Task<statuscheckmodel> EditAsn(ASNShipmentHeaderModel model)
-		{
-			statuscheckmodel status = new statuscheckmodel();
-			try
-			{
-				var asnShipmentHeaderModels = new ASNShipmentHeader();
-				var asnShipmentLines = new ASNShipmentLine();
-				var asnItemDetails = new ASNItemDetail();
-				var asnStatus = new ASNStatu();
-				if (model != null)
-				{
-					vscm.Database.Connection.Open();
-
-					asnShipmentHeaderModels = vscm.ASNShipmentHeaders.Where(x => x.ASNNo == model.ASNNo).FirstOrDefault();
-					if (asnShipmentHeaderModels != null)
-					{
-						asnShipmentHeaderModels.PO_ReferenceNo = model.PO_ReferenceNo;
-						asnShipmentHeaderModels.InvoiceNo = model.InvoiceNo;
-						asnShipmentHeaderModels.ASNNo = model.ASNNo;
-						asnShipmentHeaderModels.InboundDeliveryNo = model.InboundDeliveryNo;
-						asnShipmentHeaderModels.ShippingDate = model.ShippingDate;
-						asnShipmentHeaderModels.DeliveryDate = model.DeliveryDate;
-						asnShipmentHeaderModels.DocumentDate = model.DocumentDate;
-						asnShipmentHeaderModels.Qty = model.Qty;
-						asnShipmentHeaderModels.FreightInvNo = model.FreightInvNo;
-						asnShipmentHeaderModels.GroupingId = model.GroupingId;
-						asnShipmentHeaderModels.CarrierParty = model.CarrierParty;
-						asnShipmentHeaderModels.Carrier_SCAC_Id = model.Carrier_SCAC_Id;
-						asnShipmentHeaderModels.IncotermLoc = model.IncotermLoc;
-						asnShipmentHeaderModels.Incoterm = model.Incoterm;
-						asnShipmentHeaderModels.MeansOfTransport = model.MeansOfTransport;
-						asnShipmentHeaderModels.TotalGrossWeight_Kgs = model.TotalGrossWeight_Kgs;
-						asnShipmentHeaderModels.TotalNetWeight_Kgs = model.TotalNetWeight_Kgs;
-						asnShipmentHeaderModels.TotalVolume = model.TotalVolume;
-						asnShipmentHeaderModels.ShipmentAssignment = model.ShipmentAssignment;
-						vscm.SaveChanges();
-
-					}
-
-					asnShipmentLines = vscm.ASNShipmentLines.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
-
-					if (asnShipmentLines != null)
-					{
-						asnShipmentLines.ShipFrom = model.ShipFrom;
-						asnShipmentLines.ShipTo = model.ShipTo;
-						asnShipmentLines.CustomerLocation = model.CustomerLocation;
-						asnShipmentLines.ContainerNumber = model.ContainerNumber;
-						asnShipmentLines.CountryOfOrigin = model.CountryOfOrigin;
-						asnShipmentLines.TruckNo = model.TruckNo;
-						asnShipmentLines.Comment = model.Comment;
-						asnShipmentLines.PackingShip = model.PackingShip;
-						vscm.SaveChanges();
-					}
-
-					asnItemDetails = vscm.ASNItemDetails.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
-					if (asnItemDetails != null)
-					{
-						asnItemDetails.SupplierCumulativeQuantity = model.SupplierCumulativeQuantity;
-						asnItemDetails.CustomerCumulativeQuantity = model.CustomerCumulativeQuantity;
-						asnItemDetails.PurchasingDocumentNo = model.PurchasingDocumentNo;
-						asnItemDetails.OriginalPONumber = model.OriginalPONumber;
-						asnItemDetails.OriginalPOItem = model.OriginalPOItem;
-						asnItemDetails.TotalGrossWt_Kgs = model.TotalGrossWt;
-						asnItemDetails.TotalNetWt_Kgs = model.TotalNetWt;
-						asnItemDetails.CustomerBatchNo = model.CustomerBatchNo;
-						asnItemDetails.SupplierBatchNo = model.SupplierBatchNo;
-						vscm.SaveChanges();
-					}
-
-					asnStatus = vscm.ASNStatus.Where(x => x.ASNId == model.ASNId).FirstOrDefault();
-
-					if (asnStatus != null)
-					{
-						asnStatus.ASNStatus = Convert.ToString(model.ASNStatus);
-						asnStatus.ValidationStatus = model.ValidationStatus;
-						asnStatus.AcceptanceStatus = model.AcceptanceStatus;
-						asnStatus.TPOPIndicator = model.TPOPIndicator;
-						asnStatus.InboundDeliveryStatus = model.InboundDeliveryStatus;
-						asnStatus.OriginalSystem = model.OriginalSystem;
-						asnStatus.Split = model.Split;
-						vscm.SaveChanges();
-					}
-
-					status.Sid = model.ASNId;
-
-				}
-
-				return status;
-			}
-			catch (Exception ex)
-			{
-				throw;
-			}
+			return true;
 		}
 
 		public List<ASNShipmentHeader> getAsnList()
@@ -209,13 +201,13 @@ namespace DALayer.ASN
 				throw;
 			}
 		}
-		public ASNShipmentHeaderModel getAsnDetailsByAsnNo(int asnNo)
+		public ASNShipmentHeaderModel getAsnDetailsByAsnNo(int ASNId)
 		{
 			try
 			{
 				ASNShipmentHeaderModel asnShipmentHeaderModel = new ASNShipmentHeaderModel();
 
-				var asnShipmentHeader = vscm.ASNShipmentHeaders.Where(x => x.ASNNo == asnNo.ToString()).FirstOrDefault();
+				var asnShipmentHeader = vscm.ASNShipmentHeaders.Where(x => x.ASNId == ASNId).FirstOrDefault();
 
 				asnShipmentHeaderModel.PO_ReferenceNo = asnShipmentHeader.PO_ReferenceNo;
 				asnShipmentHeaderModel.ASNId = asnShipmentHeader.ASNId;
@@ -226,6 +218,7 @@ namespace DALayer.ASN
 
 				asnShipmentHeaderModel.InvoiceNo = asnShipmentHeader.InvoiceNo;
 				asnShipmentHeaderModel.ASNNo = asnShipmentHeader.ASNNo;
+				asnShipmentHeaderModel.HSNCode = asnShipmentHeader.HSNCode;
 				asnShipmentHeaderModel.InboundDeliveryNo = asnShipmentHeader.InboundDeliveryNo;
 				asnShipmentHeaderModel.ShippingDate = asnShipmentHeader.ShippingDate;
 				asnShipmentHeaderModel.DeliveryDate = asnShipmentHeader.DeliveryDate;
@@ -282,69 +275,6 @@ namespace DALayer.ASN
 			}
 		}
 
-		public List<DocumentDetailsInvoice> InsertDocuments_Invoice(List<DocumentDetailsInvoice> model)
-		{
-			List<DocumentDetailsInvoice> Listobj = new List<DocumentDetailsInvoice>();
-			var eachobj = new DocumentDetailsInvoice();
-			try
-			{
-
-				if (model != null)
-				{
-					foreach (var item in model)
-					{
-						//InvoiceDocument invoiceDocument = new InvoiceDocument();
-						var invoicedocuments = new InvoiceDocument();
-
-
-						//if (item.DocumentName == "Invoice")
-						//{
-						//    invoicedocuments.DocumentTypeId = 1;
-						//}
-						//else if (item.DocumentName == "Tax")
-						//{
-						//    invoicedocuments.DocumentTypeId = 2;
-						//}
-						//else
-						//{
-						//    invoicedocuments.DocumentTypeId = 3;
-						//}
-
-
-						if (item.DocumentId != 0)
-						{
-							if (item.DocumentTypeId != 3)
-							{
-								invoicedocuments = vscm.InvoiceDocuments.Where(x => x.DocumentId == item.DocumentId).FirstOrDefault();
-								invoicedocuments.IsDeleted = true;
-								vscm.SaveChanges();
-							}
-
-						}
-
-
-						invoicedocuments.DocumentTypeId = item.DocumentTypeId;
-						invoicedocuments.DocumentName = item.DocumentName;
-						invoicedocuments.Path = item.Path;
-						invoicedocuments.UploadedDate = DateTime.Now;
-						invoicedocuments.IsDeleted = item.IsDeleted;
-						invoicedocuments.UploadedBy = item.UploadedBy;
-						vscm.InvoiceDocuments.Add(invoicedocuments);
-						vscm.SaveChanges();
-						eachobj.DocumentName = invoicedocuments.Path.Substring(invoicedocuments.Path.IndexOf('_') + 1);
-						eachobj.DocumentId = invoicedocuments.DocumentId;
-						Listobj.Add(eachobj);
-					}
-
-				}
-			}
-			catch (Exception ex)
-			{
-				string msg = ex.Message;
-			}
-			return Listobj;
-		}
-
 		public InvoiceModel GetInvoiceDetails(string InvoiceNo)
 		{
 			try
@@ -368,9 +298,9 @@ namespace DALayer.ASN
 			}
 		}
 
-
 		public async Task<InvoiceDetail> UpdateInvoice(InvoiceDetail invoiceModel)
 		{
+			InvoiceDetail InvoiceDetails = new InvoiceDetail();
 			try
 			{
 				int invoiceId = 0;
@@ -427,51 +357,95 @@ namespace DALayer.ASN
 						vscm.SaveChanges();
 					}
 				}
-				return vscm.InvoiceDetails.Where(li => li.InvoiceId == invoiceId).FirstOrDefault();
+				InvoiceDetails = vscm.InvoiceDetails.Where(li => li.InvoiceId == invoiceId).FirstOrDefault();
+				InvoiceDetails.InvoiceDocuments = InvoiceDetails.InvoiceDocuments.Where(li => li.IsDeleted != true).ToList();
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return null;
+				log.ErrorMessage("ASNDA", "UpdateInvoice", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+
 			}
+			return InvoiceDetails;
 
 		}
 
-		public List<StagingPoSapModels> getPONumbersbyVendor(int vendorId)
+		public DataTable getPONumbersbyVendor(int vendorId)
 		{
-			var vendorDetails = vscm.RemoteVendorMasters.Where(x => x.Vendorid == vendorId).FirstOrDefault();
+			DataTable POTable = new DataTable();
+			POTable.TableName = "POTable";
+			try
+			{
+				using (YSCMEntities Context = new YSCMEntities())
+				{
+					string query = "select distinct pt.PONO,mprpa.VendorId,null as HSNCode from MPRPADetails mprpa inner join PAItem pt on pt.PAID=mprpa.PAId where  PAStatus='Approved' and POStatus='PO Released' and pt.PONO is not null and mprpa.VendorId=" + vendorId + "";
+					var cmd = Context.Database.Connection.CreateCommand();
+					cmd.CommandText = query;
+					cmd.Connection.Open();
+					POTable.Load(cmd.ExecuteReader());
+					cmd.Connection.Close();
+
+				}
+			}
+			catch (Exception e)
+			{
+				log.ErrorMessage("ASNDA", "getPONumbersbyVendor", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+
+			}
+			return POTable;
+		}
+
+		public List<StagingPoSapModels> getPOInvoiceDetailsbyVendor(int vendorId)
+		{
+			DataTable POTable = new DataTable();
 			var lstStagingPO_Invoices = new List<StagingPoSapModels>();
 			try
 			{
-				NpgsqlConnection conn = new NpgsqlConnection("Server=10.29.15.68;Port=5432;User Id=postgres;Password=1234;Database=WMS");
-				conn.Open();
-
-				// Define a query
-				NpgsqlCommand cmd = new NpgsqlCommand("select distinct purchdoc from wms.stag_po_sap where vendor='" + vendorDetails.VendorCode + "'", conn);
-
-				// Execute a query
-				NpgsqlDataReader dr = cmd.ExecuteReader();
-
-				// Read all rows and output the first column in each row
-				while (dr.Read())
+				using (YSCMEntities Context = new YSCMEntities())
 				{
-					StagingPoSapModels stagingPoSapModels = new StagingPoSapModels();
+					string query = "select distinct pt.PONO,mprpa.VendorId,null as HSNCode from MPRPADetails mprpa inner join PAItem pt on pt.PAID=mprpa.PAId where  PAStatus='Approved' and POStatus='PO Released' and pt.PONO is not null and mprpa.VendorId=" + vendorId + "";
+					var cmd = Context.Database.Connection.CreateCommand();
+					cmd.CommandText = query;
+					cmd.Connection.Open();
+					POTable.Load(cmd.ExecuteReader());
 
-					stagingPoSapModels.PONO = dr["purchdoc"].ToString();
-					stagingPoSapModels.InvoiceDetails = vscm.InvoiceDetails.Where(li => li.PONO == stagingPoSapModels.PONO).ToList();
+					// Read all rows and output the first column in each row
 
-					lstStagingPO_Invoices.Add(stagingPoSapModels);
+					foreach (DataRow row in POTable.Rows)
+					{
+
+						StagingPoSapModels stagingPoSapModels = new StagingPoSapModels();
+
+						stagingPoSapModels.PONO = row["PONO"].ToString();
+						stagingPoSapModels.InvoiceDetails = vscm.InvoiceDetails.Where(li => li.PONO == stagingPoSapModels.PONO).ToList();
+						foreach (InvoiceDetail item in stagingPoSapModels.InvoiceDetails)
+						{
+							item.InvoiceDocuments = item.InvoiceDocuments.Where(li => li.IsDeleted != true).ToList();
+						}
+						lstStagingPO_Invoices.Add(stagingPoSapModels);
+					}
+
+
+					// Close connection
+					cmd.Connection.Close();
 				}
-
-
-				// Close connection
-				conn.Close();
-				return lstStagingPO_Invoices;
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				throw;
+				log.ErrorMessage("ASNDA", "getPOInvoiceDetailsbyVendor", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+
 			}
+			return lstStagingPO_Invoices;
 		}
 
+		public bool DeleteInvoiceFile(int DocumentId)
+		{
+			InvoiceDocument invDoc = vscm.InvoiceDocuments.Where(li => li.DocumentId == DocumentId).FirstOrDefault();
+			if (invDoc != null)
+			{
+				invDoc.IsDeleted = true;
+				vscm.SaveChanges();
+			}
+			return true;
+		}
 	}
 }

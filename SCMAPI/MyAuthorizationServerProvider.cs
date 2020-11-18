@@ -23,12 +23,14 @@ namespace SCMAPI
                 if (user != null)
                 {
                     var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-                    identity.AddClaim(new Claim(ClaimTypes.Role, user.UserName));
+					identity.AddClaim(new Claim("Vuserid", Convert.ToString(user.Vuserid)));
+					identity.AddClaim(new Claim(ClaimTypes.Role, user.UserName));
                     identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
                     identity.AddClaim(new Claim("VuniqueId", user.VUniqueId));
                     identity.AddClaim(new Claim("VendorId", Convert.ToString(user.vendorId)));
-                    identity.AddClaim(new Claim("VendorCode", Convert.ToString(user.VendorCode)));
-                    context.Validated(identity);
+                    identity.AddClaim(new Claim("VendorCode", Convert.ToString(user.VendorCode)));					
+
+					context.Validated(identity);
                     
                 }
 

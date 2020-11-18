@@ -10,6 +10,6 @@ namespace DALayer.ASN
 {
    public interface IASNDA
     {
-        Task<statuscheckmodel> CreateAsn(ASNShipmentHeaderModel model);
+        bool CreateAsn(ASNShipmentHeaderModel model);
     }
 }

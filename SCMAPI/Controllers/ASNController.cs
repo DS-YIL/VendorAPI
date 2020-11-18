@@ -30,13 +30,10 @@ namespace SCMAPI.Controllers
 		//}
 
 		[Route("CreateAsn")]
-		[ResponseType(typeof(statuscheckmodel))]
 		[HttpPost]
-		public async Task<IHttpActionResult> CreateAsn(ASNShipmentHeaderModel model)
+		public IHttpActionResult CreateAsn([FromBody] ASNShipmentHeaderModel model)
 		{
-			statuscheckmodel status = new statuscheckmodel();
-			status = await _asnBusinessAccess.CreateAsn(model);
-			return Ok(status);
+			return Ok( _asnBusinessAccess.CreateAsn(model));
 		}
 
 		[HttpGet]
@@ -47,27 +44,25 @@ namespace SCMAPI.Controllers
 		}
 
 		[HttpGet]
-		[Route("getAsnDetails/{AsnNo}")]
-		public IHttpActionResult getAsnDetailsByAsnNo(int asnNo)
+		[Route("getAsnDetails/{ASNId}")]
+		public IHttpActionResult getAsnDetailsByAsnNo(int ASNId)
 		{
-			return Ok(_asnBusinessAccess.getAsnDetailsByAsnNo(asnNo));
+			return Ok(_asnBusinessAccess.getAsnDetailsByAsnNo(ASNId));
 		}
 
-		[Route("EditAsn")]
-		[ResponseType(typeof(statuscheckmodel))]
-		[HttpPost]
-		public async Task<IHttpActionResult> editAsn(ASNShipmentHeaderModel model)
-		{
-			statuscheckmodel status = new statuscheckmodel();
-			status = await _asnBusinessAccess.EditAsn(model);
-			return Ok(status);
-		}
-
+		
 		[HttpGet]
 		[Route("getPONumbersByVendor/{vendorId}")]
 		public IHttpActionResult getPONumbersbyVendor(int vendorId)
 		{
 			return Ok(_asnBusinessAccess.getPONumbersbyVendor(vendorId));
+		}
+
+		[HttpGet]
+		[Route("getPOInvoiceDetailsbyVendor/{vendorId}")]
+		public IHttpActionResult getPOInvoiceDetailsbyVendor(int vendorId)
+		{
+			return Ok(_asnBusinessAccess.getPOInvoiceDetailsbyVendor(vendorId));
 		}
 
 		[HttpPost]
@@ -84,6 +79,13 @@ namespace SCMAPI.Controllers
 		public IHttpActionResult GetInvoiceDetails(string InvoiceNo)
 		{
 			return Ok(_asnBusinessAccess.GetInvoiceDetails(InvoiceNo));
+		}
+
+		[HttpGet]
+		[Route("DeleteInvoiceFile/{DocumentId}")]
+		public IHttpActionResult DeleteInvoiceFile(int DocumentId)
+		{
+			return Ok(_asnBusinessAccess.DeleteInvoiceFile(DocumentId));
 		}
 	}
 }

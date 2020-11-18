@@ -10,6 +10,6 @@ namespace BALayer.ASN
 {
     public interface IASNBA
     {
-        Task<statuscheckmodel> CreateAsn(ASNShipmentHeaderModel model);
+        bool CreateAsn(ASNShipmentHeaderModel model);
     }
 }

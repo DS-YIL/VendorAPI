@@ -6,6 +6,7 @@ using SCMModels.RFQModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,58 +15,53 @@ using System.Web;
 
 namespace BALayer.ASN
 {
-   public class ASNBA : IASNBA
-    {
-        // public readonly IASNDA _asnDataAcess;
-        //public ASNBA(IASNDA ASNDA)
-        //{
-        //    this._asnDataAcess = ASNDA;
-        //}
-        ASNDA _asnDataAcess = new ASNDA();
+	public class ASNBA : IASNBA
+	{
+		// public readonly IASNDA _asnDataAcess;
+		//public ASNBA(IASNDA ASNDA)
+		//{
+		//    this._asnDataAcess = ASNDA;
+		//}
+		ASNDA _asnDataAcess = new ASNDA();
 
-        public  Task<statuscheckmodel> CreateAsn(ASNShipmentHeaderModel model)
-        {
-            return  _asnDataAcess.CreateAsn(model);
-        }
+		public bool CreateAsn(ASNShipmentHeaderModel model)
+		{
+			return _asnDataAcess.CreateAsn(model);
+		}
 
-        public List<ASNShipmentHeader> getAsnList()
-        {
-            return _asnDataAcess.getAsnList();
-        }
+		public List<ASNShipmentHeader> getAsnList()
+		{
+			return _asnDataAcess.getAsnList();
+		}
 
-        public ASNShipmentHeaderModel getAsnDetailsByAsnNo(int asnNo)
-        {
-            return _asnDataAcess.getAsnDetailsByAsnNo(asnNo);
-        }
+		public ASNShipmentHeaderModel getAsnDetailsByAsnNo(int ASNId)
+		{
+			return _asnDataAcess.getAsnDetailsByAsnNo(ASNId);
+		}
 
-        public Task<statuscheckmodel> EditAsn(ASNShipmentHeaderModel model)
-        {
-            return _asnDataAcess.EditAsn(model);
-        }
+		public DataTable getPONumbersbyVendor(int vendorId)
+		{
+			return _asnDataAcess.getPONumbersbyVendor(vendorId);
+		}
+		public List<StagingPoSapModels> getPOInvoiceDetailsbyVendor(int vendorId)
+		{
+			return _asnDataAcess.getPOInvoiceDetailsbyVendor(vendorId);
+		}
+		public Task<InvoiceDetail> UpdateInvoice(InvoiceDetail invoiceModel)
+		{
+			return _asnDataAcess.UpdateInvoice(invoiceModel);
+		}
 
-        public List<StagingPoSapModels> getPONumbersbyVendor(int vendorId)
-        {
-            return _asnDataAcess.getPONumbersbyVendor(vendorId);
-        }
-        public List<DocumentDetailsInvoice> InsertDocuments_Invoice(List<DocumentDetailsInvoice> model)
-        {
-            return _asnDataAcess.InsertDocuments_Invoice(model);
-        }
-            public Task<InvoiceDetail> UpdateInvoice(InvoiceDetail invoiceModel )
-        {
-        
-            return _asnDataAcess.UpdateInvoice(invoiceModel);
+		public InvoiceModel GetInvoiceDetails(string invoiceNo)
+		{
+			return _asnDataAcess.GetInvoiceDetails(invoiceNo);
+		}
 
-        }
+		public bool DeleteInvoiceFile(int DocumentId)
+		{
+			return _asnDataAcess.DeleteInvoiceFile(DocumentId);
+		}
 
-      
-
-        public InvoiceModel GetInvoiceDetails(string invoiceNo)
-        {
-            return _asnDataAcess.GetInvoiceDetails(invoiceNo);
-        }
-
-
-    }
+	}
 }
 
