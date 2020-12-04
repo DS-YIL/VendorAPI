@@ -1,15 +1,8 @@
-﻿using SCMModels.ASNModels;
-using SCMModels.RFQModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SCMModels.RemoteModel;
 
 namespace DALayer.ASN
 {
-   public interface IASNDA
-    {
-        bool CreateAsn(ASNShipmentHeaderModel model);
-    }
+	public interface IASNDA
+	{
+	}
 }

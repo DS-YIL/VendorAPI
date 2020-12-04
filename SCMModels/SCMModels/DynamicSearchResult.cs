@@ -80,6 +80,7 @@ namespace SCMModels
         public string VUniqueId { get; set; }
         public string UserName { get; set; }
 		public bool isRegister { get; set; }
+		public string Street { get; set; }
 
 	}
 

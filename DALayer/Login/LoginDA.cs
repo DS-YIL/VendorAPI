@@ -19,31 +19,6 @@ namespace DALayer.Login
         YSCMEntities DB = new YSCMEntities();
         VSCMEntities vscm = new VSCMEntities();
         
-        //public bool ValidateLoginCredentials(DynamicSearchResult Result)
-        //{
-        //    bool loginFlag = false;
-        //    string[] UserCredentials = Result.columnValues.Split(',');
-        //    string Id = UserCredentials[0].ToString();
-        //    PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-
-        //    UserPrincipal user = UserPrincipal.FindByIdentity(ctx, UserCredentials[0].Trim());
-        //    if (user != null)
-        //    {
-        //        if (ctx.ValidateCredentials(UserCredentials[0], UserCredentials[1]))
-        //        {
-        //            loginFlag = true;
-        //        }
-        //    }
-        //    else if (user == null)
-        //    {
-        //        string empNo = DB.Employees.Where(li => li.DomainId == Id).Select(li => li.EmployeeNo).SingleOrDefault();
-        //        if (empNo != "")
-        //        {
-        //            loginFlag = true;
-        //        }
-        //    }
-        //    return loginFlag;
-        //}
 
         //[WebMethod(enableSession: true)]
         public EmployeeModel ValidateLoginCredentials(DynamicSearchResult Result)

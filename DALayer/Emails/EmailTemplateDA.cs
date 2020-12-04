@@ -218,6 +218,36 @@ namespace DALayer.Emails
 			}
 			return true;
 		}
+
+		/*Name of Function : <<sendASNMailtoBuyer>  Author :<<Prasanna>>  
+		  Date of Creation <<27-11-2020>>
+		  Purpose : <<Sending mail method>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		public bool sendASNMailtoBuyer(int ASNId)
+		{
+			try
+			{
+				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+				mpripaddress = mpripaddress + "SCM/ASN/" + ASNId + "";
+				using (var db = new YSCMEntities()) //ok
+				{
+					EmailSend emlSndngList = new EmailSend();
+					emlSndngList.FrmEmailId = ConfigurationManager.AppSettings["fromemail"];
+					emlSndngList.Subject = "ASNCreated";
+					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Click below link to view details</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
+					emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == "400104").FirstOrDefault<Employee>()).EMail;
+					emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == "400104").FirstOrDefault<Employee>()).EMail;
+
+					this.sendEmail(emlSndngList);
+				}
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("EmailTemplate", "sendASNMailtoBuyer", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
+		}
 		public bool sendEmail(EmailSend emlSndngList)
 		{
 			//bool validEmail = IsValidEmail(emlSndngList.ToEmailId);
@@ -226,11 +256,11 @@ namespace DALayer.Emails
 				var BCC = ConfigurationManager.AppSettings["BCC"];
 				var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
 				MailMessage mailMessage = new MailMessage();
-				mailMessage.From = new MailAddress(emlSndngList.FrmEmailId); //From Email Id
+				mailMessage.From = new MailAddress(emlSndngList.FrmEmailId.Trim(), ""); //From Email Id
 				string[] ToMuliId = emlSndngList.ToEmailId.Split(',');
 				foreach (string ToEMailId in ToMuliId)
 				{
-					mailMessage.To.Add(new MailAddress(ToEMailId)); //adding multiple TO Email Id
+					mailMessage.To.Add(new MailAddress(ToEMailId.Trim(), "")); //adding multiple TO Email Id
 				}
 				SmtpClient client = new SmtpClient();
 				if (!string.IsNullOrEmpty(emlSndngList.Subject))
@@ -242,7 +272,7 @@ namespace DALayer.Emails
 
 					foreach (string CCEmail in CCId)
 					{
-						mailMessage.CC.Add(new MailAddress(CCEmail)); //Adding Multiple CC email Id
+						mailMessage.CC.Add(new MailAddress(CCEmail.Trim(), "")); //Adding Multiple CC email Id
 					}
 				}
 
@@ -253,12 +283,12 @@ namespace DALayer.Emails
 
 					foreach (string bccEmailId in bccid)
 					{
-						mailMessage.Bcc.Add(new MailAddress(bccEmailId)); //Adding Multiple BCC email Id
+						mailMessage.Bcc.Add(new MailAddress(bccEmailId.Trim(), "")); //Adding Multiple BCC email Id
 					}
 				}
 
 				if (!string.IsNullOrEmpty(BCC))
-					mailMessage.Bcc.Add(new MailAddress(BCC));
+					mailMessage.Bcc.Add(new MailAddress(BCC.Trim(), ""));
 				mailMessage.Body = emlSndngList.Body;
 				mailMessage.IsBodyHtml = true;
 				mailMessage.BodyEncoding = Encoding.UTF8;

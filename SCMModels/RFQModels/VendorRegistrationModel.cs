@@ -123,13 +123,13 @@ namespace SCMModels.RFQModels
 		public int RfqRevisionId { get; set; }
 
 	}
-	public class DocumentTypeMaster
-	{
-		public int DocumenTypeId { get; set; }
-		public string DocumentTypeName { get; set; }
-		public DateTime? CreatedOn { get; set; }
-		public string CreatedBy { get; set; }
-	}
+	//public class DocumentTypeMaster
+	//{
+	//	public int DocumenTypeId { get; set; }
+	//	public string DocumentTypeName { get; set; }
+	//	public DateTime? CreatedOn { get; set; }
+	//	public string CreatedBy { get; set; }
+	//}
 
 	public class VendorCommunicaton
 	{

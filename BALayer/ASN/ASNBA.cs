@@ -1,47 +1,47 @@
 ﻿using DALayer.ASN;
 using SCMModels;
-using SCMModels.ASNModels;
 using SCMModels.RemoteModel;
-using SCMModels.RFQModels;
-using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-
 namespace BALayer.ASN
 {
 	public class ASNBA : IASNBA
 	{
+		public readonly ASNDA _asnDataAcess;
+		public ASNBA(ASNDA ASNDA)
+		{
+			this._asnDataAcess = ASNDA;
+		}
 		// public readonly IASNDA _asnDataAcess;
 		//public ASNBA(IASNDA ASNDA)
 		//{
 		//    this._asnDataAcess = ASNDA;
 		//}
-		ASNDA _asnDataAcess = new ASNDA();
+		//ASNDA _asnDataAcess = new ASNDA();
 
-		public bool CreateAsn(ASNShipmentHeaderModel model)
+		public bool InsertandEditAsn(RemoteASNShipmentHeader model)
 		{
-			return _asnDataAcess.CreateAsn(model);
+			return _asnDataAcess.InsertandEditAsn(model);
 		}
 
-		public List<ASNShipmentHeader> getAsnList()
+		public List<RemoteASNShipmentHeader> getAsnList()
 		{
 			return _asnDataAcess.getAsnList();
 		}
 
-		public ASNShipmentHeaderModel getAsnDetailsByAsnNo(int ASNId)
+		public RemoteASNShipmentHeader getAsnDetailsByAsnNo(int ASNId)
 		{
 			return _asnDataAcess.getAsnDetailsByAsnNo(ASNId);
 		}
 
-		public DataTable getPONumbersbyVendor(int vendorId)
+		public List<StagingPoSapModels> getPONumbersbyVendor(int vendorId)
 		{
 			return _asnDataAcess.getPONumbersbyVendor(vendorId);
+		}
+		public List<PoItemDetails> getItemDetailsByPoNo(string PONo)
+		{
+			return _asnDataAcess.getItemDetailsByPoNo(PONo);
 		}
 		public List<StagingPoSapModels> getPOInvoiceDetailsbyVendor(int vendorId)
 		{
