@@ -44,9 +44,8 @@ namespace DALayer.Emails
 				emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == toEMail).FirstOrDefault<Employee>()).EMail;
 				emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
 
-				this.sendEmail(emlSndngList);
-
-
+				if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+					this.sendEmail(emlSndngList);
 
 			}
 			catch (Exception ex)
@@ -88,9 +87,8 @@ namespace DALayer.Emails
 				emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == toEMail).FirstOrDefault<Employee>()).EMail;
 				emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
 
-				this.sendEmail(emlSndngList);
-
-
+				if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+					this.sendEmail(emlSndngList);
 
 			}
 			catch (Exception ex)
@@ -149,9 +147,8 @@ namespace DALayer.Emails
 				CCEmails += "," + (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
 				emlSndngList.CC = CCEmails;
 
-				this.sendEmail(emlSndngList);
-
-
+				if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+					this.sendEmail(emlSndngList);
 
 			}
 			catch (Exception ex)
@@ -183,8 +180,8 @@ namespace DALayer.Emails
 				emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == toEMail).FirstOrDefault<Employee>()).EMail;
 				emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
 
-				this.sendEmail(emlSndngList);
-
+				if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+					this.sendEmail(emlSndngList);
 			}
 			catch (Exception ex)
 			{
@@ -207,7 +204,8 @@ namespace DALayer.Emails
 					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Comments by Vendor</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
 					emlSndngList.FrmEmailId = fromMail;
 					emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == vendorProcessDetails.IntiatedBy).FirstOrDefault<Employee>()).EMail;
-					this.sendEmail(emlSndngList);
+					if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+						this.sendEmail(emlSndngList);
 
 				}
 
@@ -227,18 +225,23 @@ namespace DALayer.Emails
 		{
 			try
 			{
+
 				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
 				mpripaddress = mpripaddress + "SCM/ASN/" + ASNId + "";
 				using (var db = new YSCMEntities()) //ok
 				{
+					ASNShipmentHeader ASNHeader = db.ASNShipmentHeaders.Where(li => li.ASNId == ASNId).FirstOrDefault();
 					EmailSend emlSndngList = new EmailSend();
 					emlSndngList.FrmEmailId = ConfigurationManager.AppSettings["fromemail"];
 					emlSndngList.Subject = "ASNCreated";
 					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Click below link to view details</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
-					emlSndngList.ToEmailId = (db.Employees.Where(li => li.EmployeeNo == "400104").FirstOrDefault<Employee>()).EMail;
-					emlSndngList.CC = (db.Employees.Where(li => li.EmployeeNo == "400104").FirstOrDefault<Employee>()).EMail;
+					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNToEmail"]))
+						emlSndngList.ToEmailId = ConfigurationManager.AppSettings["ASNToEmail"];
+					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNCCEmail"]))
+						emlSndngList.CC = ConfigurationManager.AppSettings["ASNCCEmail"];
 
-					this.sendEmail(emlSndngList);
+					if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+						this.sendEmail(emlSndngList);
 				}
 
 			}

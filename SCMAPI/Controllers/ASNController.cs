@@ -1,17 +1,7 @@
 ﻿using BALayer.ASN;
-using SCMModels;
-using SCMModels.ASNModels;
 using SCMModels.RemoteModel;
 using SCMModels.RFQModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -23,24 +13,23 @@ namespace SCMAPI.Controllers
 	{
 		// private readonly IASNBA _asnBusinessAccess;
 
-		ASNBA _asnBusinessAccess = new ASNBA();
-		//public ASNController(IASNBA asnBA)
-		//{
-		//    this._asnBusinessAccess = asnBA;
-		//}
-
-		[Route("CreateAsn")]
-		[HttpPost]
-		public IHttpActionResult CreateAsn([FromBody] ASNShipmentHeaderModel model)
+		private readonly ASNBA _asnBusinessAccess;
+		public ASNController(ASNBA ASNBA)
 		{
-			return Ok( _asnBusinessAccess.CreateAsn(model));
+			this._asnBusinessAccess = ASNBA;
+		}
+		[Route("InsertandEditAsn")]
+		[HttpPost]
+		public IHttpActionResult InsertandEditAsn([FromBody] RemoteASNShipmentHeader model)
+		{
+			return Ok(_asnBusinessAccess.InsertandEditAsn(model));
 		}
 
 		[HttpGet]
-		[Route("getAsnList")]
-		public IHttpActionResult getAsnList()
+		[Route("getAsnList/{vendorId}")]
+		public IHttpActionResult getAsnList(int vendorId)
 		{
-			return Ok(_asnBusinessAccess.getAsnList());
+			return Ok(_asnBusinessAccess.getAsnList(vendorId));
 		}
 
 		[HttpGet]
@@ -50,13 +39,20 @@ namespace SCMAPI.Controllers
 			return Ok(_asnBusinessAccess.getAsnDetailsByAsnNo(ASNId));
 		}
 
-		
+
 		[HttpGet]
 		[Route("getPONumbersByVendor/{vendorId}")]
 		public IHttpActionResult getPONumbersbyVendor(int vendorId)
 		{
 			return Ok(_asnBusinessAccess.getPONumbersbyVendor(vendorId));
 		}
+		[HttpGet]
+		[Route("getItemDetailsByPoNo/{PONo}")]
+		public IHttpActionResult getItemDetailsByPoNo(string PONo)
+		{
+			return Ok(_asnBusinessAccess.getItemDetailsByPoNo(PONo));
+		}
+
 
 		[HttpGet]
 		[Route("getPOInvoiceDetailsbyVendor/{vendorId}")]
@@ -64,6 +60,14 @@ namespace SCMAPI.Controllers
 		{
 			return Ok(_asnBusinessAccess.getPOInvoiceDetailsbyVendor(vendorId));
 		}
+
+		[Route("updateASNComminications")]
+		[HttpPost]
+		public IHttpActionResult updateASNComminications([FromBody] RemoteASNCommunication model)
+		{
+			return Ok(_asnBusinessAccess.updateASNComminications(model));
+		}
+
 
 		[HttpPost]
 		[Route("UpdateInvoice")]

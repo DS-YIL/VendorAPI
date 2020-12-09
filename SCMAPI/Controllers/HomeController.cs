@@ -14,14 +14,7 @@ namespace SCMAPI.Controllers
 
 			return View();
 		}
-        public ActionResult SCMUI()
-        {
-            //ViewBag.Title = "Home Page";
-			//
-
-            return Redirect("http://vscm-1089815394.ap-south-1.elb.amazonaws.com/");
-        }
 
 
-    }
+	}
 }

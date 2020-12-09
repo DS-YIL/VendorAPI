@@ -12,6 +12,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 namespace SCMAPI.Controllers
 {
+	//This controller not used for login.it happends from UsermasterRepository and my Authorizationprovider
     [RoutePrefix("Api/MPR")]
     public class LoginController : ApiController
     {

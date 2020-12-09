@@ -8,10 +8,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector;
-using DALayer.Login;
+//using DALayer.Login;
 using BALayer;
-using DALayer.MPR;
-using BALayer.MPR;
 using DALayer.RFQ;
 using BALayer.RFQ;
 using DALayer.Emails;
@@ -30,13 +28,13 @@ namespace SCMAPI
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			//BundleConfig.RegisterBundles(BundleTable.Bundles);
 			var container = new Container();
-            container.Register<ILoginBA, LoginBA>();
-            container.Register<ILoginDA, LoginDA>();       
+            //container.Register<ILoginBA, LoginBA>();
+            //container.Register<ILoginDA, LoginDA>();       
 			container.Register<IRFQBA, RFQBA>();
 			container.Register<IRFQDA, RFQDA>();
 			container.Register<IEmailTemplateDA, EmailTemplateDA>();
-			container.Register<IConfigAccessInterfaceBA, ConfigAccessRepoBA>();
-            container.Register<IConfigAccessInterfaceDA, ConfigAccessRepoDA>();
+			//container.Register<IConfigAccessInterfaceBA, ConfigAccessRepoBA>();
+   //         container.Register<IConfigAccessInterfaceDA, ConfigAccessRepoDA>();
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
 		}
 	}

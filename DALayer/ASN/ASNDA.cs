@@ -1,5 +1,6 @@
 ﻿using DALayer.Common;
 using DALayer.Emails;
+using Dapper;
 using Npgsql;
 using SCMModels;
 using SCMModels.RemoteModel;
@@ -7,6 +8,7 @@ using SCMModels.RFQModels;
 using SCMModels.SCMModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -38,26 +40,29 @@ namespace DALayer.ASN
 				NpgsqlConnection conn = new NpgsqlConnection("Server=10.29.15.212;Port=5432;User Id=postgres;Password=Yil@pgdb@212*_;Database=WMS");
 				conn.Open();
 				// Define a query
-				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono from wms.wms_polist where vendorcode='" + vendorDetails.VendorCode + "'", conn);
+				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono from wms.wms_polist where vendorcode='" + vendorDetails.VendorCode + "' order by pono", conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
 				// Read all rows and output the first column in each row
 				while (dr.Read())
 				{
 					StagingPoSapModels stagingPoSapModels = new StagingPoSapModels();
-					stagingPoSapModels.PONO = dr["pono"].ToString();
-					var pores = vscm.RemoteASNShipmentHeaders.Where(li => li.PONo == stagingPoSapModels.PONO).FirstOrDefault();
+					stagingPoSapModels.PONo = dr["pono"].ToString();
+					var deliveryAddress = obj.StorageLocAddresses.Where(li => li.StorageLocation == dr["sloc"]).FirstOrDefault();
+					if (deliveryAddress != null)
+						stagingPoSapModels.ShipTo = deliveryAddress.Name + "," + deliveryAddress.Street + "," + deliveryAddress.Street4 + "," + deliveryAddress.City + "," + deliveryAddress.PostalCode;
+					var pores = vscm.RemoteASNItemDetails.Where(li => li.PONo == stagingPoSapModels.PONo).FirstOrDefault();
 					//stagingPoSapModels.VendorAdress = vendorDetails.Street;
-					if (pores == null)
-						lstStagingPO.Add(stagingPoSapModels);
+					//if (pores == null)
+					lstStagingPO.Add(stagingPoSapModels);
 				}
 				// Close connection
 				conn.Close();
 
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				log.ErrorMessage("ASNDA", "getPONumbersbyVendor", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+				log.ErrorMessage("ASNDA", "getPONumbersbyVendor", ex.Message + "; " + ex.StackTrace.ToString());
 
 			}
 			return lstStagingPO;
@@ -75,15 +80,19 @@ namespace DALayer.ASN
 				NpgsqlConnection conn = new NpgsqlConnection("Server=10.29.15.212;Port=5432;User Id=postgres;Password=Yil@pgdb@212*_;Database=WMS");
 				conn.Open();
 				// Define a query
-				NpgsqlCommand cmd = new NpgsqlCommand("select  wp.pono ,wp.vendorcode,pomat.materialid ,pomat.materialdescription ,pomat.itemno,pomat.itemdeliverydate, pomat.materialqty, mat.hsncode from wms.wms_polist wp  inner join wms.wms_pomaterials pomat on pomat.pono = wp.pono inner join wms.\"MaterialMasterYGS\" mat on mat.material = pomat.materialid where wp.pono='" + PONo + "'", conn);
+				PONo = PONo.Replace(",", "','");
+				string query = "select  wp.pono ,wp.vendorcode,pomat.materialid ,pomat.materialdescription ,pomat.itemno,pomat.itemdeliverydate, pomat.materialqty, mat.hsncode from wms.wms_polist wp  inner join wms.wms_pomaterials pomat on pomat.pono = wp.pono inner join wms.\"MaterialMasterYGS\" mat on mat.material = pomat.materialid where wp.pono in ('" + PONo + "') order by wp.pono";
+				NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
 				// Read all rows and output the first column in each row
 				while (dr.Read())
 				{
 					PoItemDetails PoItemDetails = new PoItemDetails();
-					PoItemDetails.PONO = dr["pono"].ToString();
+					PoItemDetails.PONo = dr["pono"].ToString();
 					PoItemDetails.PODate = Convert.ToDateTime(dr["itemdeliverydate"]);
+					//PoItemDetails.Approver1 = Convert.ToString(dr["approver1"]);
+					//PoItemDetails.Approver2 = Convert.ToString(dr["approver2"]);
 					PoItemDetails.VendorCode = Convert.ToString(dr["vendorcode"]);
 					PoItemDetails.Material = Convert.ToString(dr["materialid"]);
 					PoItemDetails.MaterialDescription = Convert.ToString(dr["materialdescription"]);
@@ -93,10 +102,10 @@ namespace DALayer.ASN
 					var res = vscm.RemoteASNItemDetails.ToList();
 					RemoteASNItemDetail ASNitem = new RemoteASNItemDetail();
 					if (res.Count > 0)
-						ASNitem = vscm.RemoteASNItemDetails.Where(li => li.PONo == PoItemDetails.PONO && li.Material == PoItemDetails.Material).FirstOrDefault();
+						ASNitem = vscm.RemoteASNItemDetails.Where(li => li.PONo == PoItemDetails.PONo && li.Material == PoItemDetails.Material).FirstOrDefault();
 					if (ASNitem != null)
 						PoItemDetails.SupplierCumulativeQty = ASNitem.SupplierCumulativeQty;//already delivered qty
-					PoItemDetails.PoCumulativeQty = PoItemDetails.POQty - PoItemDetails.SupplierCumulativeQty;//remaining qty
+					PoItemDetails.RemainingQty = PoItemDetails.POQty - PoItemDetails.SupplierCumulativeQty;//remaining qty
 					PoItemDetailsList.Add(PoItemDetails);
 				}
 				// Close connection
@@ -154,12 +163,16 @@ namespace DALayer.ASN
 							sequenceNo = sequenceNo + 1;
 						}
 						var value = vscm.RemoteSP_sequenceNumber(sequenceNo).FirstOrDefault();
-						asnShipmentHeaderModel.PONo = model.PONo;
+						//asnShipmentHeaderModel.PONo = model.PONo;
+						//asnShipmentHeaderModel.PODate = model.PODate;
+						//asnShipmentHeaderModel.Approver1 = model.Approver1;
+						//asnShipmentHeaderModel.Approver2 = model.Approver2;
 						asnShipmentHeaderModel.InvoiceNo = model.InvoiceNo;
 						asnShipmentHeaderModel.InvoiceDate = model.InvoiceDate;
 						asnShipmentHeaderModel.ASNNo = "ASN/" + DateTime.Now.ToString("MMyy") + "/" + value;
 						asnShipmentHeaderModel.SequenceNo = sequenceNo;
 						asnShipmentHeaderModel.VendorId = model.VendorId;
+						asnShipmentHeaderModel.VendorName = model.VendorName;
 						asnShipmentHeaderModel.ShipFrom = model.ShipFrom;
 						asnShipmentHeaderModel.ShipTo = model.ShipTo;
 						asnShipmentHeaderModel.ShippingDate = model.ShippingDate;
@@ -186,14 +199,15 @@ namespace DALayer.ASN
 						{
 							RemoteASNItemDetail ASNItemDetails = new RemoteASNItemDetail();
 							ASNItemDetails.ASNId = ASNId;
-							ASNItemDetails.PONo = asnShipmentHeaderModel.PONo;
+							ASNItemDetails.PONo = item.PONo;
+							ASNItemDetails.PODate = item.PODate;
 							ASNItemDetails.POItemNo = item.POItemNo;
 							ASNItemDetails.Material = item.Material;
 							ASNItemDetails.MaterialDescription = item.MaterialDescription;
 							ASNItemDetails.HSNCode = item.HSNCode;
 							ASNItemDetails.POQty = item.POQty;//Quoted Qty						
 							ASNItemDetails.SupplierCumulativeQty = item.ASNQty; //delivered Qty
-							ASNItemDetails.PoCumulativeQty = item.POQty - ASNItemDetails.SupplierCumulativeQty;//Remaining qty		
+							ASNItemDetails.RemainingQty = item.POQty - ASNItemDetails.SupplierCumulativeQty;//Remaining qty		
 							ASNItemDetails.Remarks = item.Remarks;
 							vscm.RemoteASNItemDetails.Add(ASNItemDetails);
 							vscm.SaveChanges();
@@ -202,12 +216,16 @@ namespace DALayer.ASN
 						//update in YSCM
 						ASNShipmentHeader asnShipmentHeaderModelLocal = new ASNShipmentHeader();
 						asnShipmentHeaderModelLocal.ASNId = ASNId;
-						asnShipmentHeaderModelLocal.PONo = model.PONo;
+						//asnShipmentHeaderModelLocal.PONo = model.PONo;
+						//asnShipmentHeaderModelLocal.PODate = model.PODate;
+						//asnShipmentHeaderModelLocal.Approver1 = model.Approver1;
+						//asnShipmentHeaderModelLocal.Approver2 = model.Approver2;
 						asnShipmentHeaderModelLocal.InvoiceNo = model.InvoiceNo;
 						asnShipmentHeaderModelLocal.InvoiceDate = model.InvoiceDate;
 						asnShipmentHeaderModelLocal.ASNNo = asnShipmentHeaderModel.ASNNo;
 						asnShipmentHeaderModelLocal.SequenceNo = asnShipmentHeaderModel.SequenceNo;
 						asnShipmentHeaderModelLocal.VendorId = model.VendorId;
+						asnShipmentHeaderModelLocal.VendorName = model.VendorName;
 						asnShipmentHeaderModelLocal.ShipFrom = model.ShipFrom;
 						asnShipmentHeaderModelLocal.ShipTo = model.ShipTo;
 						asnShipmentHeaderModelLocal.ShippingDate = model.ShippingDate;
@@ -236,18 +254,23 @@ namespace DALayer.ASN
 							ASNItemDetails.ASNItemId = itemlocal.ASNItemId;
 							ASNItemDetails.ASNId = itemlocal.ASNId;
 							ASNItemDetails.PONo = itemlocal.PONo;
+							ASNItemDetails.PODate = itemlocal.PODate;
 							ASNItemDetails.POItemNo = itemlocal.POItemNo;
 							ASNItemDetails.Material = itemlocal.Material;
 							ASNItemDetails.MaterialDescription = itemlocal.MaterialDescription;
 							ASNItemDetails.HSNCode = itemlocal.HSNCode;
 							ASNItemDetails.POQty = itemlocal.POQty;//Quoted Qty
-																   //ASNItemDetails.ASNQty = itemlocal.ASNQty;//entered by vendor		
 							ASNItemDetails.SupplierCumulativeQty = itemlocal.SupplierCumulativeQty; //delivered Qty
-							ASNItemDetails.PoCumulativeQty = itemlocal.PoCumulativeQty;//Remaining qty	
+							ASNItemDetails.RemainingQty = itemlocal.RemainingQty;//Remaining qty	
 							ASNItemDetails.Remarks = itemlocal.Remarks;
 							obj.ASNItemDetails.Add(ASNItemDetails);
 							obj.SaveChanges();
 						}
+
+						//update ASN details in wms
+						string ponos = model.RemoteASNItemDetails.Select(li => li.PONo).ToString();
+						updateASNDetailsinWMS(asnShipmentHeaderModel, ponos);
+
 					}
 					else
 					{
@@ -255,6 +278,7 @@ namespace DALayer.ASN
 						asnShipmentHeaderModel.InvoiceNo = model.InvoiceNo;
 						asnShipmentHeaderModel.InvoiceDate = model.InvoiceDate;
 						asnShipmentHeaderModel.VendorId = model.VendorId;
+						asnShipmentHeaderModel.VendorName = model.VendorName;
 						asnShipmentHeaderModel.ShipFrom = model.ShipFrom;
 						asnShipmentHeaderModel.ShipTo = model.ShipTo;
 						asnShipmentHeaderModel.ShippingDate = model.ShippingDate;
@@ -280,11 +304,10 @@ namespace DALayer.ASN
 							RemoteASNItemDetail ASNItemDetails = vscm.RemoteASNItemDetails.Where(li => li.ASNItemId == item.ASNItemId).FirstOrDefault();
 							ASNItemDetails.HSNCode = item.HSNCode;
 							ASNItemDetails.POQty = item.POQty;//Quoted Qty
-															  //ASNItemDetails.ASNQty = item.ASNQty;//entered by vendor		
 							Nullable<decimal> SupplierCumulativeQty = 0;
 							if (ASNItemDetails.SupplierCumulativeQty != null)
 								ASNItemDetails.SupplierCumulativeQty = ASNItemDetails.SupplierCumulativeQty + item.ASNQty; //delivered Qty
-							ASNItemDetails.PoCumulativeQty = ASNItemDetails.POQty - ASNItemDetails.SupplierCumulativeQty;
+							ASNItemDetails.RemainingQty = ASNItemDetails.POQty - ASNItemDetails.SupplierCumulativeQty;
 							ASNItemDetails.Remarks = item.Remarks;
 							vscm.SaveChanges();
 						}
@@ -295,6 +318,7 @@ namespace DALayer.ASN
 						asnShipmentHeaderModelLocal.InvoiceNo = model.InvoiceNo;
 						asnShipmentHeaderModelLocal.InvoiceDate = model.InvoiceDate;
 						asnShipmentHeaderModelLocal.VendorId = model.VendorId;
+						asnShipmentHeaderModelLocal.VendorName = model.VendorName;
 						asnShipmentHeaderModelLocal.ShipFrom = model.ShipFrom;
 						asnShipmentHeaderModelLocal.ShipTo = model.ShipTo;
 						asnShipmentHeaderModelLocal.ShippingDate = model.ShippingDate;
@@ -321,9 +345,8 @@ namespace DALayer.ASN
 							ASNItemDetail ASNItemDetails = obj.ASNItemDetails.Where(li => li.ASNItemId == item.ASNItemId).FirstOrDefault();
 							ASNItemDetails.HSNCode = item.HSNCode;
 							ASNItemDetails.POQty = item.POQty;//Quoted Qty
-															  //ASNItemDetails.ASNQty = item.ASNQty;//entered by vendor		
 							ASNItemDetails.SupplierCumulativeQty = item.SupplierCumulativeQty; //delivered Qty
-							ASNItemDetails.PoCumulativeQty = item.PoCumulativeQty;
+							ASNItemDetails.RemainingQty = item.RemainingQty;
 							ASNItemDetails.Remarks = item.Remarks;
 							obj.SaveChanges();
 						}
@@ -349,12 +372,71 @@ namespace DALayer.ASN
 			return true;
 		}
 
-		public List<RemoteASNShipmentHeader> getAsnList()
+		/*Name of Function : <<updateASNDetailsinWMS>>  Author :<<Prasanna>>  
+		Date of Creation <<08-12-2020>>
+		Purpose : <<function is used to  update ASNDetails from vendor portal  to WMS>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		public void updateASNDetailsinWMS(RemoteASNShipmentHeader asnData, string pono)
+		{
+			try
+			{
+				using (NpgsqlConnection pgsql = new NpgsqlConnection(ConfigurationManager.AppSettings["WMSServerPath"]))
+				{
+					pgsql.Open();
+					string query1 = "Select Count(*) as count from wms.wms_asn where  = '" + asnData.ASNNo + "'";
+					int pocount = int.Parse(pgsql.ExecuteScalar(query1, null).ToString());
+					if (pocount == 0)
+					{
+						DateTime updatedon = DateTime.Now;
+						var insertquery = "INSERT INTO wms.wms_asn(pono, asn, deliverydate, updatedon, invoiceno, invoicedate, vendorid, vendoruserid)VALUES(@pono, @asn, @deliverydate,@updatedon , @invoiceno, @invoicedate,@vendorid, @vendoruserid)";
+						var results = pgsql.ExecuteScalar(insertquery, new
+						{
+							pono,
+							asnData.ASNNo,
+							asnData.DeliveryDate,
+							updatedon,
+							asnData.InvoiceNo,
+							asnData.InvoiceDate,
+							asnData.VendorId,
+							asnData.CreatedBy
+						});
+					}
+					else
+					{
+						string qry = "Update wms.wms_asn set pono = " + pono + ",deliverydate = '" + asnData.DeliveryDate + "',invoiceno='" + asnData.InvoiceNo + "',invoicedate = '" + asnData.InvoiceDate + "' where asnno = '" + asnData.ASNNo + "'";
+						var results11 = pgsql.ExecuteScalar(qry);
+					}
+				}
+			}
+			catch (DbEntityValidationException e)
+			{
+				foreach (var eve in e.EntityValidationErrors)
+				{
+					Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+						eve.Entry.Entity.GetType().Name, eve.Entry.State);
+					foreach (var ve in eve.ValidationErrors)
+					{
+						log.ErrorMessage("ASNDA", "updateASNDetailsinWMS", ve.ErrorMessage);
+						Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+							ve.PropertyName, ve.ErrorMessage);
+					}
+				}
+
+			}
+
+		}
+
+		/*Name of Function : <<getAsnList>>  Author :<<Prasanna>>  
+		Date of Creation <<07-12-2020>>
+		Purpose : <<function is used to  getAsnList>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		public List<RemoteASNShipmentHeader> getAsnList(int vendorId)
 		{
 			List<RemoteASNShipmentHeader> asnList = new List<RemoteASNShipmentHeader>();
 			try
 			{
-				asnList = vscm.RemoteASNShipmentHeaders.OrderByDescending(x => x.ASNId).ToList();
+				asnList = vscm.RemoteASNShipmentHeaders.Where(li => li.VendorId == vendorId).OrderByDescending(x => x.ASNId).ToList();
+
 				return asnList;
 			}
 			catch (Exception ex)
@@ -362,18 +444,71 @@ namespace DALayer.ASN
 				throw;
 			}
 		}
+		/*Name of Function : <<getAsnDetailsByAsnNo>>  Author :<<Prasanna>>  
+		Date of Creation <<04-12-2020>>
+		Purpose : <<function is used to  getAsnDetailsByAsnNo>>
+		Review Date :<<>>   Reviewed By :<<>>*/
 		public RemoteASNShipmentHeader getAsnDetailsByAsnNo(int ASNId)
 		{
 			RemoteASNShipmentHeader ASNDetails = new RemoteASNShipmentHeader();
 			try
 			{
-				return vscm.RemoteASNShipmentHeaders.Where(li => li.ASNId == ASNId).FirstOrDefault();
+				ASNDetails = vscm.RemoteASNShipmentHeaders.Where(li => li.ASNId == ASNId).FirstOrDefault();
+				foreach (RemoteASNCommunication item in ASNDetails.RemoteASNCommunications)
+				{
+					item.Employee = obj.VendorEmployeeViews.Where(li => li.EmployeeNo == item.RemarksFrom).FirstOrDefault();
+				}
 
 			}
 			catch (Exception ex)
 			{
 				throw;
 			}
+			return ASNDetails;
+		}
+
+		/*Name of Function : <<updateASNComminications>>  Author :<<Prasanna>>  
+		Date of Creation <<07-12-2020>>
+		Purpose : <<function is used updateASNComminications>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		public bool updateASNComminications(RemoteASNCommunication asncom)
+		{
+			try
+			{
+				int ASNCCId = 0;
+				//insert in vscm
+				RemoteASNCommunication com = vscm.RemoteASNCommunications.Where(li => li.ASNCCId == asncom.ASNCCId).FirstOrDefault();
+				if (com == null)
+				{
+					RemoteASNCommunication asnComRemote = new RemoteASNCommunication();
+					asnComRemote.ASNId = asncom.ASNId;
+					asnComRemote.Remarks = asncom.Remarks;
+					asnComRemote.RemarksFrom = asncom.RemarksFrom;
+					asnComRemote.RemarksDate = DateTime.Now;
+					vscm.RemoteASNCommunications.Add(asnComRemote);
+					vscm.SaveChanges();
+					ASNCCId = asnComRemote.ASNId;
+				}
+
+				//inert in yscm
+				ASNCommunication comLocal = obj.ASNCommunications.Where(li => li.ASNCCId == asncom.ASNCCId).FirstOrDefault();
+				if (comLocal == null)
+				{
+					ASNCommunication asnComLocal = new ASNCommunication();
+					asnComLocal.ASNCCId = ASNCCId;
+					asnComLocal.ASNId = asncom.ASNId;
+					asnComLocal.Remarks = asncom.Remarks;
+					asnComLocal.RemarksFrom = asncom.RemarksFrom;
+					asnComLocal.RemarksDate = DateTime.Now;
+					obj.ASNCommunications.Add(asnComLocal);
+					obj.SaveChanges();
+				}
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("ASNDA", "updateASNComminications", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
 		}
 
 		public InvoiceModel GetInvoiceDetails(string InvoiceNo)
@@ -399,6 +534,10 @@ namespace DALayer.ASN
 			}
 		}
 
+		/*Name of Function : <<UpdateInvoice>>  Author :<<Prasanna>>  
+		Date of Creation <<18-11-2020>>
+		Purpose : <<function is used to UpdateInvoice>>
+		Review Date :<<>>   Reviewed By :<<>>*/
 		public async Task<InvoiceDetail> UpdateInvoice(InvoiceDetail invoiceModel)
 		{
 			InvoiceDetail InvoiceDetails = new InvoiceDetail();
@@ -461,9 +600,9 @@ namespace DALayer.ASN
 				InvoiceDetails = vscm.InvoiceDetails.Where(li => li.InvoiceId == invoiceId).FirstOrDefault();
 				InvoiceDetails.InvoiceDocuments = InvoiceDetails.InvoiceDocuments.Where(li => li.IsDeleted != true).ToList();
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				log.ErrorMessage("ASNDA", "UpdateInvoice", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+				log.ErrorMessage("ASNDA", "UpdateInvoice", ex.Message + "; " + ex.StackTrace.ToString());
 
 			}
 			return InvoiceDetails;
@@ -484,17 +623,17 @@ namespace DALayer.ASN
 			{
 				var vendorDetails = vscm.RemoteVendorMasters.Where(x => x.Vendorid == vendorId).FirstOrDefault();
 				var lstStagingPO = new List<StagingPoSapModels>();
-				NpgsqlConnection conn = new NpgsqlConnection("Server=10.29.15.212;Port=5432;User Id=postgres;Password=Wms@1234*;Database=WMS");
+				NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.AppSettings["WMSServerPath"]);
 				conn.Open();
 				// Define a query
-				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono from wms.wms_polist where vendorid='" + vendorDetails.VendorCode + "'", conn);
+				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono from wms.wms_polist where vendorcode='" + vendorDetails.VendorCode + "'", conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
 				// Read all rows and output the first column in each row
 				while (dr.Read())
 				{
 					StagingPoSapModels stagingPoSapModels = new StagingPoSapModels();
-					stagingPoSapModels.PONO = dr["pono"].ToString();
+					stagingPoSapModels.PONo = dr["pono"].ToString();
 					lstStagingPO.Add(stagingPoSapModels);
 				}
 				// Close connection
@@ -503,8 +642,8 @@ namespace DALayer.ASN
 				for (int i = 0; i < lstStagingPO.Count; i++)
 				{
 					StagingPoSapModels stagingPoSapModels = new StagingPoSapModels();
-					stagingPoSapModels.PONO = lstStagingPO[i].PONO;
-					stagingPoSapModels.InvoiceDetails = vscm.InvoiceDetails.Where(li => li.PONO == stagingPoSapModels.PONO).ToList();
+					stagingPoSapModels.PONo = lstStagingPO[i].PONo;
+					stagingPoSapModels.InvoiceDetails = vscm.InvoiceDetails.Where(li => li.PONO == stagingPoSapModels.PONo).ToList();
 					foreach (InvoiceDetail item in stagingPoSapModels.InvoiceDetails)
 					{
 						item.InvoiceDocuments = item.InvoiceDocuments.Where(li => li.IsDeleted != true).ToList();
@@ -512,14 +651,18 @@ namespace DALayer.ASN
 					lstStagingPO_Invoices.Add(stagingPoSapModels);
 				}
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				log.ErrorMessage("ASNDA", "getPOInvoiceDetailsbyVendor", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
+				log.ErrorMessage("ASNDA", "getPOInvoiceDetailsbyVendor", ex.Message + "; " + ex.StackTrace.ToString());
 
 			}
 			return lstStagingPO_Invoices;
 		}
 
+		/*Name of Function : <<DeleteInvoiceFile>>  Author :<<Prasanna>>  
+		Date of Creation <<18-11-2020>>
+		Purpose : <<function is used to DeleteInvoiceFile>>
+		Review Date :<<>>   Reviewed By :<<>>*/
 		public bool DeleteInvoiceFile(int DocumentId)
 		{
 			InvoiceDocument invDoc = vscm.InvoiceDocuments.Where(li => li.DocumentId == DocumentId).FirstOrDefault();

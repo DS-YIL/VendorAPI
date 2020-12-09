@@ -25,9 +25,9 @@ namespace BALayer.ASN
 			return _asnDataAcess.InsertandEditAsn(model);
 		}
 
-		public List<RemoteASNShipmentHeader> getAsnList()
+		public List<RemoteASNShipmentHeader> getAsnList(int vendorId)
 		{
-			return _asnDataAcess.getAsnList();
+			return _asnDataAcess.getAsnList(vendorId);
 		}
 
 		public RemoteASNShipmentHeader getAsnDetailsByAsnNo(int ASNId)
@@ -43,6 +43,11 @@ namespace BALayer.ASN
 		{
 			return _asnDataAcess.getItemDetailsByPoNo(PONo);
 		}
+		public bool updateASNComminications(RemoteASNCommunication asncom)
+		{
+			return _asnDataAcess.updateASNComminications(asncom);
+		}
+
 		public List<StagingPoSapModels> getPOInvoiceDetailsbyVendor(int vendorId)
 		{
 			return _asnDataAcess.getPOInvoiceDetailsbyVendor(vendorId);
