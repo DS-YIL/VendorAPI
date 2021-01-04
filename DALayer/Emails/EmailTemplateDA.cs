@@ -225,12 +225,12 @@ namespace DALayer.Emails
 		{
 			try
 			{
-
+				VSCMEntities vscm = new VSCMEntities();
 				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
-				mpripaddress = mpripaddress + "SCM/ASN/" + ASNId + "";
+				mpripaddress = mpripaddress + "SCM/ASNView/" + ASNId + "";
 				using (var db = new YSCMEntities()) //ok
 				{
-					ASNShipmentHeader ASNHeader = db.ASNShipmentHeaders.Where(li => li.ASNId == ASNId).FirstOrDefault();
+					RemoteASNShipmentHeader ASNHeader = vscm.RemoteASNShipmentHeaders.Where(li => li.ASNId == ASNId).FirstOrDefault();
 					EmailSend emlSndngList = new EmailSend();
 					emlSndngList.FrmEmailId = ConfigurationManager.AppSettings["fromemail"];
 					emlSndngList.Subject = "ASNCreated";
@@ -248,6 +248,80 @@ namespace DALayer.Emails
 			catch (Exception ex)
 			{
 				log.ErrorMessage("EmailTemplate", "sendASNMailtoBuyer", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
+		}
+
+		/*Name of Function : <<sendInvoiceMailtoBuyer>  Author :<<Prasanna>>  
+		  Date of Creation <<1412-11-2020>>
+		  Purpose : <<Sending mail to YIL memebers>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		public bool sendInvoiceMailtoBuyer(string invoiceNo)
+		{
+			try
+			{
+				VSCMEntities vscm = new VSCMEntities();
+				var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+
+				using (var db = new YSCMEntities()) //ok
+				{
+					RemoteASNShipmentHeader ASNHeader = vscm.RemoteASNShipmentHeaders.Where(li => li.InvoiceNo == invoiceNo).FirstOrDefault();
+					mpripaddress = mpripaddress + "SCM/ASNView/" + ASNHeader.ASNId + "";
+					EmailSend emlSndngList = new EmailSend();
+					emlSndngList.FrmEmailId = ConfigurationManager.AppSettings["fromemail"];
+					emlSndngList.Subject = "Invoice Submitted For ASNNo:" + ASNHeader.ASNNo + "";
+					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Click below link to view details</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
+					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNToEmail"]))
+						emlSndngList.ToEmailId = ConfigurationManager.AppSettings["ASNToEmail"];
+					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNCCEmail"]))
+						emlSndngList.CC = ConfigurationManager.AppSettings["ASNCCEmail"];
+
+					if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+						this.sendEmail(emlSndngList);
+				}
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("EmailTemplate", "sendInvoiceMailtoBuyer", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
+		}
+
+
+		/*Name of Function : <<sendASNCommunicationMail>  Author :<<Prasanna>>  
+		  Date of Creation <<14-12-2020>>
+		  Purpose : <<Sending mail to YIL members>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		public bool sendASNCommunicationMail(int ASNId, string Remarks)
+		{
+			try
+			{
+				VSCMEntities vscm = new VSCMEntities();
+				using (var db = new YSCMEntities()) //ok
+				{
+					var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+					mpripaddress = mpripaddress + "SCM/ASN/" + ASNId + "";
+					var fromMail = ConfigurationManager.AppSettings["fromemail"];
+					RemoteASNShipmentHeader ASNHeader = vscm.RemoteASNShipmentHeaders.Where(li => li.ASNId == ASNId).FirstOrDefault();
+
+					EmailSend emlSndngList = new EmailSend();
+					emlSndngList.Subject = "ASN Response";
+					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Comments by Vendor</p></div><br/>" + Remarks + "  <br/><br/></div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
+					emlSndngList.FrmEmailId = fromMail;
+					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNToEmail"]))
+						emlSndngList.ToEmailId = ConfigurationManager.AppSettings["ASNToEmail"];
+					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNCCEmail"]))
+						emlSndngList.CC = ConfigurationManager.AppSettings["ASNCCEmail"];
+
+					if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+						this.sendEmail(emlSndngList);
+				}
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("EmailTemplate", "sendASNCommunicationMail", ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return true;
 		}

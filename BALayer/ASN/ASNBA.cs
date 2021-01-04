@@ -20,14 +20,14 @@ namespace BALayer.ASN
 		//}
 		//ASNDA _asnDataAcess = new ASNDA();
 
-		public bool InsertandEditAsn(RemoteASNShipmentHeader model)
+		public int InsertandEditAsn(RemoteASNShipmentHeader model)
 		{
 			return _asnDataAcess.InsertandEditAsn(model);
 		}
 
-		public List<RemoteASNShipmentHeader> getAsnList(int vendorId)
+		public List<RemoteASNShipmentHeader> getAsnList(ASNfilters ASNfilters)
 		{
-			return _asnDataAcess.getAsnList(vendorId);
+			return _asnDataAcess.getAsnList(ASNfilters);
 		}
 
 		public RemoteASNShipmentHeader getAsnDetailsByAsnNo(int ASNId)
@@ -48,18 +48,19 @@ namespace BALayer.ASN
 			return _asnDataAcess.updateASNComminications(asncom);
 		}
 
-		public List<StagingPoSapModels> getPOInvoiceDetailsbyVendor(int vendorId)
-		{
-			return _asnDataAcess.getPOInvoiceDetailsbyVendor(vendorId);
-		}
-		public Task<InvoiceDetail> UpdateInvoice(InvoiceDetail invoiceModel)
+		//public List<StagingPoSapModels> getPOInvoiceDetailsbyVendor(int vendorId)
+		//{
+		//	return _asnDataAcess.getPOInvoiceDetailsbyVendor(vendorId);
+		//}
+		
+		public Task<RemoteInvoiceDetail> UpdateInvoice(RemoteInvoiceDetail invoiceModel)
 		{
 			return _asnDataAcess.UpdateInvoice(invoiceModel);
 		}
 
-		public InvoiceModel GetInvoiceDetails(string invoiceNo)
+		public RemoteInvoiceDetail GetInvoiceDetails(RemoteInvoiceDetail invoiceDetails)
 		{
-			return _asnDataAcess.GetInvoiceDetails(invoiceNo);
+			return _asnDataAcess.GetInvoiceDetails(invoiceDetails);
 		}
 
 		public bool DeleteInvoiceFile(int DocumentId)

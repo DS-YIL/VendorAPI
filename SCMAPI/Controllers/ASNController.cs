@@ -1,4 +1,5 @@
 ﻿using BALayer.ASN;
+using SCMModels;
 using SCMModels.RemoteModel;
 using SCMModels.RFQModels;
 using System.Threading.Tasks;
@@ -25,11 +26,11 @@ namespace SCMAPI.Controllers
 			return Ok(_asnBusinessAccess.InsertandEditAsn(model));
 		}
 
-		[HttpGet]
-		[Route("getAsnList/{vendorId}")]
-		public IHttpActionResult getAsnList(int vendorId)
+		[HttpPost]
+		[Route("getAsnList")]
+		public IHttpActionResult getAsnList(ASNfilters ASNfilters)
 		{
-			return Ok(_asnBusinessAccess.getAsnList(vendorId));
+			return Ok(_asnBusinessAccess.getAsnList(ASNfilters));
 		}
 
 		[HttpGet]
@@ -54,12 +55,13 @@ namespace SCMAPI.Controllers
 		}
 
 
-		[HttpGet]
-		[Route("getPOInvoiceDetailsbyVendor/{vendorId}")]
-		public IHttpActionResult getPOInvoiceDetailsbyVendor(int vendorId)
-		{
-			return Ok(_asnBusinessAccess.getPOInvoiceDetailsbyVendor(vendorId));
-		}
+		//[HttpGet]
+		//[Route("getPOInvoiceDetailsbyVendor/{vendorId}")]
+		//public IHttpActionResult getPOInvoiceDetailsbyVendor(int vendorId)
+		//{
+		//	return Ok(_asnBusinessAccess.getPOInvoiceDetailsbyVendor(vendorId));
+		//}
+		
 
 		[Route("updateASNComminications")]
 		[HttpPost]
@@ -72,17 +74,17 @@ namespace SCMAPI.Controllers
 		[HttpPost]
 		[Route("UpdateInvoice")]
 		[ResponseType(typeof(statuscheckmodel))]
-		public async Task<IHttpActionResult> UpdateInvoice(InvoiceDetail invoiceModel)
+		public async Task<IHttpActionResult> UpdateInvoice(RemoteInvoiceDetail invoiceModel)
 		{
 			return Ok(await _asnBusinessAccess.UpdateInvoice(invoiceModel));
 		}
 
 
-		[HttpGet]
-		[Route("GetInvoiceDetails/{InvoiceNo}")]
-		public IHttpActionResult GetInvoiceDetails(string InvoiceNo)
+		[HttpPost]
+		[Route("GetInvoiceDetails")]
+		public IHttpActionResult GetInvoiceDetails(RemoteInvoiceDetail invoiceDetails)
 		{
-			return Ok(_asnBusinessAccess.GetInvoiceDetails(InvoiceNo));
+			return Ok(_asnBusinessAccess.GetInvoiceDetails(invoiceDetails));
 		}
 
 		[HttpGet]

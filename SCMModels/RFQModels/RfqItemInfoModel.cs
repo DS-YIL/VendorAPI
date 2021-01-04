@@ -19,8 +19,8 @@ namespace SCMModels.RFQModels
         public int CurrencyID { get; set; }
         public decimal CurrencyValue { get; set; }
         public string Remarks { get; set; }
-        public DateTime DeliveryDate { get; set; }
-        public bool IsDeleted { get; set; }
+		public Nullable<System.DateTime> DeliveryDate { get; set; }
+		public bool IsDeleted { get; set; }
         public RfqItemModel item { get; set; }
         public string ItemNameForMultiple { get; set; }
         public string ItemDescriptionForMultiple { get; set; }

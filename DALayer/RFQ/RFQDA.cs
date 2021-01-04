@@ -525,7 +525,7 @@ namespace DALayer.RFQ
 							rfqinsertdata.CurrencyValue = item.CurrencyValue;
 							rfqinsertdata.Remarks = item.Remarks;
 							rfqinsertdata.DeliveryDate = item.DeliveryDate;
-							vscm.SaveChanges();
+							obj.SaveChanges();
 						}
 						else
 						{
