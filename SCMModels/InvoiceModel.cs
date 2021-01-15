@@ -12,8 +12,8 @@ namespace SCMModels
         public string InvoiceNo { get; set; }
         public int VendorId { get; set; }
         public string VuniqueId { get; set; }
-        public long? PONumber { get; set; }
-        public DateTime CreatedDate { get; set; }
+		public string PONO { get; set; }
+		public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
@@ -21,11 +21,7 @@ namespace SCMModels
         public string ModifiedBy_VuniqueId { get; set; }
         public int DocumentId { get; set; }
         public int InvoiceId { get; set; }
-        public string DocumentName { get; set; }
-        public int DocumentTypeId { get; set; }
-        public string Path { get; set; }
-        public int UploadedBy { get; set; }
-        public DateTime UploadedDate { get; set; }
+        
      
 
       
@@ -38,7 +34,7 @@ namespace SCMModels
         public string DocumentName { get; set; }
         public int DocumentTypeId { get; set; }
         public string Path { get; set; }
-        public int UploadedBy { get; set; }
+        public string UploadedBy { get; set; }
         public DateTime UploadedDate { get; set; }
         public bool IsDeleted { get; set; }
         public int vendorId { get; set; }

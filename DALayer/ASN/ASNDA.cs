@@ -37,10 +37,10 @@ namespace DALayer.ASN
 			var lstStagingPO = new List<StagingPoSapModels>();
 			try
 			{
-				NpgsqlConnection conn = new NpgsqlConnection("Server=10.29.15.212;Port=5432;User Id=postgres;Password=Yil@pgdb@212*_;Database=WMS");
+				NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.AppSettings["WMSServerPath"]);
 				conn.Open();
 				// Define a query
-				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono,sloc from wms.wms_polist where vendorcode='" + vendorDetails.VendorCode + "' order by pono", conn);
+				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono,sloc from wms.wms_polist where isclosed is false and vendorcode='" + vendorDetails.VendorCode + "' order by pono", conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
 				// Read all rows and output the first column in each row
@@ -86,11 +86,11 @@ namespace DALayer.ASN
 			var PoItemDetailsList = new List<PoItemDetails>();
 			try
 			{
-				NpgsqlConnection conn = new NpgsqlConnection("Server=10.29.15.212;Port=5432;User Id=postgres;Password=Yil@pgdb@212*_;Database=WMS");
+				NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.AppSettings["WMSServerPath"]);
 				conn.Open();
 				// Define a query
 				PONo = PONo.Replace(",", "','");
-				string query = "select  wp.pono ,wp.vendorcode,pomat.materialid ,pomat.materialdescription ,pomat.itemno,pomat.itemdeliverydate, pomat.materialqty, mat.hsncode from wms.wms_polist wp  inner join wms.wms_pomaterials pomat on pomat.pono = wp.pono inner join wms.\"MaterialMasterYGS\" mat on mat.material = pomat.materialid where wp.pono in ('" + PONo + "') order by wp.pono";
+				string query = "select  wp.pono ,wp.vendorcode,pomat.materialid ,pomat.materialdescription ,pomat.poitemdescription,pomat.itemno,pomat.itemdeliverydate, pomat.materialqty, pomat.deliveredqty,mat.hsncode from wms.wms_polist wp  inner join wms.wms_pomaterials pomat on pomat.pono = wp.pono inner join wms.\"MaterialMasterYGS\" mat on mat.material = pomat.materialid where wp.pono in ('" + PONo + "') order by wp.pono";
 				NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -105,15 +105,19 @@ namespace DALayer.ASN
 					PoItemDetails.VendorCode = Convert.ToString(dr["vendorcode"]);
 					PoItemDetails.Material = Convert.ToString(dr["materialid"]);
 					PoItemDetails.MaterialDescription = Convert.ToString(dr["materialdescription"]);
+					PoItemDetails.poitemdescription = Convert.ToString(dr["poitemdescription"]);
+					PoItemDetails.deliveredqty = Convert.ToDecimal(dr["deliveredqty"]);
 					PoItemDetails.POItemNo = Convert.ToString(dr["itemno"]);
 					PoItemDetails.HSNCode = Convert.ToString(dr["hsncode"]);
 					PoItemDetails.POQty = Convert.ToDecimal(dr["materialqty"]);//quoted qty
 					var res = vscm.RemoteASNItemDetails.ToList();
 					RemoteASNItemDetail ASNitem = new RemoteASNItemDetail();
 					if (res.Count > 0)
-						ASNitem = vscm.RemoteASNItemDetails.Where(li => li.PONo == PoItemDetails.PONo && li.Material == PoItemDetails.Material).FirstOrDefault();
+						ASNitem = vscm.RemoteASNItemDetails.Where(li => li.PONo == PoItemDetails.PONo && li.Material == PoItemDetails.Material && li.POItemNo == PoItemDetails.POItemNo).FirstOrDefault();
 					if (ASNitem != null)
 						PoItemDetails.SupplierCumulativeQty = ASNitem.SupplierCumulativeQty;//already delivered qty
+					else
+						PoItemDetails.SupplierCumulativeQty = PoItemDetails.deliveredqty;//already delivered qty
 					PoItemDetails.RemainingQty = PoItemDetails.POQty - PoItemDetails.SupplierCumulativeQty;//remaining qty
 					PoItemDetailsList.Add(PoItemDetails);
 				}
@@ -350,9 +354,10 @@ namespace DALayer.ASN
 						ASNId = asnShipmentHeaderModel.ASNId;
 
 						List<RemoteASNItemDetail> ASNItemDetailsList = vscm.RemoteASNItemDetails.Where(li => li.ASNId == ASNId).ToList();
-
+						List<string> ponos = new List<string>();
 						foreach (RemoteASNItemDetail item in ASNItemDetailsList)
 						{
+							ponos.Add(item.PONo);
 							ASNItemDetail ASNItemDetails = obj.ASNItemDetails.Where(li => li.ASNItemId == item.ASNItemId).FirstOrDefault();
 							ASNItemDetails.HSNCode = item.HSNCode;
 							ASNItemDetails.POQty = item.POQty;//Quoted Qty
@@ -361,6 +366,10 @@ namespace DALayer.ASN
 							ASNItemDetails.Remarks = item.Remarks;
 							obj.SaveChanges();
 						}
+						//update ASN details in wms
+						var pono = string.Join(",", ponos);
+
+						updateASNDetailsinWMS(model, pono, asnShipmentHeaderModel.ASNNo);
 					}
 				}
 				emailTemplateDA.sendASNMailtoBuyer(ASNId);
@@ -395,64 +404,76 @@ namespace DALayer.ASN
 				{
 					DateTime Date = Convert.ToDateTime(asnData.DeliveryDate);
 					var DeliveryDate = Date.ToString("yyyy-MM-dd");
+					Nullable<System.DateTime> itemdeliverydate = asnData.DeliveryDate;
 					pgsql.Open();
-					string query1 = "Select Count(*) as count from wms.wms_asn where asn = '" + ASNNo + "'";
-					int pocount = int.Parse(pgsql.ExecuteScalar(query1, null).ToString());
-					if (pocount == 0)
-					{
-						DateTime updatedon = DateTime.Now;
-						string asn = ASNNo;
-						//pono = "4507962964";
-						string vendoruserid = asnData.CreatedBy;
-						var insertquery = "INSERT INTO wms.wms_asn(pono, asn, deliverydate, updatedon, invoiceno, invoicedate, vendorid, vendoruserid)VALUES(@pono, @asn, @deliverydate,@updatedon , @invoiceno, @invoicedate,@vendorid, @vendoruserid)";
-						var results = pgsql.Execute(insertquery, new
-						{
-							pono,
-							asn,
-							asnData.DeliveryDate,
-							updatedon,
-							asnData.InvoiceNo,
-							asnData.InvoiceDate,
-							asnData.VendorId,
-							vendoruserid,
-						});
-					}
-					else
-					{
-						string qry = "Update wms.wms_asn set pono = " + pono + ",deliverydate = '" + DeliveryDate + "',invoiceno='" + asnData.InvoiceNo + "',invoicedate = '" + asnData.InvoiceDate + "' where asnno = '" + asnData.ASNNo + "'";
-						var results11 = pgsql.ExecuteScalar(qry);
-					}
+					//string query1 = "Select Count(*) as count from wms.wms_asn where asn = '" + ASNNo + "'";
+					//int pocount = int.Parse(pgsql.ExecuteScalar(query1, null).ToString());
+					//if (pocount == 0)
+					//{
+					//	DateTime updatedon = DateTime.Now;
+					//	string asn = ASNNo;
+					//	//pono = "4507962964";
+					//	string vendoruserid = asnData.CreatedBy;
+					//	var insertquery = "INSERT INTO wms.wms_asn(pono, asn, deliverydate, updatedon, invoiceno, invoicedate, vendorid, vendoruserid)VALUES(@pono, @asn, @deliverydate,@updatedon , @invoiceno, @invoicedate,@vendorid, @vendoruserid)";
+					//	var results = pgsql.Execute(insertquery, new
+					//	{
+					//		pono,
+					//		asn,
+					//		asnData.DeliveryDate,
+					//		updatedon,
+					//		asnData.InvoiceNo,
+					//		asnData.InvoiceDate,
+					//		asnData.VendorId,
+					//		vendoruserid,
+					//	});
+					//}
+					//else
+					//{
+					//	string qry = "Update wms.wms_asn set pono = " + pono + ",deliverydate = '" + DeliveryDate + "',invoiceno='" + asnData.InvoiceNo + "',invoicedate = '" + asnData.InvoiceDate + "' where asnno = '" + asnData.ASNNo + "'";
+					//	var results11 = pgsql.ExecuteScalar(qry);
+					//}
 
 
 					foreach (RemoteASNItemDetail itemlocal in asnData.RemoteASNItemDetails)
 					{
+
 						//check asn no  already exist or not, if asno no not exist update asn no based on po and material 
-						string query2 = "Select Count(*) as count from wms.wms_pomaterials where  asnno is  null and pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "'";
+						string query2 = "Select Count(*) as count from wms.wms_pomaterials where  asnno is  null and pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 						int pocount2 = int.Parse(pgsql.ExecuteScalar(query2, null).ToString());
 						if (pocount2 > 0)
 						{
-							string qry = "Update wms.wms_pomaterials set asnno= '" + ASNNo + "', itemdeliverydate = '" + DeliveryDate + "',asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "' where  pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "'";
+							string qry = "Update wms.wms_pomaterials set asnno= '" + ASNNo + "', itemdeliverydate = '" + DeliveryDate + "',asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "' where  pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 							var results11 = pgsql.ExecuteScalar(qry);
 						}
 						else
 						{
-							string query3 = "Select Count(*) as count from wms.wms_pomaterials where  asnno ='" + ASNNo + "' and pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "'";
+							//for second time update if quantity is partially delivered first time new row will add in materials table
+							string query3 = "Select Count(*) as count from wms.wms_pomaterials where  asnno ='" + ASNNo + "' and pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 							int pocount3 = int.Parse(pgsql.ExecuteScalar(query3, null).ToString());
 							if (pocount3 == 0)
 							{
 								string materialid = itemlocal.Material;
 								decimal materialqty = Convert.ToDecimal(itemlocal.POQty);
 								int itemno = Convert.ToInt32(itemlocal.POItemNo);
-								Nullable<System.DateTime> itemdeliverydate = asnData.DeliveryDate;
-								var insertquery = "INSERT INTO wms.wms_pomaterials(pono, materialid, materialdescription,materialqty,itemno,itemdeliverydate,asnno,invoiceno,asnqty)VALUES(@pono, @materialid, @materialdescription,@materialqty,@itemno,@itemdeliverydate,@asnno,@invoiceno,@asnqty)";
+								itemlocal.MaterialDescription = itemlocal.MaterialDescription;
+								string query = "select * from wms.wms_pomaterials pomat where pomat.pono ='" + itemlocal.PONo + "' and pomat.materialid='" + itemlocal.Material + "' and itemno ='" + itemlocal.POItemNo + "'";
+								var result = pgsql.QueryFirstOrDefault<PoItemDetails>(
+												query, null, commandType: CommandType.Text);
+								var poitemdescription = result.poitemdescription;
+								var unitprice = result.unitprice;
+								var itemamount = result.itemamount;
+								var insertquery = "INSERT INTO wms.wms_pomaterials(pono, materialid, materialdescription,poitemdescription,materialqty,itemno,itemdeliverydate,unitprice,itemamount,asnno,invoiceno,asnqty)VALUES(@pono, @materialid, @materialdescription,@poitemdescription,@materialqty,@itemno,@itemdeliverydate,@unitprice,@itemamount,@asnno,@invoiceno,@asnqty)";
 								var results = pgsql.Execute(insertquery, new
 								{
 									itemlocal.PONo,
 									materialid,
 									itemlocal.MaterialDescription,
+									poitemdescription,
 									materialqty,
 									itemno,
 									itemdeliverydate,
+									unitprice,
+									itemamount,
 									ASNNo,
 									asnData.InvoiceNo,
 									itemlocal.ASNQty
@@ -461,7 +482,7 @@ namespace DALayer.ASN
 
 							else
 							{
-								string qry = "Update wms.wms_pomaterials set  itemdeliverydate = " + DeliveryDate + ",asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "'where asnno='" + ASNNo + "'  pono ='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "";
+								string qry = "Update wms.wms_pomaterials set  itemdeliverydate = " + DeliveryDate + ",asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "'where asnno='" + ASNNo + "' and  pono ='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 								var results11 = pgsql.ExecuteScalar(qry);
 							}
 
@@ -594,7 +615,7 @@ namespace DALayer.ASN
 			RemoteInvoiceDetail invDetails = new RemoteInvoiceDetail();
 			try
 			{
-				invDetails = vscm.RemoteInvoiceDetails.Where(li => li.InvoiceNo == invoiceDetails.InvoiceNo).FirstOrDefault();
+				invDetails = vscm.RemoteInvoiceDetails.Where(li => li.InvoiceNo == invoiceDetails.InvoiceNo && li.ASNId == invoiceDetails.ASNId).FirstOrDefault();
 				// invoiceDetails.
 
 			}

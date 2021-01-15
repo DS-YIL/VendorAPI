@@ -2520,11 +2520,19 @@ namespace DALayer.RFQ
 					StatusTxt = "Regretted";
 				this.emailTemplateDA.sendSatustoRequestor(rfqStatus.RfqRevisionId, StatusTxt, rfqStatus.Remarks);
 			}
-			catch (Exception e)
+			catch (DbEntityValidationException e)
 			{
-
-				log.ErrorMessage("RFQDA", "rfqStatusUpdate", e.Message.ToString() + e.InnerException.ToString() + e.ToString());
-
+				foreach (var eve in e.EntityValidationErrors)
+				{
+					Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+						eve.Entry.Entity.GetType().Name, eve.Entry.State);
+					foreach (var ve in eve.ValidationErrors)
+					{
+						log.ErrorMessage("RFQDA", "rfqStatusUpdate", ve.ErrorMessage);
+						Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+							ve.PropertyName, ve.ErrorMessage);
+					}
+				}
 			}
 			return true;
 		}
@@ -2564,13 +2572,22 @@ namespace DALayer.RFQ
 				query = Result.query;
 			}
 
-			SqlConnection con = new SqlConnection(vscm.Database.Connection.ConnectionString);
-			SqlCommand cmd = new SqlCommand(query, con);
-			con.Open();
-			SqlDataAdapter da = new SqlDataAdapter(cmd);
-			da.Fill(dtDBMastersList);
-			con.Close();
-			da.Dispose();
+			using (SqlConnection con = new SqlConnection(vscm.Database.Connection.ConnectionString))
+			{
+
+				SqlCommand cmd = new SqlCommand(query, con);
+				SqlDataAdapter da = new SqlDataAdapter(cmd);
+				try
+				{
+					con.Open();
+					da.Fill(dtDBMastersList);
+				}
+				finally
+				{
+					con.Close();
+					da.Dispose();
+				}
+			}
 
 			return dtDBMastersList;
 		}
