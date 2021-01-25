@@ -442,7 +442,7 @@ namespace DALayer.ASN
 						int pocount2 = int.Parse(pgsql.ExecuteScalar(query2, null).ToString());
 						if (pocount2 > 0)
 						{
-							string qry = "Update wms.wms_pomaterials set asnno= '" + ASNNo + "', itemdeliverydate = '" + DeliveryDate + "',asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "' where  pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
+							string qry = "Update wms.wms_pomaterials set asnno= '" + ASNNo + "', itemdeliverydate = '" + DeliveryDate + "',asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "',billoflodingnumber='" + asnData.BillofLodingNumber + "' where  pono='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 							var results11 = pgsql.ExecuteScalar(qry);
 						}
 						else
@@ -462,7 +462,7 @@ namespace DALayer.ASN
 								var poitemdescription = result.poitemdescription;
 								var unitprice = result.unitprice;
 								var itemamount = result.itemamount;
-								var insertquery = "INSERT INTO wms.wms_pomaterials(pono, materialid, materialdescription,poitemdescription,materialqty,itemno,itemdeliverydate,unitprice,itemamount,asnno,invoiceno,asnqty)VALUES(@pono, @materialid, @materialdescription,@poitemdescription,@materialqty,@itemno,@itemdeliverydate,@unitprice,@itemamount,@asnno,@invoiceno,@asnqty)";
+								var insertquery = "INSERT INTO wms.wms_pomaterials(pono, materialid, materialdescription,poitemdescription,materialqty,itemno,itemdeliverydate,unitprice,itemamount,asnno,invoiceno,asnqty,billoflodingnumber)VALUES(@pono, @materialid, @materialdescription,@poitemdescription,@materialqty,@itemno,@itemdeliverydate,@unitprice,@itemamount,@asnno,@invoiceno,@asnqty,@billoflodingnumber)";
 								var results = pgsql.Execute(insertquery, new
 								{
 									itemlocal.PONo,
@@ -476,13 +476,14 @@ namespace DALayer.ASN
 									itemamount,
 									ASNNo,
 									asnData.InvoiceNo,
-									itemlocal.ASNQty
+									itemlocal.ASNQty,
+									asnData.BillofLodingNumber
 								});
 							}
 
 							else
 							{
-								string qry = "Update wms.wms_pomaterials set  itemdeliverydate = " + DeliveryDate + ",asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "'where asnno='" + ASNNo + "' and  pono ='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
+								string qry = "Update wms.wms_pomaterials set  itemdeliverydate = " + DeliveryDate + ",asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "',billoflodingnumber='" + asnData.BillofLodingNumber + "' where asnno='" + ASNNo + "' and  pono ='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 								var results11 = pgsql.ExecuteScalar(qry);
 							}
 

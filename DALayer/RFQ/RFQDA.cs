@@ -912,6 +912,27 @@ namespace DALayer.RFQ
 					}
 
 				}
+				var rfqitems = obj.RFQItems_N.Where(li => li.RFQItemsId == rfqitemid).FirstOrDefault();
+				var mprrfqitems = obj.MPRRfqItems.Where(li => li.MPRItemDetailsid == rfqitems.MPRItemDetailsid && li.RfqItemsid == rfqitemid && li.DeleteFlag == false).ToList();
+				if (mprrfqitems != null)
+				{
+					foreach (var items in mprrfqitems)
+					{
+						var mprrfqItemInfo = obj.MPRRfqItemInfos.Where(x => x.rfqsplititemid == id && x.MPRRFQitemId == items.MPRRFQitemId && x.Deleteflag == false).ToList();
+
+						if (mprrfqItemInfo != null)
+						{
+							foreach (var item in mprrfqItemInfo)
+							{
+								item.Deleteflag = true;
+								obj.SaveChanges();
+							}
+
+						}
+					}
+				}
+
+
 				List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == id && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
 
 				foreach (var data1 in itemsforupdate)
@@ -2267,6 +2288,25 @@ namespace DALayer.RFQ
 					obj.SaveChanges();
 
 				}
+				var rfqitems = obj.RFQItems_N.Where(li => li.RFQItemsId == Remotedata.RFQItemsId).FirstOrDefault();
+				var mprrfqitems = obj.MPRRfqItems.Where(li => li.MPRItemDetailsid == rfqitems.MPRItemDetailsid && li.RfqItemsid == Remotedata.RFQItemsId && li.DeleteFlag == false).ToList();
+				if (mprrfqitems != null)
+				{
+					foreach (var items in mprrfqitems)
+					{
+						var mprrfqItemInfo = obj.MPRRfqItemInfos.Where(x => x.rfqsplititemid == id && x.MPRRFQitemId == items.MPRRFQitemId && x.Deleteflag == false).ToList();
+
+						if (mprrfqItemInfo != null)
+						{
+							foreach (var item in mprrfqItemInfo)
+							{
+								item.Deleteflag = true;
+								obj.SaveChanges();
+							}
+
+						}
+					}
+				}
 				List<RemoteRfqVendorBOM> itemsforupdate = vscm.RemoteRfqVendorBOMs.Where(li => li.RfqItemsId == id && li.DeleteFlag == false).ToList<RemoteRfqVendorBOM>();
 
 				foreach (var data1 in itemsforupdate)
@@ -2552,9 +2592,9 @@ namespace DALayer.RFQ
 		}
 
 		/*Name of Function : <<getDBMastersList>>  Author :<<Prasanna>>  
-	    Date of Creation <<22-10-2020>>
-	    Purpose : <<get table data dynamically by passing query as parameter>>
-	    Review Date :<<>>   Reviewed By :<<>>*/
+		Date of Creation <<22-10-2020>>
+		Purpose : <<get table data dynamically by passing query as parameter>>
+		Review Date :<<>>   Reviewed By :<<>>*/
 		public DataTable getDBMastersList(DynamicSearchResult Result)
 		{
 			DataTable dtDBMastersList = new DataTable();
