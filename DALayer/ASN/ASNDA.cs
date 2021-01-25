@@ -163,6 +163,7 @@ namespace DALayer.ASN
 			int ASNId = 0;
 			try
 			{
+				var PONos = string.Join(",", (model.RemoteASNItemDetails.Select(c => c.PONo).ToList()).Distinct().ToArray());
 				if (model != null)
 				{
 					if (model.ASNId == 0)
@@ -176,7 +177,6 @@ namespace DALayer.ASN
 							sequenceNo = sequenceNo + 1;
 						}
 						var value = vscm.RemoteSP_sequenceNumber(sequenceNo).FirstOrDefault();
-						//asnShipmentHeaderModel.PONo = model.PONo;
 						//asnShipmentHeaderModel.PODate = model.PODate;
 						//asnShipmentHeaderModel.Approver1 = model.Approver1;
 						//asnShipmentHeaderModel.Approver2 = model.Approver2;
@@ -184,6 +184,7 @@ namespace DALayer.ASN
 						asnShipmentHeaderModel.InvoiceDate = model.InvoiceDate;
 						asnShipmentHeaderModel.ASNNo = "ASN/" + DateTime.Now.ToString("MMyy") + "/" + value;
 						asnShipmentHeaderModel.SequenceNo = sequenceNo;
+						asnShipmentHeaderModel.PONos = PONos;
 						asnShipmentHeaderModel.VendorId = model.VendorId;
 						asnShipmentHeaderModel.VendorName = model.VendorName;
 						asnShipmentHeaderModel.ShipFrom = model.ShipFrom;
@@ -237,6 +238,7 @@ namespace DALayer.ASN
 						asnShipmentHeaderModelLocal.InvoiceDate = model.InvoiceDate;
 						asnShipmentHeaderModelLocal.ASNNo = asnShipmentHeaderModel.ASNNo;
 						asnShipmentHeaderModelLocal.SequenceNo = asnShipmentHeaderModel.SequenceNo;
+						asnShipmentHeaderModelLocal.PONos = PONos;
 						asnShipmentHeaderModelLocal.VendorId = model.VendorId;
 						asnShipmentHeaderModelLocal.VendorName = model.VendorName;
 						asnShipmentHeaderModelLocal.ShipFrom = model.ShipFrom;
@@ -259,7 +261,7 @@ namespace DALayer.ASN
 						asnShipmentHeaderModelLocal.CreatedDate = DateTime.Now;
 						obj.ASNShipmentHeaders.Add(asnShipmentHeaderModelLocal);
 						obj.SaveChanges();
-						List<string> ponos = new List<string>();
+						//List<string> ponos = new List<string>();
 						List<RemoteASNItemDetail> ASNItemDetailsList = vscm.RemoteASNItemDetails.Where(li => li.ASNId == ASNId).ToList();
 						foreach (RemoteASNItemDetail itemlocal in ASNItemDetailsList)
 						{
@@ -267,7 +269,7 @@ namespace DALayer.ASN
 							ASNItemDetails.ASNItemId = itemlocal.ASNItemId;
 							ASNItemDetails.ASNId = itemlocal.ASNId;
 							ASNItemDetails.PONo = itemlocal.PONo;
-							ponos.Add(ASNItemDetails.PONo);
+							//ponos.Add(ASNItemDetails.PONo);
 							ASNItemDetails.PODate = itemlocal.PODate;
 							ASNItemDetails.POItemNo = itemlocal.POItemNo;
 							ASNItemDetails.Material = itemlocal.Material;
@@ -282,7 +284,7 @@ namespace DALayer.ASN
 						}
 
 						//update ASN details in wms
-						var pono = string.Join(",", ponos);
+						var pono = string.Join(",", PONos);
 
 						updateASNDetailsinWMS(model, pono, asnShipmentHeaderModel.ASNNo);
 
@@ -292,6 +294,7 @@ namespace DALayer.ASN
 						RemoteASNShipmentHeader asnShipmentHeaderModel = vscm.RemoteASNShipmentHeaders.Where(li => li.ASNId == model.ASNId).FirstOrDefault();
 						asnShipmentHeaderModel.InvoiceNo = model.InvoiceNo;
 						asnShipmentHeaderModel.InvoiceDate = model.InvoiceDate;
+						asnShipmentHeaderModel.PONos = PONos;
 						asnShipmentHeaderModel.VendorId = model.VendorId;
 						asnShipmentHeaderModel.VendorName = model.VendorName;
 						asnShipmentHeaderModel.ShipFrom = model.ShipFrom;
@@ -332,6 +335,7 @@ namespace DALayer.ASN
 						ASNShipmentHeader asnShipmentHeaderModelLocal = obj.ASNShipmentHeaders.Where(li => li.ASNId == model.ASNId).FirstOrDefault();
 						asnShipmentHeaderModelLocal.InvoiceNo = model.InvoiceNo;
 						asnShipmentHeaderModelLocal.InvoiceDate = model.InvoiceDate;
+						asnShipmentHeaderModelLocal.PONos = PONos;
 						asnShipmentHeaderModelLocal.VendorId = model.VendorId;
 						asnShipmentHeaderModelLocal.VendorName = model.VendorName;
 						asnShipmentHeaderModelLocal.ShipFrom = model.ShipFrom;
@@ -354,10 +358,10 @@ namespace DALayer.ASN
 						ASNId = asnShipmentHeaderModel.ASNId;
 
 						List<RemoteASNItemDetail> ASNItemDetailsList = vscm.RemoteASNItemDetails.Where(li => li.ASNId == ASNId).ToList();
-						List<string> ponos = new List<string>();
+						//List<string> ponos = new List<string>();
 						foreach (RemoteASNItemDetail item in ASNItemDetailsList)
 						{
-							ponos.Add(item.PONo);
+							//ponos.Add(item.PONo);
 							ASNItemDetail ASNItemDetails = obj.ASNItemDetails.Where(li => li.ASNItemId == item.ASNItemId).FirstOrDefault();
 							ASNItemDetails.HSNCode = item.HSNCode;
 							ASNItemDetails.POQty = item.POQty;//Quoted Qty
@@ -367,9 +371,9 @@ namespace DALayer.ASN
 							obj.SaveChanges();
 						}
 						//update ASN details in wms
-						var pono = string.Join(",", ponos);
+						var pono = string.Join(",", PONos);
 
-						updateASNDetailsinWMS(model, pono, asnShipmentHeaderModel.ASNNo);
+						updateASNDetailsinWMS(model, PONos, asnShipmentHeaderModel.ASNNo);
 					}
 				}
 				emailTemplateDA.sendASNMailtoBuyer(ASNId);

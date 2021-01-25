@@ -913,12 +913,12 @@ namespace DALayer.RFQ
 
 				}
 				var rfqitems = obj.RFQItems_N.Where(li => li.RFQItemsId == rfqitemid).FirstOrDefault();
-				var mprrfqitems = obj.MPRRfqItems.Where(li => li.MPRItemDetailsid == rfqitems.MPRItemDetailsid && li.RfqItemsid == rfqitemid && li.DeleteFlag == false).ToList();
+				var mprrfqitems = obj.MPRRfqItems.Where(li => li.MPRItemDetailsid == rfqitems.MPRItemDetailsid && li.RfqItemsid == rfqitemid && li.DeleteFlag != true).ToList();
 				if (mprrfqitems != null)
 				{
 					foreach (var items in mprrfqitems)
 					{
-						var mprrfqItemInfo = obj.MPRRfqItemInfos.Where(x => x.rfqsplititemid == id && x.MPRRFQitemId == items.MPRRFQitemId && x.Deleteflag == false).ToList();
+						var mprrfqItemInfo = obj.MPRRfqItemInfos.Where(x => x.rfqsplititemid == id && x.MPRRFQitemId == items.MPRRFQitemId && x.Deleteflag != true).ToList();
 
 						if (mprrfqItemInfo != null)
 						{
