@@ -36,6 +36,7 @@ namespace BALayer.RFQ
 		List<NatureOfBusiness> natureOfBusinessesList();
 		List<DocumentType> DocumentMasterList();
 		RemoteVendorRegisterMaster SaveVendorDetails(VendorRegistrationModel model);
+		RemoteVendorRegisterMaster updateRegTerms(VendorRegistrationModel model);
 		bool DeletefileAttached(documentDetails model);
 		List<RemoteRfqTerm> GetTermMaster(int rfqrevisionId);
 		List<RemoteRfqTerm> UpdateVendorTerms(List<RemoteRfqTerm> obj);
@@ -57,6 +58,11 @@ namespace BALayer.RFQ
 		bool checkrfqitemexists(int rfqitemsid);
 		DataTable getDBMastersList(DynamicSearchResult Result);
 		bool rfqStatusUpdate(RFQStatu rfqstatus);
+		RemoteBankGuarantee updateBG(RemoteBankGuarantee bg);
+		List<RemoteBankGuarantee> getBGList(BGfilters BGfilters);
+
+		RemoteBankGuarantee getBGDetails(int bgid);
+		bool DeleteBGFile(int DocumentId);
 	}
 
 }

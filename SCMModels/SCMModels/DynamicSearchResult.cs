@@ -101,6 +101,17 @@ namespace SCMModels
 		public string Vendorid { get; set; }
 		public string VendorName { get; set; }
 		public string IntiatedBy { get; set; }
+		public string PONo { get; set; }
+	}
+	public partial class BGfilters
+	{
+		public string FromDate { get; set; }
+		public string ToDate { get; set; }
+		public string BGNo { get; set; }
+		public string Vendorid { get; set; }
+		public string VendorName { get; set; }
+		public string BGStatus { get; set; }
+		public string PONo { get; set; }
 	}
 
 }

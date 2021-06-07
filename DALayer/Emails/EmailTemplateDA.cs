@@ -325,6 +325,56 @@ namespace DALayer.Emails
 			}
 			return true;
 		}
+
+		/*Name of Function : <<sendBGmail>  Author :<<Prasanna>>  
+		  Date of Creation <<16-01-2021>>
+		  Purpose : <<Sending mail to YIL members>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		public bool sendBGmail(int bgId)
+		{
+			try
+			{
+				VSCMEntities vscm = new VSCMEntities();
+				using (var db = new YSCMEntities()) //ok
+				{
+					var mpripaddress = ConfigurationManager.AppSettings["UI_IpAddress"];
+					mpripaddress = mpripaddress + "SCM/BGView/" + bgId + "";
+					var fromMail = ConfigurationManager.AppSettings["fromemail"];
+					RemoteBankGuarantee BGDeatils = vscm.RemoteBankGuarantees.Where(li => li.BGId == bgId).FirstOrDefault();
+					var mailData = (db.Employees.Where(li => li.EmployeeNo == BGDeatils.CreatedBy).FirstOrDefault<Employee>());
+					EmailSend emlSndngList = new EmailSend();
+					emlSndngList.Subject = "BG Submitted For PONo:" + BGDeatils.PONo + "; BGNo:" + BGDeatils.BGNo + " ";
+					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Click below link to view details</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b><p style = 'margin-bottom:0px;' ><br/> Regards,</p><p> <b>" + BGDeatils.VendorName + "</b></p></body></html>";
+					emlSndngList.FrmEmailId = fromMail;
+					emlSndngList.ToEmailId = mailData.EMail + ",";
+					if (BGDeatils.BuyerManger != null)
+						emlSndngList.ToEmailId += (db.Employees.Where(li => li.EmployeeNo == BGDeatils.BuyerManger).FirstOrDefault<Employee>()).EMail;
+					if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+						this.sendEmail(emlSndngList);
+				}
+
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("EmailTemplate", "sendASNCommunicationMail", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return true;
+		}
+		/*Name of Function : <<sendErrorLog>>  Author :<<Prasanna>>  
+		  Date of Creation <<04-03-2021>>
+		  Purpose : <<sendErrorLog>>
+		  Review Date :<<>>   Reviewed By :<<>>*/
+		public bool sendErrorLogEmail(string controllername, string methodname, string exception, Uri url)
+		{
+			EmailSend emlSndngList = new EmailSend();
+			emlSndngList.Subject = "Error Log Created";
+			emlSndngList.Body = "<html><head></head><body><div class='container'><b  style='color:#40bfbf;'>Controller Name:</b>" + controllername + "</div><br/><div><b  style='color:#40bfbf;'>Method Name:" + methodname + "</b></div><br /><div><b  style='color:#40bfbf;'>URL:" + url + "</b></div><div><b  style='color:#40bfbf;'>Exception Details:" + exception + "</b></div></body></html>";
+			emlSndngList.FrmEmailId = ConfigurationManager.AppSettings["fromemail"];
+			emlSndngList.ToEmailId = ConfigurationManager.AppSettings["ErrorToEmail"];
+			if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
+				this.sendEmail(emlSndngList);
+			return true;
+		}
 		public bool sendEmail(EmailSend emlSndngList)
 		{
 			//bool validEmail = IsValidEmail(emlSndngList.ToEmailId);

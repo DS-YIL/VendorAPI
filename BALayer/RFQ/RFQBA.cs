@@ -94,6 +94,10 @@ namespace BALayer.RFQ
 		{
 			return _rfqDataAcess.SaveVendorDetails(model);
 		}
+		public RemoteVendorRegisterMaster updateRegTerms(VendorRegistrationModel model)
+		{
+			return _rfqDataAcess.updateRegTerms(model);
+		}
 
 		public bool DeletefileAttached(documentDetails model)
 		{
@@ -212,5 +216,26 @@ namespace BALayer.RFQ
 		//{
 		//    throw new NotImplementedException();
 		//}
+
+		//bank guarantee
+		public RemoteBankGuarantee updateBG(RemoteBankGuarantee bg)
+		{
+			return this._rfqDataAcess.updateBG(bg);
+		}
+		public List<RemoteBankGuarantee> getBGList(BGfilters BGfilters)
+		{
+			return this._rfqDataAcess.getBGList(BGfilters);
+
+		}
+		public RemoteBankGuarantee getBGDetails(int bgid)
+		{
+			return this._rfqDataAcess.getBGDetails(bgid);
+
+		}
+		public bool DeleteBGFile(int DocumentId)
+		{
+			return this._rfqDataAcess.DeleteBGFile(DocumentId);
+
+		}
 	}
 }

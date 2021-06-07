@@ -17,5 +17,7 @@ namespace DALayer.Emails
 		bool sendASNMailtoBuyer(int ASNId);
 		bool sendInvoiceMailtoBuyer(string invoiceNo);
 		bool sendEmail(EmailSend emailobj);
+		bool sendBGmail(int bgId);
+		bool sendErrorLogEmail(string controllername, string methodname, string exception, Uri URL);
 	}
 }

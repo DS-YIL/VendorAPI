@@ -76,6 +76,8 @@ namespace SCMModels.RFQModels
 		public string CurrencyName { get; set; }
 		public Nullable<bool> VendorType { get; set; }
 		public string Country { get; set; }
+		public Nullable<bool> TermsAndConditions { get; set; }
+		public Nullable<bool> Guidelines { get; set; }
 
 		public List<RemoteVendorRegisterDocumentDetail> DocDetailsLists = new List<RemoteVendorRegisterDocumentDetail>();
 

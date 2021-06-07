@@ -158,8 +158,8 @@ namespace SCMAPI.Controllers
 		}
 		private static string ToValidFileName(string fileName)
         {
-            fileName = fileName.ToLower().Replace(" ", "_").Replace("(", "_").Replace(")", "_").Replace("&", "_").Replace("*", "_").Replace("-", "_").Replace("+", "_");
-            return string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
+            fileName = fileName.ToLower().Replace(" ", "_").Replace("(", "_").Replace(")", "_").Replace("&", "_").Replace("*", "_").Replace("-", "_").Replace("+", "_").Replace("?", "_");
+			return string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
         }
 
     }

@@ -17,10 +17,14 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.OleDb;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -315,11 +319,9 @@ namespace SCMAPI.Controllers
 
 		private static string ToValidFileName(string fileName)
 		{
-			fileName = fileName.ToLower().Replace(" ", "_").Replace("(", "_").Replace(")", "_").Replace("&", "_").Replace("*", "_").Replace("-", "_").Replace("+", "_");
+			fileName = fileName.ToLower().Replace(" ", "_").Replace("(", "_").Replace(")", "_").Replace("&", "_").Replace("*", "_").Replace("-", "_").Replace("+", "_").Replace("?", "_");
 			return string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
 		}
-
-
 
 		/*Name of Function : <<ToValidFileName>>  Author :<<Prasanna>>  
 		Date of Creation <<04-09-2020>>
@@ -340,6 +342,16 @@ namespace SCMAPI.Controllers
 		public IHttpActionResult SaveVendorData(VendorRegistrationModel model)
 		{
 			return Ok(this._rfqBusenessAcess.SaveVendorDetails(model));
+		}
+		/*Name of Function : <<updateRegTerms>>  Author :<<Prasanna>>  
+		Date of Creation <<01-06-2021>>
+		Purpose : <<updateRegTerms  >>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		[HttpPost]
+		[Route("updateRegTerms")]
+		public IHttpActionResult updateRegTerms(VendorRegistrationModel model)
+		{
+			return Ok(this._rfqBusenessAcess.updateRegTerms(model));
 		}
 		/*Name of Function : <<deleteAttachedfile>>  Author :<<Prasanna>>  
 		Date of Creation <<04-09-2020>>
@@ -742,6 +754,548 @@ namespace SCMAPI.Controllers
 			return status;
 		}
 
+		//bank gurantee
+		[HttpPost]
+		[Route("updateBG")]
+		public IHttpActionResult updateBG(RemoteBankGuarantee bg)
+		{
+			return Ok(this._rfqBusenessAcess.updateBG(bg));
+		}
+
+		[HttpPost]
+		[Route("getBGList")]
+		public IHttpActionResult getBGList(BGfilters BGfilters)
+		{
+			return Ok(_rfqBusenessAcess.getBGList(BGfilters));
+		}
+
+		[HttpGet]
+		[Route("getBGDetails/{BGId}")]
+		public IHttpActionResult getBGDetails(int BGId)
+		{
+			return Ok(this._rfqBusenessAcess.getBGDetails(BGId));
+		}
+		[HttpGet]
+		[Route("DeleteBGFile/{DocId}")]
+		public IHttpActionResult DeleteBGFile(int DocId)
+		{
+			return Ok(_rfqBusenessAcess.DeleteBGFile(DocId));
+		}
+
+		/*
+            Name of Function : <<Downloadexcel>>  Author :<<Prasanna>>  
+            Date of Creation <<19-03-2021>>
+            Purpose : <<Down load RFQ data in excel>>
+            Review Date :<<>>   Reviewed By :<<>>
+            Version : 0.1 <change version only if there is major change - new release etc>
+            Sourcecode Copyright : Yokogawa India Limited
+       */
+		[HttpGet]
+		[Route("Downloadexcel/{revisionid}")]
+		public HttpResponseMessage Downloadexcel(int revisionid)
+		{
+			try
+			{
+				string sourcePath = "D:\\YILProjects\\SCM\\SCMFiles\\";
+				//string sourcePath = "D:\\Excelpath\\";
+				string targetpath = "D:\\YILProjects\\SCM\\SCMFiles\\";
+				string srcfilename = "RFQDownloadTemplate.xlsx";
+				string targetfilename = "Akil" + DateTime.Now.ToString("ddMMyyyyhhmmss") + ".xlsx";
+				string sourceFile = System.IO.Path.Combine(sourcePath, srcfilename);
+				string destFile = System.IO.Path.Combine(targetpath, targetfilename);
+				if (!System.IO.Directory.Exists(targetpath))
+				{
+					System.IO.Directory.CreateDirectory(targetpath);
+				}
+				System.IO.File.Copy(sourceFile, destFile, false);
+				Microsoft.Office.Interop.Excel._Application docExcel = new Microsoft.Office.Interop.Excel.Application();
+				docExcel.Visible = false;
+				docExcel.DisplayAlerts = false;
+				Microsoft.Office.Interop.Excel._Workbook workbooksExcel = docExcel.Workbooks.Open(destFile, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+				Microsoft.Office.Interop.Excel._Worksheet worksheetExcel = (Microsoft.Office.Interop.Excel._Worksheet)workbooksExcel.ActiveSheet;
+
+				YSCMEntities obj = new YSCMEntities();
+				var data = obj.RfqForVendorDownloads.Where(x => x.rfqRevisionId == revisionid).ToList();
+				Microsoft.Office.Interop.Excel.Range range = worksheetExcel.UsedRange;
+				foreach (var item in data)
+				{
+					if (!string.IsNullOrEmpty(item.RFQNo))
+						(range.Worksheet.Cells["2", "G"]).Value2 = item.RFQNo;
+					if (!string.IsNullOrEmpty(item.rfqRevisionId.ToString()))
+						(range.Worksheet.Cells["2", "O"]).Value2 = item.rfqRevisionId;
+					if (!string.IsNullOrEmpty(item.RFQValidDate.ToString()))
+						(range.Worksheet.Cells["3", "G"]).Value2 = item.RFQValidDate;
+					if (!string.IsNullOrEmpty(item.ReqRemarks))
+						(range.Worksheet.Cells["3", "L"]).Value2 = item.ReqRemarks;
+					if (!string.IsNullOrEmpty(item.RFQValidDate.ToString()))
+						(range.Worksheet.Cells["2", "L"]).Value2 = item.RFQValidDate;
+				}
+
+				int i = 6;
+				foreach (var item1 in data)
+				{
+					if (!string.IsNullOrEmpty(item1.RFQItemsId.ToString()))
+						(range.Worksheet.Cells[i, "A"]).Value2 = item1.RFQItemsId;
+					else
+						(range.Worksheet.Cells[i, "A"]).Value2 = 0;
+
+					(range.Worksheet.Cells[i, "B"]).Value2 = i - 5;
+
+					if (!string.IsNullOrEmpty(item1.ItemId.ToString()))
+						(range.Worksheet.Cells[i, "C"]).Value2 = item1.ItemId;
+					else
+						(range.Worksheet.Cells[i, "C"]).Value2 = "";
+
+					if (!string.IsNullOrEmpty(item1.ItemDescription))
+						(range.Worksheet.Cells[i, "D"]).Value2 = item1.ItemDescription;
+					else
+						(range.Worksheet.Cells[i, "D"]).Value2 = "";
+
+					if (!string.IsNullOrEmpty(item1.QuotationQty.ToString()))
+						(range.Worksheet.Cells[i, "E"]).Value2 = item1.QuotationQty;
+					else
+						(range.Worksheet.Cells[i, "E"]).Value2 = 0;
+
+					if (item1.UOM != null)
+						(range.Worksheet.Cells[i, "F"]).Value2 = item1.UOM;
+					else
+						(range.Worksheet.Cells[i, "F"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.CurrencyValue.ToString()))
+						(range.Worksheet.Cells[i, "G"]).Value2 = item1.CurrencyValue;
+					else
+						(range.Worksheet.Cells[i, "G"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.UnitPrice.ToString()))
+						(range.Worksheet.Cells[i, "H"]).Value2 = item1.UnitPrice;
+					else
+						(range.Worksheet.Cells[i, "H"]).Value2 = 0;
+
+					if (item1.HSNCode != null)
+						(range.Worksheet.Cells[i, "I"]).Value2 = item1.HSNCode;
+					else
+						(range.Worksheet.Cells[i, "I"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.DiscountPercentage.ToString()))
+						(range.Worksheet.Cells[i, "J"]).Value2 = item1.DiscountPercentage;
+					else
+						(range.Worksheet.Cells[i, "J"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.Discount.ToString()))
+						(range.Worksheet.Cells[i, "K"]).Value2 = item1.Discount;
+					else
+						(range.Worksheet.Cells[i, "K"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.VendorModelNo))
+						(range.Worksheet.Cells[i, "L"]).Value2 = item1.VendorModelNo;
+					else
+						(range.Worksheet.Cells[i, "L"]).Value2 = "";
+
+					if (!string.IsNullOrEmpty(item1.MfgPartNo))
+						(range.Worksheet.Cells[i, "M"]).Value2 = item1.MfgPartNo;
+					else
+						(range.Worksheet.Cells[i, "M"]).Value2 = "";
+
+					if (!string.IsNullOrEmpty(item1.MfgModelNo))
+						(range.Worksheet.Cells[i, "N"]).Value2 = item1.MfgModelNo;
+					else
+						(range.Worksheet.Cells[i, "N"]).Value2 = "";
+
+					if (!string.IsNullOrEmpty(item1.ManufacturerName))
+						(range.Worksheet.Cells[i, "O"]).Value2 = item1.ManufacturerName;
+					else
+						(range.Worksheet.Cells[i, "O"]).Value2 = "";
+
+					if (!string.IsNullOrEmpty(item1.CGSTPercentage.ToString()))
+						(range.Worksheet.Cells[i, "P"]).Value2 = item1.CGSTPercentage;
+					else
+						(range.Worksheet.Cells[i, "P"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.IGSTPercentage.ToString()))
+						(range.Worksheet.Cells[i, "Q"]).Value2 = item1.IGSTPercentage;
+					else
+						(range.Worksheet.Cells[i, "Q"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.SGSTPercentage.ToString()))
+						(range.Worksheet.Cells[i, "R"]).Value2 = item1.SGSTPercentage;
+					else
+						(range.Worksheet.Cells[i, "R"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.PFAmount.ToString()))
+						(range.Worksheet.Cells[i, "S"]).Value2 = item1.PFAmount;
+					else
+						(range.Worksheet.Cells[i, "S"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.PFPercentage.ToString()))
+						(range.Worksheet.Cells[i, "T"]).Value2 = item1.PFPercentage;
+					else
+						(range.Worksheet.Cells[i, "T"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.FreightAmount.ToString()))
+						(range.Worksheet.Cells[i, "U"]).Value2 = item1.FreightAmount;
+					else
+						(range.Worksheet.Cells[i, "U"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.FreightPercentage.ToString()))
+						(range.Worksheet.Cells[i, "V"]).Value2 = item1.FreightPercentage;
+					else
+						(range.Worksheet.Cells[i, "V"]).Value2 = 0;
+
+					if (!string.IsNullOrEmpty(item1.DeliveryDate.ToString()))
+					{
+						DateTime dt = DateTime.ParseExact(item1.DeliveryDate.ToString(), "dd-MM-yyyy HH:mm:ss", null);
+						string date = dt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+						(range.Worksheet.Cells[i, "W"]).Value2 = date;
+					}
+					else
+						(range.Worksheet.Cells[i, "W"]).Value2 = "";
+
+					if (item1.Remarks != null && !string.IsNullOrEmpty(item1.Remarks))
+						(range.Worksheet.Cells[i, "X"]).Value2 = item1.Remarks;
+					else
+						(range.Worksheet.Cells[i, "X"]).Value2 = "";
+					if (!string.IsNullOrEmpty(item1.RFQSplitItemId.ToString()))
+						(range.Worksheet.Cells[i, "Y"]).Value2 = item1.RFQSplitItemId;
+					else
+						(range.Worksheet.Cells[i, "Y"]).Value2 = 0;
+					i++;
+				}
+				range.Worksheet.Protect("password", Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
+
+				workbooksExcel.Save();
+				workbooksExcel.Close(false, Type.Missing, Type.Missing);
+				docExcel.Application.DisplayAlerts = true;
+				docExcel.Application.Quit();
+				var result = getGenetatedExcel(destFile);
+				return result;
+
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public HttpResponseMessage getGenetatedExcel(string filepath)
+		{
+			var path = filepath;
+			HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+			var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			result.Content = new StreamContent(stream);
+			//result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+			result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			//stream.Dispose();
+			//stream.Close();
+			return (result);
+		}
+
+
+		/*
+            Name of Function : <<UploadRfqData>>  Author :<<Prasanna>>  
+            Date of Creation <<19-03-2021>>
+            Purpose : <<Loading and Updating RfqData through excel>>
+            Review Date :<<>>   Reviewed By :<<>>
+            Version : 0.1 <change version only if there is major change - new release etc>
+            Sourcecode Copyright : Yokogawa India Limited
+       */
+		[HttpPost]
+		[Route("UploadRfqData")]
+		public IHttpActionResult UploadRfqData()
+		{
+			try
+			{
+				var httpRequest = HttpContext.Current.Request;
+				var serverPath = HttpContext.Current.Server.MapPath("~/SCMDocs");
+				string parsedFileName = "";
+				if (httpRequest.Files.Count > 0)
+				{
+					var Id = httpRequest.Files.AllKeys[0];
+					var postedFile = httpRequest.Files[0];
+					parsedFileName = string.Format(DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM") + "\\" + Id + "\\" + ToValidFileName(postedFile.FileName));
+					serverPath = serverPath + string.Format("\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.ToString("MMM")) + "\\" + Id;
+					var filePath = Path.Combine(serverPath, ToValidFileName(postedFile.FileName));
+					if (!Directory.Exists(serverPath))
+						Directory.CreateDirectory(serverPath);
+					postedFile.SaveAs(filePath);
+
+
+					DataTable dtexcel = new DataTable();
+					bool hasHeaders = false;
+					string HDR = hasHeaders ? "Yes" : "No";
+					string strConn;
+					if (filePath.Substring(filePath.LastIndexOf('.')).ToLower() == ".xlsx")
+						strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filePath + ";Extended Properties=\"Excel 12.0;HDR=" + HDR + ";IMEX=0\"";
+					else
+						strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Extended Properties=\"Excel 8.0;HDR=" + HDR + ";IMEX=0\"";
+
+					OleDbConnection conn = new OleDbConnection(strConn);
+					conn.Open();
+					DataTable schemaTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+
+					DataRow schemaRow = schemaTable.Rows[0];
+					string sheet = schemaRow["TABLE_NAME"].ToString();
+					if (!sheet.EndsWith("_"))
+					{
+						string query = "SELECT  * FROM [Sheet1$]";
+						OleDbDataAdapter daexcel = new OleDbDataAdapter(query, conn);
+						dtexcel.Locale = CultureInfo.CurrentCulture;
+						daexcel.Fill(dtexcel);
+					}
+
+					conn.Close();
+					int iSucceRows = 0;
+					YSCMEntities obj = new YSCMEntities();
+					VSCMEntities remoteObj = new VSCMEntities();
+
+					int i = 0;
+					string errorMessages = "";
+					foreach (DataRow row in dtexcel.Rows)
+					{
+
+						if (i > 3 && row[0] != null && !string.IsNullOrEmpty((row[0]).ToString()))
+						{
+							if (string.IsNullOrEmpty(row[7].ToString()))
+							{
+								return Ok(new SCMModels.RFQModels.ServerSideValidation { ErrorMessage = "Unit Price Cannot be Empty At Line -" + i + " Cell No 7", ValidData = false });
+							}
+
+							if (string.IsNullOrEmpty(row[8].ToString()))
+							{
+								return Ok(new SCMModels.RFQModels.ServerSideValidation { ErrorMessage = "HSN Code Cannot be Empty At Line - " + i + "Cell No 8", ValidData = false });
+							}
+							if (string.IsNullOrEmpty(row[16].ToString()))
+							{
+								if (string.IsNullOrEmpty(row[15].ToString()) && string.IsNullOrEmpty(row[17].ToString()))
+									return Ok(new SCMModels.RFQModels.ServerSideValidation { ErrorMessage = "CGST or SGST Percentage Cannot be Empty At Line - " + i + "Cell No 15 or 17", ValidData = false });
+
+							}
+
+
+							int itemsid = Convert.ToInt32(row[0]);
+							RemoteRFQItems_N remoteRFQItems_N = remoteObj.RemoteRFQItems_N.Where(x => x.RFQItemsId == itemsid).FirstOrDefault();
+							remoteRFQItems_N.ItemId = row[2].ToString();
+							if (!string.IsNullOrEmpty(row[4].ToString()))
+								remoteRFQItems_N.QuotationQty = Convert.ToDouble(row[4]);
+							if (!string.IsNullOrEmpty(row[11].ToString()))
+								remoteRFQItems_N.VendorModelNo = (row[11].ToString());
+							if (!string.IsNullOrEmpty(row[12].ToString()))
+								remoteRFQItems_N.MfgPartNo = row[12].ToString();
+							if (!string.IsNullOrEmpty(row[13].ToString()))
+								remoteRFQItems_N.MfgModelNo = row[13].ToString();
+
+							if (!string.IsNullOrEmpty(row[14].ToString()))
+								remoteRFQItems_N.ManufacturerName = row[14].ToString();
+
+							if (!string.IsNullOrEmpty(row[15].ToString()))
+								remoteRFQItems_N.CGSTPercentage = Convert.ToDecimal(row[15]);
+
+							if (!string.IsNullOrEmpty(row[16].ToString()))
+								remoteRFQItems_N.IGSTPercentage = Convert.ToDecimal(row[16]);
+
+							if (!string.IsNullOrEmpty(row[17].ToString()))
+								remoteRFQItems_N.SGSTPercentage = Convert.ToDecimal(row[17]);
+
+							if (!string.IsNullOrEmpty(row[18].ToString()))
+								remoteRFQItems_N.PFAmount = Convert.ToDecimal(row[18]);
+
+							if (!string.IsNullOrEmpty(row[19].ToString()))
+								remoteRFQItems_N.PFPercentage = Convert.ToDecimal(row[19]);
+
+							if (!string.IsNullOrEmpty(row[20].ToString()))
+								remoteRFQItems_N.FreightAmount = Convert.ToDecimal(row[20]);
+
+							if (!string.IsNullOrEmpty(row[21].ToString()))
+								remoteRFQItems_N.FreightPercentage = Convert.ToDecimal(row[21]);
+
+							if (!string.IsNullOrEmpty(row[8].ToString()))
+								remoteRFQItems_N.HSNCode = row[8].ToString();
+							remoteObj.SaveChanges();
+
+							RemoteRFQItemsInfo_N remoteitemsInfo_N = remoteObj.RemoteRFQItemsInfo_N.Where(x => x.RFQItemsId == itemsid && x.DeleteFlag == false).FirstOrDefault();
+							if (remoteitemsInfo_N != null)
+							{
+
+								if (!string.IsNullOrEmpty(row[5].ToString()))
+									remoteitemsInfo_N.UOM = Convert.ToInt32(row[5]);
+								if (!string.IsNullOrEmpty(row[6].ToString()))
+									remoteitemsInfo_N.CurrencyValue = Convert.ToDecimal(row[6]);
+								if (!string.IsNullOrEmpty(row[7].ToString()))
+									remoteitemsInfo_N.UnitPrice = Convert.ToDecimal(row[7]);
+								if (!string.IsNullOrEmpty(row[9].ToString()))
+									remoteitemsInfo_N.DiscountPercentage = Convert.ToDecimal(row[9]);
+								if (!string.IsNullOrEmpty(row[10].ToString()))
+									remoteitemsInfo_N.Discount = Convert.ToDecimal(row[10]);
+								if (!string.IsNullOrEmpty(row[22].ToString()))
+								{
+									var Text = row[22].ToString();
+
+									DateTime dt = DateTime.ParseExact(Text, "dd/MM/yyyy", null);
+									remoteitemsInfo_N.DeliveryDate = dt;
+								}
+								if (!string.IsNullOrEmpty(row[23].ToString()))
+									remoteitemsInfo_N.Remarks = row[23].ToString();
+								remoteObj.SaveChanges();
+							}
+							else
+							{
+								RemoteRFQItemsInfo_N newremoteRfqItemsInfon = new RemoteRFQItemsInfo_N();
+								int rfqsplititemid = obj.RFQItemsInfo_N.Max(li => li.RFQSplitItemId);
+								newremoteRfqItemsInfon.RFQSplitItemId = rfqsplititemid + 1;
+								if (!string.IsNullOrEmpty(row[5].ToString()))
+									newremoteRfqItemsInfon.UOM = Convert.ToInt32(row[5]);
+								newremoteRfqItemsInfon.RFQItemsId = itemsid;
+								if (!string.IsNullOrEmpty(row[6].ToString()))
+									newremoteRfqItemsInfon.CurrencyValue = Convert.ToDecimal(row[6]);
+
+								if (!string.IsNullOrEmpty(row[7].ToString()))
+									newremoteRfqItemsInfon.UnitPrice = Convert.ToDecimal(row[7]);
+								if (!string.IsNullOrEmpty(row[9].ToString()))
+									newremoteRfqItemsInfon.DiscountPercentage = Convert.ToDecimal(row[9]);
+
+								if (!string.IsNullOrEmpty(row[10].ToString()))
+									newremoteRfqItemsInfon.Discount = Convert.ToDecimal(row[10]);
+
+								if (!string.IsNullOrEmpty(row[22].ToString()))
+									newremoteRfqItemsInfon.DeliveryDate = Convert.ToDateTime(row[22]);
+								if (!string.IsNullOrEmpty(row[23].ToString()))
+									newremoteRfqItemsInfon.Remarks = row[23].ToString();
+								remoteObj.RemoteRFQItemsInfo_N.Add(newremoteRfqItemsInfon);
+								remoteObj.SaveChanges();
+
+							}
+
+							RFQItems_N rFQItems_N = obj.RFQItems_N.Where(x => x.RFQItemsId == itemsid).FirstOrDefault();
+
+							rFQItems_N.ItemId = row[2].ToString();
+							if (!string.IsNullOrEmpty(row[4].ToString()))
+								rFQItems_N.QuotationQty = Convert.ToDouble(row[4]);
+							if (!string.IsNullOrEmpty(row[11].ToString()))
+								rFQItems_N.VendorModelNo = (row[11].ToString());
+							if (!string.IsNullOrEmpty(row[12].ToString()))
+								rFQItems_N.MfgPartNo = row[12].ToString();
+							if (!string.IsNullOrEmpty(row[13].ToString()))
+								rFQItems_N.MfgModelNo = row[13].ToString();
+							if (!string.IsNullOrEmpty(row[14].ToString()))
+								rFQItems_N.ManufacturerName = row[14].ToString();
+							if (!string.IsNullOrEmpty(row[15].ToString()))
+								rFQItems_N.CGSTPercentage = Convert.ToDecimal(row[15]);
+							if (!string.IsNullOrEmpty(row[16].ToString()))
+								rFQItems_N.IGSTPercentage = Convert.ToDecimal(row[16]);
+							if (!string.IsNullOrEmpty(row[17].ToString()))
+								rFQItems_N.SGSTPercentage = Convert.ToDecimal(row[17]);
+							if (!string.IsNullOrEmpty(row[18].ToString()))
+								rFQItems_N.PFAmount = Convert.ToDecimal(row[18]);
+							if (!string.IsNullOrEmpty(row[19].ToString()))
+								rFQItems_N.PFPercentage = Convert.ToDecimal(row[19]);
+							if (!string.IsNullOrEmpty(row[20].ToString()))
+								rFQItems_N.FreightAmount = Convert.ToDecimal(row[20]);
+							if (!string.IsNullOrEmpty(row[21].ToString()))
+								rFQItems_N.FreightPercentage = Convert.ToDecimal(row[21]);
+							if (!string.IsNullOrEmpty(row[8].ToString()))
+								rFQItems_N.HSNCode = row[8].ToString();
+							obj.SaveChanges();
+
+							RFQItemsInfo_N itemsInfo_N = obj.RFQItemsInfo_N.Where(x => x.RFQItemsId == itemsid && x.DeleteFlag == false).FirstOrDefault();
+							if (itemsInfo_N != null)
+							{
+								if (!string.IsNullOrEmpty(row[5].ToString()))
+									itemsInfo_N.UOM = Convert.ToInt32(row[5]);
+								if (!string.IsNullOrEmpty(row[6].ToString()))
+									itemsInfo_N.CurrencyValue = Convert.ToDecimal(row[6]);
+								if (!string.IsNullOrEmpty(row[7].ToString()))
+									itemsInfo_N.UnitPrice = Convert.ToDecimal(row[7]);
+								if (!string.IsNullOrEmpty(row[9].ToString()))
+									itemsInfo_N.DiscountPercentage = Convert.ToDecimal(row[9]);
+								if (!string.IsNullOrEmpty(row[10].ToString()))
+									itemsInfo_N.Discount = Convert.ToDecimal(row[10]);
+								if (!string.IsNullOrEmpty(row[22].ToString()))
+								{
+									DateTime dt = DateTime.ParseExact(row[22].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+									itemsInfo_N.DeliveryDate = dt;
+								}
+								if (!string.IsNullOrEmpty(row[23].ToString()))
+									itemsInfo_N.Remarks = row[23].ToString();
+								obj.SaveChanges();
+							}
+							else
+							{
+								RFQItemsInfo_N newRfqItemsInfon = new RFQItemsInfo_N();
+								int rfqsplititemid = obj.RFQItemsInfo_N.Max(li => li.RFQSplitItemId);
+								newRfqItemsInfon.RFQSplitItemId = rfqsplititemid + 1;
+								if (!string.IsNullOrEmpty(row[5].ToString()))
+									newRfqItemsInfon.UOM = Convert.ToInt32(row[5]);
+								newRfqItemsInfon.RFQItemsId = itemsid;
+								if (!string.IsNullOrEmpty(row[6].ToString()))
+									newRfqItemsInfon.CurrencyValue = Convert.ToDecimal(row[6]);
+								if (!string.IsNullOrEmpty(row[7].ToString()))
+									newRfqItemsInfon.UnitPrice = Convert.ToDecimal(row[7]);
+								if (!string.IsNullOrEmpty(row[9].ToString()))
+									newRfqItemsInfon.DiscountPercentage = Convert.ToDecimal(row[9]);
+								if (!string.IsNullOrEmpty(row[10].ToString()))
+									newRfqItemsInfon.Discount = Convert.ToDecimal(row[10]);
+								if (!string.IsNullOrEmpty(row[22].ToString()))
+								{
+									DateTime dt = DateTime.ParseExact(row[22].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+									itemsInfo_N.DeliveryDate = dt;
+								}
+								if (!string.IsNullOrEmpty(row[23].ToString()))
+									newRfqItemsInfon.Remarks = row[23].ToString();
+								obj.RFQItemsInfo_N.Add(newRfqItemsInfon);
+								obj.SaveChanges();
+
+							}
+							var mPRItemInfo = obj.MPRItemInfoes.Join(obj.RFQItems_N, mpr => mpr.Itemdetailsid, rfq => rfq.MPRItemDetailsid, (mpr, rfq) => new { mpr, rfq }).Where(mpritem => mpritem.rfq.RFQItemsId == itemsid).FirstOrDefault();
+							MPRItemInfo mpritemsinfor = obj.MPRItemInfoes.Where(x => x.Itemdetailsid == mPRItemInfo.mpr.Itemdetailsid).FirstOrDefault();
+							if (!string.IsNullOrEmpty(row[3].ToString()))
+								mpritemsinfor.ItemDescription = row[3].ToString();
+							obj.SaveChanges();
+						}
+						i++;
+					}
+
+
+					int succRecs = iSucceRows;
+				}
+				return Ok(parsedFileName);
+
+			}
+			catch (Exception e)
+			{
+				return Ok(e);
+			}
+
+
+		}
+
+		/*Name of Function : <<RfqIteminfoDeleteByidformultiple>>  Author :<<Prasanna>>  
+	    Date of Creation <<21-10-2020>>
+	    Purpose : <<RfqIteminfoDeleteByidformultiple  >>
+	    Review Date :<<>>   Reviewed By :<<>>*/
+		[HttpGet]
+		[Route("deleteRFQFormatFile")]
+		public IHttpActionResult deleteRFQFormatFile()
+		{
+
+			string partialName = "Akil";
+			DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(@"D:\\YILProjects\\SCM\\SCMFiles\\");
+			FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles("*" + partialName + "*.*");
+			foreach (FileInfo file in filesInDir)
+			{
+				try
+				{
+					var stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+					stream.Dispose();
+					stream.Close();
+					File.Delete(file.FullName); 
+				}
+				catch (Exception e)
+				{
+					continue;
+				}
+			}
+
+			return Ok(true);
+		}
 	}
 
 }

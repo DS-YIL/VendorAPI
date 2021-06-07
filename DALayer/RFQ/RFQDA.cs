@@ -1749,6 +1749,56 @@ namespace DALayer.RFQ
 
 			return vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == vendorid).FirstOrDefault();
 		}
+		/*Name of Function : <<updateRegTerms>>  Author :<<Prasanna>>  
+		Date of Creation <<01-06-2021>>
+		Purpose : <<updateRegTerms>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+
+		public RemoteVendorRegisterMaster updateRegTerms(VendorRegistrationModel model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					if (model.VendorId != 0)
+					{
+						RemoteVendorRegisterMaster Remotedata = vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == model.VendorId).FirstOrDefault<RemoteVendorRegisterMaster>();
+						if (Remotedata != null)
+						{
+
+							Remotedata.TermsAndConditions = model.TermsAndConditions;
+							Remotedata.Guidelines = model.Guidelines;
+							vscm.SaveChanges();
+						}
+					}
+					//yscm
+					if (model.VendorId != 0)
+					{
+						VendorRegisterMaster yscmdata = obj.VendorRegisterMasters.Where(li => li.Vendorid == model.VendorId).FirstOrDefault<VendorRegisterMaster>();
+						yscmdata.TermsAndConditions = model.TermsAndConditions;
+						yscmdata.Guidelines = model.Guidelines;
+						obj.SaveChanges();
+					}
+				}
+			}
+			catch (DbEntityValidationException e)
+			{
+				foreach (var eve in e.EntityValidationErrors)
+				{
+					Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+						eve.Entry.Entity.GetType().Name, eve.Entry.State);
+					foreach (var ve in eve.ValidationErrors)
+					{
+						log.ErrorMessage("RFQDA", "updateRegTerms", ve.ErrorMessage);
+						Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+							ve.PropertyName, ve.ErrorMessage);
+					}
+				}
+
+			}
+
+			return vscm.RemoteVendorRegisterMasters.Where(li => li.Vendorid == model.VendorId).FirstOrDefault();
+		}
 		/*Name of Function : <<InsertVendorDocuments>>  Author :<<Prasanna>>  
 		Date of Creation <<04-09-2020>>
 		Purpose : <<SaveVendorDetails>>
@@ -2197,7 +2247,8 @@ namespace DALayer.RFQ
 					listobj.CurrencyName = getdata.CurrencyName;
 					listobj.VendorType = getdata.VendorType;
 					listobj.Country = getdata.Country;
-
+					listobj.TermsAndConditions = getdata.TermsAndConditions;
+					listobj.Guidelines = getdata.Guidelines;
 					RemoteBankDetailsForVendor bankData = vscm.RemoteBankDetailsForVendors.Where(li => li.VendorId == vendorId).FirstOrDefault();
 					if (bankData != null)
 					{
@@ -2630,6 +2681,230 @@ namespace DALayer.RFQ
 			}
 
 			return dtDBMastersList;
+		}
+
+		//Bank Guarantee
+		/*
+           Name of Function : <<updateBG>>  Author :<<Prasanna>>  
+           Date of Creation <<16-02-2021>>
+           Purpose : <<Update Bank guarantee details>>
+           Review Date :<<>>   Reviewed By :<<>>
+          Version : 0.1 <change version only if there is major change - new release etc>
+           Sourcecode Copyright : Yokogawa India Limited
+      */
+		public RemoteBankGuarantee updateBG(RemoteBankGuarantee bg)
+		{
+			try
+			{
+				if (bg.BGId != null)
+				{
+					var RemoteBankGuarantee = vscm.RemoteBankGuarantees.Where(li => li.BGId == bg.BGId).FirstOrDefault();
+					RemoteBankGuarantee.BGSerialNo = bg.BGSerialNo;
+					RemoteBankGuarantee.BGDate = bg.BGDate;
+					RemoteBankGuarantee.BGValue = bg.BGValue;
+					RemoteBankGuarantee.Items = bg.Items;
+					RemoteBankGuarantee.WarrantyExpiryDate = bg.WarrantyExpiryDate;
+					RemoteBankGuarantee.BGExpiryDate = bg.BGExpiryDate;
+					RemoteBankGuarantee.ClaimDate = bg.ClaimDate;
+					RemoteBankGuarantee.BGStatus = "Submitted";
+					RemoteBankGuarantee.IsBGRevised = true;
+					vscm.SaveChanges();
+					var doclList = vscm.RemoteBGDocuments.Where(li => li.BGId == bg.BGId && li.DeleteFlag != true).ToList();
+					foreach (var item in bg.RemoteBGDocuments)
+					{
+						var BGDoc = vscm.RemoteBGDocuments.Where(li => li.DocId == item.DocId).FirstOrDefault();
+						if (BGDoc == null)
+						{
+							var bgdocuments =
+
+								new RemoteBGDocument();
+							bgdocuments.BGId = bg.BGId;
+							bgdocuments.DocumentName = item.DocumentName;
+							bgdocuments.Path = item.Path;
+							bgdocuments.UploadedDate = DateTime.Now;
+							bgdocuments.UploadedBy = item.UploadedBy;
+							if (doclList.Count > 0)
+								bgdocuments.RevisedCopy = true;
+							else
+								bgdocuments.RevisedCopy = false;
+							bgdocuments.RevisedDate = DateTime.Now;
+							bgdocuments.DeleteFlag = false;
+							bgdocuments.IsLatestCopy = true;
+							vscm.RemoteBGDocuments.Add(bgdocuments);
+							vscm.SaveChanges();
+						}
+						else
+						{
+							BGDoc.IsLatestCopy = false;
+							vscm.SaveChanges();
+						}
+					}
+					//Local
+					var BankGuarantee = vscm.RemoteBankGuarantees.Where(li => li.BGId == bg.BGId).FirstOrDefault();
+					var LocalBG = obj.BankGuarantees.Where(li => li.BGId == bg.BGId).FirstOrDefault();
+					if (LocalBG != null)
+					{
+						LocalBG.BGSerialNo = BankGuarantee.BGSerialNo;
+						LocalBG.BGDate = BankGuarantee.BGDate;
+						LocalBG.BGValue = BankGuarantee.BGValue;
+						LocalBG.Items = BankGuarantee.Items;
+						LocalBG.WarrantyExpiryDate = BankGuarantee.WarrantyExpiryDate;
+						LocalBG.BGExpiryDate = BankGuarantee.BGExpiryDate;
+						LocalBG.ClaimDate = BankGuarantee.ClaimDate;
+						LocalBG.BGStatus = "Submitted";
+						LocalBG.IsBGRevised = true;
+						obj.SaveChanges();
+					}
+					var RemoteBgDocuments = vscm.RemoteBGDocuments.Where(li => li.BGId == bg.BGId).ToList();
+					foreach (var item in RemoteBgDocuments)
+					{
+						var bgDoc = obj.BGDocuments.Where(li => li.DocId == item.DocId).FirstOrDefault();
+						if (bgDoc == null)
+						{
+							var bgocuments = new BGDocument();
+							bgocuments.DocId = item.DocId;
+							bgocuments.BGId = bg.BGId;
+							bgocuments.DocumentName = item.DocumentName;
+							bgocuments.Path = item.Path;
+							bgocuments.UploadedBy = item.UploadedBy;
+							bgocuments.UploadedDate = DateTime.Now;
+							bgocuments.RevisedCopy = item.RevisedCopy;
+							bgocuments.IsLatestCopy = item.IsLatestCopy;
+							bgocuments.RevisedDate = DateTime.Now;
+							bgocuments.DeleteFlag = false;
+							obj.BGDocuments.Add(bgocuments);
+							obj.SaveChanges();
+						}
+						else
+						{
+							bgDoc.IsLatestCopy = false;
+							obj.SaveChanges();
+						}
+					}
+					//update BG status track in remote 
+					RemoteBGStatusTrack RemstatusTrack = new RemoteBGStatusTrack();
+					RemstatusTrack.BGId = bg.BGId;
+					RemstatusTrack.UpdatedDate = DateTime.Now;
+					RemstatusTrack.UpdatedBy = bg.CreatedBy;
+					RemstatusTrack.Status = "Submitted";
+					if (!string.IsNullOrEmpty(RemstatusTrack.Status))
+					{
+						vscm.RemoteBGStatusTracks.Add(RemstatusTrack);
+						vscm.SaveChanges();
+					}
+
+					//update BG status track status track 
+					BGStatusTrack statusTrack = new BGStatusTrack();
+					statusTrack.StatustrackId = RemstatusTrack.StatustrackId;
+					statusTrack.BGId = bg.BGId;
+					statusTrack.UpdatedDate = DateTime.Now;
+					statusTrack.UpdatedBy = bg.CreatedBy;
+					statusTrack.Status = "Submitted";
+					if (!string.IsNullOrEmpty(statusTrack.Status))
+					{
+						obj.BGStatusTracks.Add(statusTrack);
+						obj.SaveChanges();
+					}
+					//mail to vendor
+					this.emailTemplateDA.sendBGmail(bg.BGId);
+				}
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("RFQDA", "updateBG", ex.Message.ToString());
+			}
+
+			var bankGuarantee = vscm.RemoteBankGuarantees.Where(li => li.BGId == bg.BGId).FirstOrDefault();
+			bankGuarantee.RemoteBGDocuments = bg.RemoteBGDocuments.Where(li => li.DeleteFlag != true).ToList();
+			foreach (RemoteBGStatusTrack item in bankGuarantee.RemoteBGStatusTracks)
+			{
+				item.Employee = obj.VendorEmployeeViews.Where(li => li.EmployeeNo == item.UpdatedBy).FirstOrDefault();
+			}
+			return bankGuarantee;
+		}
+		/*Name of Function : <<getBGList>>  Author :<<Prasanna>>  
+		Date of Creation <<16-02-2021>>
+		Purpose : <<function is used to  get getBGList>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		public List<RemoteBankGuarantee> getBGList(BGfilters BGfilters)
+		{
+			List<RemoteBankGuarantee> BGList = new List<RemoteBankGuarantee>();
+			try
+			{
+				using (YSCMEntities Context = new YSCMEntities())
+				{
+					Context.Configuration.ProxyCreationEnabled = false;
+					var query = default(string);
+					query = "select * from RemoteBankGuarantee where ( Deleteflag=0 or Deleteflag is null)";
+					if (!string.IsNullOrEmpty(BGfilters.ToDate))
+						query += " and CreatedDate <= '" + BGfilters.ToDate + "'";
+					if (!string.IsNullOrEmpty(BGfilters.FromDate))
+						query += "  and CreatedDate >= '" + BGfilters.FromDate + "'";
+					if (!string.IsNullOrEmpty(BGfilters.Vendorid))
+						query += "  and Vendorid =" + BGfilters.Vendorid + "";
+					if (!string.IsNullOrEmpty(BGfilters.VendorName))
+						query += "  and VendorName like'%" + BGfilters.VendorName + "%'";
+					if (!string.IsNullOrEmpty(BGfilters.BGNo))
+						query += "  and ASNNo = '" + BGfilters.BGNo + "'";
+					if (!string.IsNullOrEmpty(BGfilters.PONo))
+						query += "  and PONo = '" + BGfilters.PONo + "'";
+					if (!string.IsNullOrEmpty(BGfilters.BGStatus))
+						query += "  and BGStatus = '" + BGfilters.BGStatus + "'";
+					query += " order by BGId desc ";
+					BGList = vscm.RemoteBankGuarantees.SqlQuery(query).ToList<RemoteBankGuarantee>();
+				}
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("MPRDA", "getBGList", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return BGList;
+		}
+
+		/*Name of Function : <<getBGDetails>>  Author :<<Prasanna>>  
+		Date of Creation <<16-02-2021>>
+		Purpose : <<function is used to  get getBG details>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+
+		public RemoteBankGuarantee getBGDetails(int BGId)
+		{
+			var bg = new RemoteBankGuarantee();
+			try
+			{
+				bg = vscm.RemoteBankGuarantees.Where(li => li.BGId == BGId).FirstOrDefault();
+				bg.RemoteBGDocuments = bg.RemoteBGDocuments.Where(li => li.DeleteFlag != true).ToList();
+				bg.RemoteBGStatusTracks = bg.RemoteBGStatusTracks.OrderBy(li => li.StatustrackId).ToList();
+				foreach (RemoteBGStatusTrack item in bg.RemoteBGStatusTracks)
+				{
+					item.Employee = obj.VendorEmployeeViews.Where(li => li.EmployeeNo == item.UpdatedBy).FirstOrDefault();
+				}
+			}
+			catch (Exception ex)
+			{
+				log.ErrorMessage("RFQDA", "getBGDetails", ex.Message + "; " + ex.StackTrace.ToString());
+			}
+			return bg;
+		}
+
+		/*Name of Function : <<DeleteBGFile>>  Author :<<Prasanna>>  
+		Date of Creation <<16-02-2021>>
+		Purpose : <<function is used to DeleteBGFile>>
+		Review Date :<<>>   Reviewed By :<<>>*/
+		public bool DeleteBGFile(int DocumentId)
+		{
+			RemoteBGDocument bgDoc = vscm.RemoteBGDocuments.Where(li => li.DocId == DocumentId).FirstOrDefault();
+			if (bgDoc != null)
+			{
+				bgDoc.DeleteFlag = true;
+				vscm.SaveChanges();
+			}
+			BGDocument bgdocloc = obj.BGDocuments.Where(li => li.DocId == DocumentId).FirstOrDefault();
+			if (bgdocloc != null)
+			{
+				bgdocloc.DeleteFlag = true;
+				obj.SaveChanges();
+			}
+			return true;
 		}
 	}
 }
