@@ -9,6 +9,8 @@ using SCMModels.RemoteModel;
 using DALayer.Common;
 using System.Collections.Generic;
 using SCMModels;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace DALayer.Emails
 {
@@ -144,9 +146,9 @@ namespace DALayer.Emails
 				//CC Mails
 				var CC1 = Convert.ToString(rfqrevisiondetails.CreatedBy);
 				string CCEmails = (db.Employees.Where(li => li.EmployeeNo == CC1).FirstOrDefault<Employee>()).EMail;
-				CCEmails += "," + (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
+				if (!string.IsNullOrEmpty(rfqrevisiondetails.BuyergroupEmail))
+					CCEmails += "," + (db.Employees.Where(li => li.EmployeeNo == rfqrevisiondetails.BuyergroupEmail).FirstOrDefault<Employee>()).EMail;
 				emlSndngList.CC = CCEmails;
-
 				if ((!string.IsNullOrEmpty(emlSndngList.FrmEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId)) && (emlSndngList.FrmEmailId != "NULL" && emlSndngList.ToEmailId != "NULL"))
 					this.sendEmail(emlSndngList);
 
@@ -269,7 +271,7 @@ namespace DALayer.Emails
 					mpripaddress = mpripaddress + "SCM/ASNView/" + ASNHeader.ASNId + "";
 					EmailSend emlSndngList = new EmailSend();
 					emlSndngList.FrmEmailId = ConfigurationManager.AppSettings["fromemail"];
-					emlSndngList.Subject = "Invoice Submitted For ASNNo:" + ASNHeader.ASNNo + "";
+					emlSndngList.Subject = "Invoice Submitted For ASNNo:" + ASNHeader.ASNNo + "; PO No:" + ASNHeader.PONos + "; Invoice No:" + ASNHeader.InvoiceNo + "";
 					emlSndngList.Body = "<html><head></head><body><div class='container'><p>Click below link to view details</p></div><br/><div><b  style='color:#40bfbf;'>TO View Details: <a href='" + mpripaddress + "'>" + mpripaddress + "</a></b></div><br /><div><b  style='color:#40bfbf;'></a></b></body></html>";
 					if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ASNToEmail"]))
 						emlSndngList.ToEmailId = ConfigurationManager.AppSettings["ASNToEmail"];
@@ -377,54 +379,70 @@ namespace DALayer.Emails
 		}
 		public bool sendEmail(EmailSend emlSndngList)
 		{
-			//bool validEmail = IsValidEmail(emlSndngList.ToEmailId);
-			if (!string.IsNullOrEmpty(emlSndngList.ToEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId))
+			//calling SCM api to send mail
+
+			string serviceUrl = ConfigurationManager.AppSettings["SCMDocUploadPath"];
+			//log.ErrorMessage("VendorRFQController", "serviceurl called", serviceUrl);
+			serviceUrl = serviceUrl + "sendVSCMEmail";
+			using (var client = new HttpClient())
 			{
-				var BCC = ConfigurationManager.AppSettings["BCC"];
-				var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
-				MailMessage mailMessage = new MailMessage();
-				mailMessage.From = new MailAddress(emlSndngList.FrmEmailId.Trim(), ""); //From Email Id
-				string[] ToMuliId = emlSndngList.ToEmailId.Split(',');
-				foreach (string ToEMailId in ToMuliId)
-				{
-					mailMessage.To.Add(new MailAddress(ToEMailId.Trim(), "")); //adding multiple TO Email Id
-				}
-				SmtpClient client = new SmtpClient();
-				if (!string.IsNullOrEmpty(emlSndngList.Subject))
-					mailMessage.Subject = emlSndngList.Subject;
-
-				if (!string.IsNullOrEmpty(emlSndngList.CC))
-				{
-					string[] CCId = emlSndngList.CC.Split(',');
-
-					foreach (string CCEmail in CCId)
-					{
-						mailMessage.CC.Add(new MailAddress(CCEmail.Trim(), "")); //Adding Multiple CC email Id
-					}
-				}
-
-				if (!string.IsNullOrEmpty(emlSndngList.BCC))
-				{
-					string[] bccid = emlSndngList.BCC.Split(',');
-
-
-					foreach (string bccEmailId in bccid)
-					{
-						mailMessage.Bcc.Add(new MailAddress(bccEmailId.Trim(), "")); //Adding Multiple BCC email Id
-					}
-				}
-
-				if (!string.IsNullOrEmpty(BCC))
-					mailMessage.Bcc.Add(new MailAddress(BCC.Trim(), ""));
-				mailMessage.Body = emlSndngList.Body;
-				mailMessage.IsBodyHtml = true;
-				mailMessage.BodyEncoding = Encoding.UTF8;
-				SmtpClient mailClient = new SmtpClient(SMTPServer, 25);
-				//SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
-				//mailClient.EnableSsl = true;
-				mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-				mailClient.Send(mailMessage);
+				var result = client.PostAsJsonAsync(serviceUrl, emlSndngList).Result;
 			}
+			//bool validEmail = IsValidEmail(emlSndngList.ToEmailId);
+			//try
+			//{
+			//	if (!string.IsNullOrEmpty(emlSndngList.ToEmailId) && !string.IsNullOrEmpty(emlSndngList.FrmEmailId))
+			//{
+			//	var BCC = ConfigurationManager.AppSettings["BCC"];
+			//	var SMTPServer = ConfigurationManager.AppSettings["SMTPServer"];
+			//	MailMessage mailMessage = new MailMessage();
+			//	mailMessage.From = new MailAddress(emlSndngList.FrmEmailId.Trim(), ""); //From Email Id
+			//	string[] ToMuliId = emlSndngList.ToEmailId.Split(',');
+			//	foreach (string ToEMailId in ToMuliId)
+			//	{
+			//		mailMessage.To.Add(new MailAddress(ToEMailId.Trim(), "")); //adding multiple TO Email Id
+			//	}
+			//	SmtpClient client = new SmtpClient();
+			//	if (!string.IsNullOrEmpty(emlSndngList.Subject))
+			//		mailMessage.Subject = emlSndngList.Subject;
+
+			//	if (!string.IsNullOrEmpty(emlSndngList.CC))
+			//	{
+			//		string[] CCId = emlSndngList.CC.Split(',');
+
+			//		foreach (string CCEmail in CCId)
+			//		{
+			//			mailMessage.CC.Add(new MailAddress(CCEmail.Trim(), "")); //Adding Multiple CC email Id
+			//		}
+			//	}
+
+			//	if (!string.IsNullOrEmpty(emlSndngList.BCC))
+			//	{
+			//		string[] bccid = emlSndngList.BCC.Split(',');
+
+
+			//		foreach (string bccEmailId in bccid)
+			//		{
+			//			mailMessage.Bcc.Add(new MailAddress(bccEmailId.Trim(), "")); //Adding Multiple BCC email Id
+			//		}
+			//	}
+
+			//	if (!string.IsNullOrEmpty(BCC))
+			//		mailMessage.Bcc.Add(new MailAddress(BCC.Trim(), ""));
+			//	mailMessage.Body = emlSndngList.Body;
+			//	mailMessage.IsBodyHtml = true;
+			//	mailMessage.BodyEncoding = Encoding.UTF8;
+			//	SmtpClient mailClient = new SmtpClient(SMTPServer, 25);
+			//	//SmtpClient mailClient = new SmtpClient("10.29.15.9", 25);
+			//	//mailClient.EnableSsl = true;
+			//	mailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+			//	mailClient.Send(mailMessage);
+			//}
+			//}
+			//catch (Exception ex)
+			//{
+			//	log.ErrorMessage("EmailTemplate", "sendEmail" + ";" + emlSndngList.ToEmailId.ToString() + "", ex.ToString());
+			//}
 			return true;
 		}
 

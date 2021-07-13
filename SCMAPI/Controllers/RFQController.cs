@@ -799,8 +799,10 @@ namespace SCMAPI.Controllers
 				string sourcePath = "D:\\YILProjects\\SCM\\SCMFiles\\";
 				//string sourcePath = "D:\\Excelpath\\";
 				string targetpath = "D:\\YILProjects\\SCM\\SCMFiles\\";
+				//string sourcePath = ConfigurationManager.AppSettings["RFQTemplate"];
+				//string targetpath = ConfigurationManager.AppSettings["DownloadVexcel"];
 				string srcfilename = "RFQDownloadTemplate.xlsx";
-				string targetfilename = "Akil" + DateTime.Now.ToString("ddMMyyyyhhmmss") + ".xlsx";
+				string targetfilename = "RFQ" + DateTime.Now.ToString("ddMMyyyyhhmmss") + revisionid + ".xlsx";
 				string sourceFile = System.IO.Path.Combine(sourcePath, srcfilename);
 				string destFile = System.IO.Path.Combine(targetpath, targetfilename);
 				if (!System.IO.Directory.Exists(targetpath))
@@ -972,6 +974,7 @@ namespace SCMAPI.Controllers
 			}
 			catch (Exception ex)
 			{
+				log.ErrorMessage("RFQController", "Downloadexcel", ex.Message + "; " + ex.StackTrace.ToString());
 				throw;
 			}
 		}
@@ -1276,8 +1279,8 @@ namespace SCMAPI.Controllers
 		public IHttpActionResult deleteRFQFormatFile()
 		{
 
-			string partialName = "Akil";
-			DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(@"D:\\YILProjects\\SCM\\SCMFiles\\");
+			string partialName = "RFQ";
+			DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(@"C:\VSCMDeployment\RFQFiles");
 			FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles("*" + partialName + "*.*");
 			foreach (FileInfo file in filesInDir)
 			{
@@ -1286,7 +1289,7 @@ namespace SCMAPI.Controllers
 					var stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 					stream.Dispose();
 					stream.Close();
-					File.Delete(file.FullName); 
+					File.Delete(file.FullName);
 				}
 				catch (Exception e)
 				{

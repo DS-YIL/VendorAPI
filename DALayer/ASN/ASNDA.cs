@@ -40,7 +40,7 @@ namespace DALayer.ASN
 				NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.AppSettings["WMSServerPath"]);
 				conn.Open();
 				// Define a query
-				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono,sloc,podate  from wms.wms_polist where isclosed is false and vendorcode='" + vendorDetails.VendorCode + "' order by pono", conn);
+				NpgsqlCommand cmd = new NpgsqlCommand("select distinct pono,sloc,podate,crcy,exchangerate  from wms.wms_polist where isclosed is false and vendorcode='" + vendorDetails.VendorCode + "' order by pono", conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
 				// Read all rows and output the first column in each row
@@ -52,6 +52,9 @@ namespace DALayer.ASN
 						stagingPoSapModels.PODate = Convert.ToDateTime(dr["podate"]);
 					else
 						stagingPoSapModels.PODate = null;
+					stagingPoSapModels.Crcy = dr["crcy"].ToString();
+					stagingPoSapModels.ExchangeRate = dr["exchangerate"].ToString();
+
 					var sloc = dr["sloc"].ToString();
 					if (!string.IsNullOrEmpty(sloc))
 					{
@@ -94,7 +97,7 @@ namespace DALayer.ASN
 				conn.Open();
 				// Define a query
 				PONo = PONo.Replace(",", "','");
-				string query = "select  wp.pono ,wp.podate,wp.vendorcode,pomat.saleordertype,pomat.materialid ,pomat.materialdescription ,pomat.poitemdescription,pomat.unitprice,pomat.projectname,pomat.projectcode,pomat.itemno,pomat.itemdeliverydate, pomat.materialqty, pomat.deliveredqty,mat.hsncode from wms.wms_polist wp  inner join wms.wms_pomaterials pomat on pomat.pono = wp.pono inner join wms.\"MaterialMasterYGS\" mat on mat.material = pomat.materialid where wp.pono in ('" + PONo + "') order by wp.pono";
+				string query = "select  wp.pono ,wp.podate,wp.vendorcode,pomat.saleordertype,pomat.materialid ,pomat.materialdescription ,pomat.poitemdescription,pomat.unitprice,pomat.projectname,pomat.projectcode,pomat.itemno,pomat.itemdeliverydate, pomat.materialqty, pomat.deliveredqty,mat.hsncode,pomat.saleordertype as InvoiceType from wms.wms_polist wp  inner join wms.wms_pomaterials pomat on pomat.pono = wp.pono inner join wms.\"MaterialMasterYGS\" mat on mat.material = pomat.materialid where wp.pono in ('" + PONo + "') order by wp.pono";
 				NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 				// Execute a query
 				NpgsqlDataReader dr = cmd.ExecuteReader();
@@ -109,18 +112,22 @@ namespace DALayer.ASN
 						PoItemDetails.PODate = null;
 					//PoItemDetails.Approver1 = Convert.ToString(dr["approver1"]);
 					//PoItemDetails.Approver2 = Convert.ToString(dr["approver2"]);
+					PoItemDetails.InvoiceType = Convert.ToString(dr["InvoiceType"]);
 					PoItemDetails.VendorCode = Convert.ToString(dr["vendorcode"]);
 					PoItemDetails.Material = Convert.ToString(dr["materialid"]);
 					PoItemDetails.MaterialDescription = Convert.ToString(dr["materialdescription"]);
 					PoItemDetails.poitemdescription = Convert.ToString(dr["poitemdescription"]);
-					PoItemDetails.deliveredqty = Convert.ToDecimal(dr["deliveredqty"]);
+					var deliveredqty = dr["deliveredqty"].ToString();
+					if (!string.IsNullOrEmpty(deliveredqty))
+						PoItemDetails.deliveredqty = Convert.ToDouble(dr["deliveredqty"]);
 					PoItemDetails.POItemNo = Convert.ToString(dr["itemno"]);
-					PoItemDetails.unitprice = Convert.ToDecimal(dr["unitprice"]);
+					if (!string.IsNullOrEmpty(dr["unitprice"].ToString()))
+						PoItemDetails.UnitPrice = Convert.ToDecimal(dr["unitprice"]);
 					PoItemDetails.InvoiceType = Convert.ToString(dr["saleordertype"]);
 					PoItemDetails.ProjectName = Convert.ToString(dr["projectname"]);
 					PoItemDetails.ProjectCode = Convert.ToString(dr["projectcode"]);
 					PoItemDetails.HSNCode = Convert.ToString(dr["hsncode"]);
-					PoItemDetails.POQty = Convert.ToDecimal(dr["materialqty"]);//quoted qty
+					PoItemDetails.POQty = Convert.ToDouble(dr["materialqty"]);//quoted qty
 					var res = vscm.RemoteASNItemDetails.ToList();
 					RemoteASNItemDetail ASNitem = new RemoteASNItemDetail();
 					if (res.Count > 0)
@@ -180,10 +187,10 @@ namespace DALayer.ASN
 				//var ProjectNames = string.Join(",", (model.RemoteASNItemDetails.Select(c => c.ProjectName).ToList()).Distinct().ToArray());
 				//var ProjectCodes = string.Join(",", (model.RemoteASNItemDetails.Select(c => c.projectcode).ToList()).Distinct().ToArray());
 				//var invoiceAmnt = model.RemoteASNItemDetails.Aggregate((invoiceAmnt, x) => invoiceAmnt + x);
-				if (model.InvoiceType == "Y101")
-					model.InvoiceType = "Supply";
-				else if (model.InvoiceType == "Y201")
-					model.InvoiceType = "Service";
+				//if (model.InvoiceType == "Y201")
+				//	model.InvoiceType = "Service";
+				//else
+				//	model.InvoiceType = "Supply";
 				if (model != null)
 				{
 					if (model.ASNId == 0)
@@ -230,11 +237,24 @@ namespace DALayer.ASN
 						asnShipmentHeaderModel.InvoiceType = model.InvoiceType;
 						asnShipmentHeaderModel.ProjectCode = model.ProjectCode;
 						asnShipmentHeaderModel.ProjectName = model.ProjectName;
+						asnShipmentHeaderModel.Crcy = model.Crcy;
+						asnShipmentHeaderModel.ExchangeRate = model.ExchangeRate;
+						asnShipmentHeaderModel.Status = "ASN Submitted";
 						asnShipmentHeaderModel.CreatedBy = model.CreatedBy;
 						asnShipmentHeaderModel.CreatedDate = DateTime.Now;
 						vscm.RemoteASNShipmentHeaders.Add(asnShipmentHeaderModel);
 						vscm.SaveChanges();
 						ASNId = asnShipmentHeaderModel.ASNId;
+						RemoteASNStatusTrack RemotestatusTrack = new RemoteASNStatusTrack();
+						RemotestatusTrack.ASNId = asnShipmentHeaderModel.ASNId;
+						RemotestatusTrack.UpdatedBy = asnShipmentHeaderModel.CreatedBy;
+						RemotestatusTrack.UpdatedOn = DateTime.Now;
+						RemotestatusTrack.Status = "ASN Submitted";
+						if (!string.IsNullOrEmpty(RemotestatusTrack.Status))
+						{
+							vscm.RemoteASNStatusTracks.Add(RemotestatusTrack);
+							vscm.SaveChanges();
+						}
 						foreach (RemoteASNItemDetail item in model.RemoteASNItemDetails)
 						{
 							RemoteASNItemDetail ASNItemDetails = new RemoteASNItemDetail();
@@ -292,10 +312,26 @@ namespace DALayer.ASN
 						asnShipmentHeaderModelLocal.InvoiceType = model.InvoiceType;
 						asnShipmentHeaderModelLocal.ProjectCode = model.ProjectCode;
 						asnShipmentHeaderModelLocal.ProjectName = model.ProjectName;
+						asnShipmentHeaderModelLocal.Crcy = model.Crcy;
+						asnShipmentHeaderModelLocal.ExchangeRate = model.ExchangeRate;
+						asnShipmentHeaderModelLocal.Status = "ASN Submitted";
 						asnShipmentHeaderModelLocal.CreatedBy = model.CreatedBy;
 						asnShipmentHeaderModelLocal.CreatedDate = DateTime.Now;
 						obj.ASNShipmentHeaders.Add(asnShipmentHeaderModelLocal);
 						obj.SaveChanges();
+
+						//ASN Track details
+						ASNStatusTrack statusTrack = new ASNStatusTrack();
+						statusTrack.ASNStatusId = RemotestatusTrack.ASNStatusId;
+						statusTrack.ASNId = asnShipmentHeaderModelLocal.ASNId;
+						statusTrack.UpdatedBy = asnShipmentHeaderModelLocal.CreatedBy;
+						statusTrack.UpdatedOn = DateTime.Now;
+						statusTrack.Status = "ASN Submitted";
+						if (!string.IsNullOrEmpty(statusTrack.Status))
+						{
+							obj.ASNStatusTracks.Add(statusTrack);
+							obj.SaveChanges();
+						}
 						//List<string> ponos = new List<string>();
 						List<RemoteASNItemDetail> ASNItemDetailsList = vscm.RemoteASNItemDetails.Where(li => li.ASNId == ASNId).ToList();
 						foreach (RemoteASNItemDetail itemlocal in ASNItemDetailsList)
@@ -357,23 +393,38 @@ namespace DALayer.ASN
 						asnShipmentHeaderModel.InvoiceType = model.InvoiceType;
 						asnShipmentHeaderModel.ProjectCode = model.ProjectCode;
 						asnShipmentHeaderModel.ProjectName = model.ProjectName;
+						asnShipmentHeaderModel.Crcy = model.Crcy;
+						asnShipmentHeaderModel.ExchangeRate = model.ExchangeRate;
+						asnShipmentHeaderModel.Status = "ASN Updated By Vendor";
 						asnShipmentHeaderModel.CreatedBy = model.CreatedBy;
 						asnShipmentHeaderModel.CreatedDate = DateTime.Now;
 						vscm.SaveChanges();
 						ASNId = asnShipmentHeaderModel.ASNId;
+						RemoteASNStatusTrack RemotestatusTrack = new RemoteASNStatusTrack();
+						RemotestatusTrack.ASNId = asnShipmentHeaderModel.ASNId;
+						RemotestatusTrack.UpdatedBy = asnShipmentHeaderModel.CreatedBy;
+						RemotestatusTrack.UpdatedOn = DateTime.Now;
+						RemotestatusTrack.Status = "ASN Updated By Vendor";
+						if (!string.IsNullOrEmpty(RemotestatusTrack.Status))
+						{
+							vscm.RemoteASNStatusTracks.Add(RemotestatusTrack);
+							vscm.SaveChanges();
+						}
 						foreach (RemoteASNItemDetail item in model.RemoteASNItemDetails)
 						{
 							RemoteASNItemDetail ASNItemDetails = vscm.RemoteASNItemDetails.Where(li => li.ASNItemId == item.ASNItemId).FirstOrDefault();
-							ASNItemDetails.HSNCode = item.HSNCode;
-							ASNItemDetails.POQty = item.POQty;//Quoted Qty
-							Nullable<decimal> SupplierCumulativeQty = 0;
-							if (ASNItemDetails.SupplierCumulativeQty != null)
-								ASNItemDetails.SupplierCumulativeQty = ASNItemDetails.SupplierCumulativeQty + item.ASNQty; //delivered Qty
-							ASNItemDetails.RemainingQty = ASNItemDetails.POQty - ASNItemDetails.SupplierCumulativeQty;
-							ASNItemDetails.ProjectCode = item.ProjectCode;
-							ASNItemDetails.ProjectName = item.ProjectName;
-							ASNItemDetails.UnitPrice = item.UnitPrice;
-							ASNItemDetails.Remarks = item.Remarks;
+							//ASNItemDetails.HSNCode = item.HSNCode;
+							//ASNItemDetails.POQty = item.POQty;//Quoted Qty
+							//Nullable<decimal> SupplierCumulativeQty = 0;
+							//if (ASNItemDetails.SupplierCumulativeQty != null)
+							//ASNItemDetails.SupplierCumulativeQty = ASNItemDetails.SupplierCumulativeQty + item.ASNQty; //delivered Qty
+							item.ASNQty = item.SupplierCumulativeQty;
+							ASNItemDetails.SupplierCumulativeQty = item.SupplierCumulativeQty;
+							ASNItemDetails.RemainingQty = item.POQty - item.SupplierCumulativeQty;
+							//ASNItemDetails.ProjectCode = item.ProjectCode;
+							//ASNItemDetails.ProjectName = item.ProjectName;
+							//ASNItemDetails.UnitPrice = item.UnitPrice;
+							//ASNItemDetails.Remarks = item.Remarks;
 							vscm.SaveChanges();
 						}
 
@@ -407,23 +458,37 @@ namespace DALayer.ASN
 						asnShipmentHeaderModelLocal.InvoiceType = model.InvoiceType;
 						asnShipmentHeaderModelLocal.ProjectCode = model.ProjectCode;
 						asnShipmentHeaderModelLocal.ProjectName = model.ProjectName;
+						asnShipmentHeaderModelLocal.Crcy = model.Crcy;
+						asnShipmentHeaderModelLocal.ExchangeRate = model.ExchangeRate;
+						asnShipmentHeaderModelLocal.Status = "ASN Updated By Vendor";
 						obj.SaveChanges();
 						ASNId = asnShipmentHeaderModel.ASNId;
-
+						//update ASN status track
+						ASNStatusTrack statusTrack = new ASNStatusTrack();
+						statusTrack.ASNStatusId = RemotestatusTrack.ASNStatusId;
+						statusTrack.ASNId = asnShipmentHeaderModelLocal.ASNId;
+						statusTrack.UpdatedBy = asnShipmentHeaderModelLocal.CreatedBy;
+						statusTrack.UpdatedOn = DateTime.Now;
+						statusTrack.Status = "ASN Updated By Vendor";
+						if (!string.IsNullOrEmpty(statusTrack.Status))
+						{
+							obj.ASNStatusTracks.Add(statusTrack);
+							obj.SaveChanges();
+						}
 						List<RemoteASNItemDetail> ASNItemDetailsList = vscm.RemoteASNItemDetails.Where(li => li.ASNId == ASNId).ToList();
 						//List<string> ponos = new List<string>();
 						foreach (RemoteASNItemDetail item in ASNItemDetailsList)
 						{
 							//ponos.Add(item.PONo);
 							ASNItemDetail ASNItemDetails = obj.ASNItemDetails.Where(li => li.ASNItemId == item.ASNItemId).FirstOrDefault();
-							ASNItemDetails.HSNCode = item.HSNCode;
-							ASNItemDetails.POQty = item.POQty;//Quoted Qty
+							//ASNItemDetails.HSNCode = item.HSNCode;
+							//ASNItemDetails.POQty = item.POQty;//Quoted Qty
 							ASNItemDetails.SupplierCumulativeQty = item.SupplierCumulativeQty; //delivered Qty
 							ASNItemDetails.RemainingQty = item.RemainingQty;
-							ASNItemDetails.ProjectCode = item.ProjectCode;
-							ASNItemDetails.ProjectName = item.ProjectName;
-							ASNItemDetails.UnitPrice = item.UnitPrice;
-							ASNItemDetails.Remarks = item.Remarks;
+							//ASNItemDetails.ProjectCode = item.ProjectCode;
+							//ASNItemDetails.ProjectName = item.ProjectName;
+							//ASNItemDetails.UnitPrice = item.UnitPrice;
+							//ASNItemDetails.Remarks = item.Remarks;
 							obj.SaveChanges();
 						}
 						//update ASN details in wms
@@ -522,7 +587,7 @@ namespace DALayer.ASN
 								var result = pgsql.QueryFirstOrDefault<PoItemDetails>(
 												query, null, commandType: CommandType.Text);
 								var poitemdescription = result.poitemdescription;
-								var unitprice = result.unitprice;
+								var unitprice = result.UnitPrice;
 								var itemamount = result.itemamount;
 								var deliveredqty = 0;
 								var insertquery = "INSERT INTO wms.wms_pomaterials(pono, materialid, materialdescription,poitemdescription,materialqty,itemno,itemdeliverydate,unitprice,itemamount,asnno,invoiceno,invoicedate,asnqty,billoflodingnumber,deliveredqty)VALUES(@pono, @materialid, @materialdescription,@poitemdescription,@materialqty,@itemno,@itemdeliverydate,@unitprice,@itemamount,@asnno,@invoiceno,@invoicedate,@asnqty,@billoflodingnumber,@deliveredqty)";
@@ -548,7 +613,7 @@ namespace DALayer.ASN
 
 							else
 							{
-								string qry = "Update wms.wms_pomaterials set  itemdeliverydate = " + DeliveryDate + ",asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "',invoicedate='" + InvoiceDate + "',billoflodingnumber='" + asnData.BillofLodingNumber + "' where asnno='" + ASNNo + "' and  pono ='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
+								string qry = "Update wms.wms_pomaterials set  itemdeliverydate = '" + DeliveryDate + "',asnqty = '" + itemlocal.ASNQty + "',invoiceno='" + asnData.InvoiceNo + "',invoicedate='" + InvoiceDate + "',billoflodingnumber='" + asnData.BillofLodingNumber + "' where asnno='" + ASNNo + "' and  pono ='" + itemlocal.PONo + "' and materialid='" + itemlocal.Material + "' and itemno='" + itemlocal.POItemNo + "'";
 								var results11 = pgsql.ExecuteScalar(qry);
 							}
 

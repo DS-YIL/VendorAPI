@@ -1214,12 +1214,11 @@ namespace DALayer.RFQ
 		{
 			List<RFQMasterModel> model = new List<RFQMasterModel>();
 			List<V_RFQList> data = null;
+			var query = default(string);
 			try
 			{
 
 				int vendorid = Convert.ToInt32(rfqfilterparams.VendorId);
-
-				var query = default(string);
 				query = "select * from V_RFQList Where VendorId = " + rfqfilterparams.VendorId + " and (DeleteFlag = 0 or DeleteFlag is null) and VendorVisiblity = 1 and ActiveRevision=1";
 				if (rfqfilterparams.typeOfFilter == "true")
 				{
@@ -1297,7 +1296,7 @@ namespace DALayer.RFQ
 			}
 			catch (Exception ex)
 			{
-				log.ErrorMessage("RFQDA", "GetRfqByVendorId", ex.Message + "; " + ex.StackTrace.ToString());
+				log.ErrorMessage("RFQDA", "GetRfqByVendorId", query + ";" + ex.Message + "; " + ex.StackTrace.ToString());
 			}
 			return data;
 		}
@@ -2845,7 +2844,7 @@ namespace DALayer.RFQ
 					if (!string.IsNullOrEmpty(BGfilters.VendorName))
 						query += "  and VendorName like'%" + BGfilters.VendorName + "%'";
 					if (!string.IsNullOrEmpty(BGfilters.BGNo))
-						query += "  and ASNNo = '" + BGfilters.BGNo + "'";
+						query += "  and BGNo = '" + BGfilters.BGNo + "'";
 					if (!string.IsNullOrEmpty(BGfilters.PONo))
 						query += "  and PONo = '" + BGfilters.PONo + "'";
 					if (!string.IsNullOrEmpty(BGfilters.BGStatus))
